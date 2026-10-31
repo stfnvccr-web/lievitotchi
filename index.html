@@ -3,1270 +3,1457 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lievitotchi 🍞 - Il Tamagotchi del tuo Lievito Madre</title>
-  <!-- Google Fonts per stile Retro/Pixel + UI moderna pulita -->
+  <title>Lievitotchi Pro 🍞 - Digital Sourdough Assistant & Pet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-cream: #FAF6EE;
-      --card-bg: #FFFFFF;
-      --primary: #D97736;
-      --primary-light: #FDEBD0;
-      --primary-dark: #9C4516;
-      --accent-green: #48BB78;
-      --accent-blue: #4299E1;
-      --accent-purple: #805AD5;
-      --accent-red: #E53E3E;
-      --text-dark: #2D3748;
-      --text-muted: #718096;
+      --bg-page: #0F141C;
+      --bg-surface: #18202F;
+      --bg-card: #202B3E;
+      --bg-card-hover: #26344B;
+      --border-color: #2F3E58;
+      --border-focus: #F59E0B;
+      
+      --accent-amber: #F59E0B;
+      --accent-amber-light: #FDE68A;
+      --accent-cyan: #06B6D4;
+      --accent-emerald: #10B981;
+      --accent-rose: #F43F5E;
+      --accent-violet: #8B5CF6;
+
+      --text-main: #F1F5F9;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+
       --pixel-font: 'Press Start 2P', monospace;
-      --sans-font: 'Outfit', sans-serif;
-      --border-tamagotchi: #4A3E3D;
-      --tmg-screen-bg: #D4E7D0;
-      --tmg-screen-inner: #C2DEC0;
+      --sans-font: 'Plus Jakarta Sans', sans-serif;
+      --mono-font: 'JetBrains Mono', monospace;
+
+      --lcd-green: #9CB788;
+      --lcd-dark: #1E2B1A;
+      --lcd-accent: #2C4026;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg-cream);
-      color: var(--text-dark);
+      background-color: var(--bg-page);
+      color: var(--text-main);
       font-family: var(--sans-font);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 12px 60px;
+      padding: 24px 16px 80px;
+      line-height: 1.5;
     }
 
-    /* Container principale stile app */
-    .app-container {
+    /* TOP BAR & APP HEADER */
+    .app-header {
       width: 100%;
-      max-width: 520px;
+      max-width: 1200px;
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 4px;
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    .app-title {
-      font-family: var(--pixel-font);
-      font-size: 1.25rem;
-      color: var(--primary-dark);
-      letter-spacing: -0.5px;
-      margin-bottom: 4px;
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #F59E0B, #B45309);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .brand-text h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
 
-    .app-subtitle {
+    .brand-badge {
+      font-family: var(--pixel-font);
+      font-size: 0.55rem;
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-amber);
+      border: 1px solid var(--accent-amber);
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+
+    .brand-text p {
       font-size: 0.85rem;
       color: var(--text-muted);
-      font-weight: 500;
     }
 
-    /* Tamagotchi Shell */
-    .tamagotchi-shell {
-      background: linear-gradient(145deg, #FAD02C, #F39C12);
-      border-radius: 46% 46% 42% 42% / 40% 40% 50% 50%;
-      padding: 24px 20px 32px;
-      border: 6px solid #C0392B;
-      box-shadow: 0 16px 30px rgba(192, 57, 43, 0.25), inset 0 6px 12px rgba(255, 255, 255, 0.4), inset 0 -6px 12px rgba(0, 0, 0, 0.2);
-      position: relative;
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
 
-    .shell-brand {
+    .btn-secondary {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      border-color: var(--accent-amber);
+    }
+
+    /* MAIN DASHBOARD DUAL-COLUMN LAYOUT */
+    .dashboard-layout {
+      width: 100%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* LEFT COLUMN: THE RETRO-PIXEL TAMAGOTCHI DEVICE */
+    .tamagotchi-unit {
+      background: linear-gradient(170deg, #1E293B, #0F172A);
+      border: 2px solid var(--border-color);
+      border-radius: 28px;
+      padding: 24px 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 20px;
+    }
+
+    .device-chassis {
+      background: linear-gradient(145deg, #F59E0B, #D97706);
+      border-radius: 46% 46% 40% 40% / 40% 40% 48% 48%;
+      padding: 20px 16px 26px;
+      border: 4px solid #78350F;
+      box-shadow: inset 0 4px 8px rgba(255, 255, 255, 0.4), inset 0 -4px 8px rgba(0,0,0,0.3), 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    .device-model-label {
       text-align: center;
       font-family: var(--pixel-font);
-      font-size: 0.65rem;
-      color: #900C3F;
+      font-size: 0.58rem;
+      color: #451A03;
       margin-bottom: 12px;
       letter-spacing: 1px;
     }
 
-    .tamagotchi-screen-frame {
-      background: #EAE6DF;
-      border: 4px solid var(--border-tamagotchi);
-      border-radius: 18px;
-      padding: 12px;
-      box-shadow: inset 0 3px 6px rgba(0,0,0,0.25);
+    .lcd-bezel {
+      background: #D9D2C7;
+      border: 4px solid #3E2723;
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.4);
     }
 
-    .tamagotchi-lcd {
-      background: var(--tmg-screen-bg);
-      border: 3px solid #758A73;
-      border-radius: 10px;
-      padding: 12px 10px;
+    .lcd-screen {
+      background: var(--lcd-green);
+      border: 2px solid #57684C;
+      border-radius: 8px;
+      padding: 10px 8px;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 2px 8px rgba(45, 68, 43, 0.35);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
     }
 
-    /* Griglia a pixel sottile sullo schermo LCD */
-    .tamagotchi-lcd::before {
+    .lcd-screen::after {
       content: "";
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: radial-gradient(#111 0.75px, transparent 0.75px);
       background-size: 3px 3px;
-      opacity: 0.06;
+      opacity: 0.08;
       pointer-events: none;
-      z-index: 10;
     }
 
-    .lcd-header {
+    .lcd-top-status {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--pixel-font);
-      font-size: 0.6rem;
-      color: #2D3E2C;
-      border-bottom: 2px dashed #9DB89B;
+      font-size: 0.52rem;
+      color: var(--lcd-dark);
+      border-bottom: 1px dashed var(--lcd-accent);
       padding-bottom: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .yeast-profile-pill {
-      background: rgba(45, 62, 44, 0.15);
-      padding: 3px 6px;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-
-    /* Vaso di vetro e canvas */
-    .stage-wrapper {
+    .canvas-box {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 145px;
       position: relative;
-      min-height: 165px;
+    }
+
+    canvas#pixelCanvas {
+      image-rendering: pixelated;
+    }
+
+    .lcd-speech-box {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1.5px solid var(--lcd-dark);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-family: var(--pixel-font);
+      font-size: 0.52rem;
+      line-height: 1.35;
+      color: var(--lcd-dark);
+      margin-top: 6px;
+      text-align: center;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
 
-    canvas#yeastCanvas {
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      max-width: 100%;
-    }
-
-    .lcd-bubble {
-      background: #FFFFFF;
-      border: 2px solid #2D3E2C;
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-family: var(--pixel-font);
-      font-size: 0.58rem;
-      line-height: 1.4;
-      color: #1F2D1E;
+    .lcd-metrics {
       margin-top: 8px;
-      text-align: center;
-      position: relative;
-      animation: floatSpeech 3s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatSpeech {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(-3px); }
-    }
-
-    /* Stats sul LCD */
-    .lcd-bars {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px 12px;
-      margin-top: 10px;
+      gap: 6px 10px;
       font-family: var(--pixel-font);
-      font-size: 0.52rem;
-      color: #243523;
+      font-size: 0.48rem;
+      color: var(--lcd-dark);
     }
 
-    .stat-row {
+    .metric-row {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
     }
 
-    .stat-label-row {
+    .metric-header {
       display: flex;
       justify-content: space-between;
     }
 
-    .meter-outer {
-      height: 8px;
-      background: #B3C8B1;
-      border: 1.5px solid #2D3E2C;
+    .metric-track {
+      height: 7px;
+      background: rgba(44, 64, 38, 0.25);
+      border: 1px solid var(--lcd-dark);
       border-radius: 2px;
       overflow: hidden;
     }
 
-    .meter-fill {
+    .metric-fill {
       height: 100%;
-      background: #2D3E2C;
-      width: 50%;
-      transition: width 0.4s ease, background 0.3s ease;
+      background: var(--lcd-dark);
+      transition: width 0.3s ease;
     }
 
-    /* Pulsanti fisici Tamagotchi (A, B, C) */
-    .tamagotchi-buttons {
+    /* 3 PHYSICAL BUTTONS */
+    .device-buttons {
       display: flex;
       justify-content: space-around;
-      align-items: center;
-      margin-top: 22px;
-      padding: 0 12px;
+      margin-top: 20px;
+      padding: 0 10px;
     }
 
-    .tmg-btn-wrapper {
+    .btn-capsule {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    .tmg-btn {
-      width: 48px;
-      height: 48px;
+    .btn-round {
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #F5B7B1, #C0392B);
-      border: 3px solid #78281F;
-      box-shadow: 0 5px 0 #641E16, 0 8px 10px rgba(0,0,0,0.3);
+      background: radial-gradient(circle at 35% 35%, #F87171, #DC2626);
+      border: 3px solid #991B1B;
+      box-shadow: 0 4px 0 #7F1D1D, 0 6px 8px rgba(0,0,0,0.4);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      transition: all 0.1s ease;
-      color: #fff;
+      font-size: 1.1rem;
+      color: #FFFFFF;
+      transition: all 0.1s;
     }
 
-    .tmg-btn:active {
-      transform: translateY(4px);
-      box-shadow: 0 1px 0 #641E16, 0 3px 5px rgba(0,0,0,0.3);
+    .btn-round:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #7F1D1D, 0 2px 4px rgba(0,0,0,0.4);
     }
 
-    .tmg-btn-label {
+    .btn-round-label {
       font-family: var(--pixel-font);
-      font-size: 0.55rem;
-      color: #78281F;
-      font-weight: bold;
+      font-size: 0.5rem;
+      color: #451A03;
+      font-weight: 700;
     }
 
-    /* Modalità scientifica / Hub interattivo */
-    .science-hub {
-      background: var(--card-bg);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      border: 1px solid #E2E8F0;
+    /* RIGHT COLUMN: PROFESSIONAL ASSISTANT & KITCHEN ADVISOR */
+    .pro-dashboard {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 24px;
     }
 
-    .hub-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--primary-dark);
+    /* SECTION CARD BASE */
+    .section-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .section-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
     }
 
-    .pill-mode {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      font-size: 0.72rem;
+    .section-title {
+      font-size: 1.05rem;
       font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 12px;
-    }
-
-    /* Goal & Routine Selector */
-    .goal-selector {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .goal-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 8px;
+      color: #FFFFFF;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
     }
 
-    .options-grid {
+    .badge-tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.4); }
+    .badge-cyan { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid rgba(6, 182, 212, 0.4); }
+    .badge-emerald { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    /* COMMITMENT / SCHEDULE SELECTOR */
+    .commit-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 12px;
     }
 
-    .option-btn {
-      background: #FFFFFF;
-      border: 2px solid #CBD5E0;
-      border-radius: 10px;
-      padding: 8px 6px;
-      text-align: center;
+    @media (max-width: 680px) {
+      .commit-grid { grid-template-columns: 1fr; }
+    }
+
+    .commit-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .option-btn:hover {
-      border-color: var(--primary);
-    }
-
-    .option-btn.active {
-      border-color: var(--primary);
-      background: #FEF3C7;
-      box-shadow: 0 2px 6px rgba(217, 119, 54, 0.15);
-    }
-
-    .option-btn .opt-icon {
-      font-size: 1.2rem;
-    }
-
-    .option-btn .opt-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    .option-btn .opt-desc {
-      font-size: 0.62rem;
-      color: var(--text-muted);
-      line-height: 1.1;
-    }
-
-    /* Calcolatore Rinfresco Scientifico */
-    .refresh-calc {
-      background: #FFFDF9;
-      border: 1.5px solid #F6E05E;
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .calc-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .calc-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #B7791F;
-      display: flex;
-      align-items: center;
       gap: 6px;
     }
 
-    .inputs-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 12px;
+    .commit-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(245, 158, 11, 0.5);
     }
 
-    .input-field {
+    .commit-card.active {
+      border-color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.08);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+    }
+
+    .commit-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .commit-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .commit-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .commit-cadence {
+      margin-top: auto;
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+      color: var(--accent-amber);
+    }
+
+    /* SMART TIMELINE COMPONENT */
+    .timeline-container {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .timeline-list {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 14px;
+      position: relative;
     }
 
-    .input-field label {
-      font-size: 0.72rem;
+    .timeline-step {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 14px;
+      align-items: baseline;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .timeline-step:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .step-time-badge {
+      font-family: var(--mono-font);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .step-content h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 3px;
+    }
+
+    .step-content p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* REFRESH CALCULATOR ENGINE */
+    .calculator-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .calculator-panel { grid-template-columns: 1fr; }
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 0.78rem;
       font-weight: 600;
       color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
     }
 
-    .input-field select, .input-field input {
-      padding: 8px 10px;
-      border: 1.5px solid #CBD5E0;
-      border-radius: 8px;
+    .input-control {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #FFFFFF;
       font-family: var(--sans-font);
-      font-size: 0.85rem;
-      background: white;
-      color: var(--text-dark);
+      font-size: 0.9rem;
       font-weight: 600;
+      outline: none;
+      transition: border 0.2s;
     }
 
-    .recipe-cards {
+    .input-control:focus {
+      border-color: var(--accent-amber);
+    }
+
+    .recipe-results {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 8px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
-    .recipe-card {
-      background: white;
-      border-radius: 10px;
-      padding: 8px;
-      text-align: center;
-      border: 1px solid #E2E8F0;
-    }
-
-    .recipe-card .ing-title {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .recipe-card .ing-value {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      margin: 2px 0;
-    }
-
-    .recipe-card .ing-hint {
-      font-size: 0.62rem;
-      color: var(--text-muted);
-    }
-
-    /* Science Insight Card */
-    .science-card {
-      background: #F0FFF4;
-      border: 1.5px solid #9AE6B4;
+    .recipe-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-color);
       border-radius: 12px;
       padding: 12px;
-      font-size: 0.78rem;
-      line-height: 1.45;
-      color: #22543D;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
+      text-align: center;
+      position: relative;
     }
 
-    .science-card .icon {
-      font-size: 1.3rem;
-      flex-shrink: 0;
+    .recipe-box.primary-ing {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.05);
     }
 
-    /* Modale / Sheet per dettagli o azioni */
-    .action-btn-main {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      font-family: var(--sans-font);
+    .recipe-box-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
       font-weight: 700;
-      font-size: 0.9rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .recipe-box-val {
+      font-family: var(--mono-font);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 4px 0;
+    }
+
+    .recipe-box-sub {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    /* ACTION BUTTON */
+    .btn-feed-action {
+      width: 100%;
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #111827;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 10px rgba(217, 119, 54, 0.3);
-      transition: background 0.2s;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+      transition: all 0.2s;
     }
 
-    .action-btn-main:hover {
-      background: var(--primary-dark);
+    .btn-feed-action:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
     }
 
-    /* Timeline & Programma */
-    .schedule-box {
-      background: #FAF5FF;
-      border: 1.5px solid #D6BCFA;
+    .btn-feed-action:active {
+      transform: translateY(1px);
+    }
+
+    /* SOURDOUGH DOCTOR / TROUBLESHOOTING GUIDE */
+    .doctor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 680px) {
+      .doctor-grid { grid-template-columns: 1fr; }
+    }
+
+    .diagnostic-item {
+      background: var(--bg-card);
       border-radius: 12px;
-      padding: 12px;
-    }
-
-    .schedule-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--accent-purple);
-      margin-bottom: 8px;
-    }
-
-    .timeline-steps {
+      border: 1px solid var(--border-color);
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .step-item {
+    .diag-header {
       display: flex;
-      gap: 10px;
       align-items: center;
-      font-size: 0.75rem;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #FFFFFF;
     }
 
-    .step-time {
-      font-family: var(--pixel-font);
-      font-size: 0.6rem;
-      background: white;
-      padding: 3px 6px;
-      border-radius: 4px;
-      border: 1px solid #D6BCFA;
-      color: #553C9A;
-      flex-shrink: 0;
+    .diag-body {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
     }
 
-    .step-desc {
-      color: #4A5568;
+    .diag-rx {
+      font-size: 0.74rem;
+      color: var(--accent-emerald);
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 6px 8px;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent-emerald);
+      margin-top: 4px;
     }
 
-    .step-desc strong {
-      color: var(--text-dark);
-    }
-
-    /* Audio switch */
-    .sound-toggle {
+    /* FLOATING HEARTS & FEEDBACK */
+    .floating-reaction {
       position: absolute;
-      top: 14px;
-      right: 18px;
-      background: rgba(0,0,0,0.15);
-      border: none;
-      border-radius: 20px;
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      color: white;
-    }
-
-    /* Animazione confetti o cuoricini */
-    .floating-heart {
-      position: absolute;
-      font-size: 1.2rem;
       pointer-events: none;
-      animation: flyUp 1.2s forwards ease-out;
+      font-size: 1.4rem;
+      animation: floatUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
-    @keyframes flyUp {
+    @keyframes floatUpFade {
       0% { transform: translateY(0) scale(0.6); opacity: 1; }
-      100% { transform: translateY(-45px) scale(1.3); opacity: 0; }
+      100% { transform: translateY(-40px) scale(1.4); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-<div class="app-container">
-  <header>
-    <div class="app-title">
-      <span>🍞 LIEVITOTCHI 🌾</span>
+  <!-- APP HEADER -->
+  <header class="app-header">
+    <div class="brand-group">
+      <div class="brand-icon">🍞</div>
+      <div class="brand-text">
+        <h1>Lievitotchi Pro <span class="brand-badge">BIO-SIM v2.0</span></h1>
+        <p>Assistente Tecnico di Panificazione & Colonia Microbiotica Tascabile</p>
+      </div>
     </div>
-    <div class="app-subtitle">Biotecnologia tascabile & cure amorevoli</div>
+    <div class="header-actions">
+      <!-- TIME MACHINE / DEV TIME CONTROLS -->
+      <div style="background: rgba(245, 158, 11, 0.15); border: 1px dashed var(--accent-amber); padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 6px;">
+        <span style="font-family: var(--mono-font); font-size: 0.72rem; color: var(--accent-amber); font-weight: 700;">⏱️ TIME MACHINE:</span>
+        <button class="btn-secondary" id="btnFastForwardHours" style="padding: 4px 8px; font-size: 0.74rem;" title="Avanza il tempo di 6 ore">+6h</button>
+        <button class="btn-secondary" id="btnFastForwardDay" style="padding: 4px 8px; font-size: 0.74rem;" title="Avanza il tempo di 1 giorno intero">+1 Giorno ⏩</button>
+        <button class="btn-secondary" id="btnFastForward3Days" style="padding: 4px 8px; font-size: 0.74rem;" title="Avanza di 3 giorni">+3 Giorni 🚀</button>
+      </div>
+      <button class="btn-secondary" id="btnAudioToggle">🔊 Audio Retro: ON</button>
+      <button class="btn-secondary" id="btnExportLog" title="Esporta log rinfreschi in JSON">📋 Log Rinfreschi</button>
+    </div>
   </header>
 
-  <!-- TAMAGOTCHI CONSOLE -->
-  <div class="tamagotchi-shell">
-    <button class="sound-toggle" id="soundToggle" title="Audio Retro">🔊 Suoni ON</button>
-    <div class="shell-brand">BIO-ORGANISM PET v1.0</div>
+  <!-- DASHBOARD TWO COLUMNS -->
+  <main class="dashboard-layout">
+    
+    <!-- LEFT: TAMAGOTCHI DEVICE WIDGET -->
+    <div class="tamagotchi-unit">
+      <div class="device-chassis">
+        <div class="device-model-label">BIOPET MODEL LCD-8BIT</div>
 
-    <div class="tamagotchi-screen-frame">
-      <div class="tamagotchi-lcd">
-        <div class="lcd-header">
-          <span id="petName">Nome: BUBBLE</span>
-          <span class="yeast-profile-pill" id="yeastTypeLabel">LICOLI (100%)</span>
-          <span id="stateModeBadge">❄️ FRIGO</span>
-        </div>
+        <div class="lcd-bezel">
+          <div class="lcd-screen">
+            <div class="lcd-top-status">
+              <span id="lcdYeastType">LICOLI 100%</span>
+              <span id="lcdThermalState">❄️ FRIGO (+4°C)</span>
+            </div>
 
-        <div class="stage-wrapper">
-          <canvas id="yeastCanvas" width="240" height="150"></canvas>
-          <div class="lcd-bubble" id="petSpeech">
-            "Brrr! Sto sonnecchiando al fresco (+4°C)... Svegliami per il weekend!"
+            <div class="canvas-box">
+              <canvas id="pixelCanvas" width="220" height="140"></canvas>
+              <div class="lcd-speech-box" id="lcdSpeech">
+                "In letargo nel freddo. I miei batteri lattici riposano!"
+              </div>
+            </div>
+
+            <!-- METRICHE SCIENTIFICHE CHIP -->
+            <div class="lcd-metrics">
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span>FAME</span>
+                  <span id="statHunger">45%</span>
+                </div>
+                <div class="metric-track">
+                  <div class="metric-fill" id="barHunger" style="width: 45%;"></div>
+                </div>
+              </div>
+
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span>FORZA</span>
+                  <span id="statStrength">88%</span>
+                </div>
+                <div class="metric-track">
+                  <div class="metric-fill" id="barStrength" style="width: 88%;"></div>
+                </div>
+              </div>
+
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span>ACIDO</span>
+                  <span id="statAcidity">pH 4.1</span>
+                </div>
+                <div class="metric-track">
+                  <div class="metric-fill" id="barAcidity" style="width: 35%;"></div>
+                </div>
+              </div>
+
+              <div class="metric-row">
+                <div class="metric-header">
+                  <span>VOLUME</span>
+                  <span id="statVolume">x1.4</span>
+                </div>
+                <div class="metric-track">
+                  <div class="metric-fill" id="barVolume" style="width: 45%;"></div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- METER / STATISTICHE BIOLOGICHE -->
-        <div class="lcd-bars">
-          <div class="stat-row">
-            <div class="stat-label-row">
-              <span>FAME</span>
-              <span id="hungerVal">68%</span>
-            </div>
-            <div class="meter-outer">
-              <div class="meter-fill" id="hungerBar" style="width: 68%;"></div>
-            </div>
+        <!-- 3 TASTI RETRO -->
+        <div class="device-buttons">
+          <div class="btn-capsule">
+            <button class="btn-round" id="btnDeviceFeed" title="Nutri Lievito">🥣</button>
+            <span class="btn-round-label">NUTRI</span>
           </div>
-
-          <div class="stat-row">
-            <div class="stat-label-row">
-              <span>ATTIVITÀ</span>
-              <span id="vitalityVal">85%</span>
-            </div>
-            <div class="meter-outer">
-              <div class="meter-fill" id="vitalityBar" style="width: 85%;"></div>
-            </div>
+          <div class="btn-capsule">
+            <button class="btn-round" id="btnDeviceTemp" title="Sposta Frigo / Stanza">🌡️</button>
+            <span class="btn-round-label">AMBIENTE</span>
           </div>
-
-          <div class="stat-row">
-            <div class="stat-label-row">
-              <span>ACIDITÀ</span>
-              <span id="acidityVal">OTTIMA</span>
-            </div>
-            <div class="meter-outer">
-              <div class="meter-fill" id="acidityBar" style="width: 25%;"></div>
-            </div>
-          </div>
-
-          <div class="stat-row">
-            <div class="stat-label-row">
-              <span>VOLUME</span>
-              <span id="volumeVal">x1.3</span>
-            </div>
-            <div class="meter-outer">
-              <div class="meter-fill" id="volumeBar" style="width: 40%;"></div>
-            </div>
+          <div class="btn-capsule">
+            <button class="btn-round" id="btnDeviceSync" title="Check Salute">🩺</button>
+            <span class="btn-round-label">GUIDA</span>
           </div>
         </div>
+
       </div>
     </div>
 
-    <!-- PULSANTI FISICI DEL TAMAGOTCHI -->
-    <div class="tamagotchi-buttons">
-      <div class="tmg-btn-wrapper">
-        <button class="tmg-btn" id="btnFeed" title="Rinfresca con farina e acqua">🥣</button>
-        <span class="tmg-btn-label">NUTRI</span>
-      </div>
-      <div class="tmg-btn-wrapper">
-        <button class="tmg-btn" id="btnFridgeToggle" title="Metti o togli dal frigorifero">❄️</button>
-        <span class="tmg-btn-label">FRIGO / STANZA</span>
-      </div>
-      <div class="tmg-btn-wrapper">
-        <button class="tmg-btn" id="btnPlan" title="Pianifica impasto per il tuo obiettivo">📅</button>
-        <span class="tmg-btn-label">PIANO</span>
-      </div>
+    <!-- RIGHT: PRO BAKING DESK & BIO-ASSISTANT -->
+    <div class="pro-dashboard">
+      
+      <!-- 1. LIVELLO DI IMPEGNO & STRATEGIA CUCINA -->
+      <section class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>🎯 Strategia & Impegno in Cucina</span>
+          </div>
+          <span class="badge-tag badge-amber" id="strategyBadge">PIZZA & PANE WEEKEND</span>
+        </div>
+
+        <div class="commit-grid">
+          <div class="commit-card" data-plan="zen">
+            <div class="commit-top">
+              <span class="commit-title">🌱 Zen (Basso Impegno)</span>
+              <span>💤</span>
+            </div>
+            <p class="commit-desc">Per chi panifica 1 volta ogni 10-15 giorni. Il lievito riposa sereno in frigorifero senza ansia.</p>
+            <span class="commit-cadence">Rinfresco: Ogni 7-10 gg (Rapporto 1:3)</span>
+          </div>
+
+          <div class="commit-card active" data-plan="weekend">
+            <div class="commit-top">
+              <span class="commit-title">🍕 Weekend Chef</span>
+              <span>🔥</span>
+            </div>
+            <p class="commit-desc">Focalizzato sulla sfornata del sabato o domenica. Programma risveglio il giovedì/venerdì sera.</p>
+            <span class="commit-cadence">Rinfresco: 1 di riattivazione + 1 di picco</span>
+          </div>
+
+          <div class="commit-card" data-plan="pro">
+            <div class="commit-top">
+              <span class="commit-title">🥖 Bakery Pro (Alto)</span>
+              <span>⚡</span>
+            </div>
+            <p class="commit-desc">Per infornate frequenti (2-3 a settimana). Lievito sempre a temperatura controllata e massima spinta.</p>
+            <span class="commit-cadence">Rinfresco: Ogni 24-48h (Rapporto 1:1 o 1:2)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. CRONOPROGRAMMA OPERATIVO GUIDATO -->
+      <section class="section-card" id="scheduleSection">
+        <div class="section-header">
+          <div class="section-title">
+            <span>⏱️ Cronoprogramma di Lievitazione & Cottura</span>
+          </div>
+          <span class="badge-tag badge-cyan">GUIDA STEP-BY-STEP</span>
+        </div>
+
+        <div class="timeline-container">
+          <div class="timeline-list" id="scheduleTimeline">
+            <!-- Popolato via JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. LABORATORIO SCIENTIFICO DI RINFRESCO -->
+      <section class="section-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span>⚖️ Calcolatore Stechiometrico di Rinfresco</span>
+          </div>
+          <span class="badge-tag badge-emerald">BILANCIAMENTO IDRICO</span>
+        </div>
+
+        <div class="calculator-panel">
+          <div class="input-group">
+            <label for="selectYeastType">
+              <span>Tipologia Coltura:</span>
+              <strong id="typeHintText">Idratazione 100%</strong>
+            </label>
+            <select id="selectYeastType" class="input-control">
+              <option value="licoli">Li.Co.Li (Lievito Madre Liquido - 100%)</option>
+              <option value="solido">Pasta Madre Solida Tradizionale (50%)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="selectRatio">
+              <span>Rapporto di Rinfresco (Madre : Farina):</span>
+              <strong id="ratioSpeedText">Medio Termine</strong>
+            </label>
+            <select id="selectRatio" class="input-control">
+              <option value="1:1">1 : 1 (Rapido ~3-4h a 26°C - Pre-impasto)</option>
+              <option value="1:2" selected>1 : 2 (Standard ~5-7h o notte frigo)</option>
+              <option value="1:3">1 : 3 (Lunga Conservazione / Pulizia Acidità)</option>
+              <option value="1:5">1 : 5 (Buffet di Zuccheri / Grandi Lievitati)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="inputYeastGrams">
+              <span>Quantità Lievito Madre di partenza:</span>
+              <span>g</span>
+            </label>
+            <input type="number" id="inputYeastGrams" class="input-control" value="60" min="10" max="1000" step="5">
+          </div>
+
+          <div class="input-group">
+            <label for="inputRoomTemp">
+              <span>Temperatura Ambiente Prevista:</span>
+              <span id="tempCelsiusVal">22°C</span>
+            </label>
+            <input type="range" id="inputRoomTemp" class="input-control" min="16" max="30" value="22" step="1">
+          </div>
+        </div>
+
+        <!-- RISULTATI BILANCIA -->
+        <div class="recipe-results">
+          <div class="recipe-box primary-ing">
+            <div class="recipe-box-title">Lievito Madre</div>
+            <div class="recipe-box-val" id="resYeast">60g</div>
+            <div class="recipe-box-sub">Da prelevare dal vaso</div>
+          </div>
+          <div class="recipe-box">
+            <div class="recipe-box-title">Farina (W 280-350)</div>
+            <div class="recipe-box-val" id="resFlour">120g</div>
+            <div class="recipe-box-sub" id="resFlourSub">Proteine ~12.5-13.5%</div>
+          </div>
+          <div class="recipe-box">
+            <div class="recipe-box-title">Acqua (~24-26°C)</div>
+            <div class="recipe-box-val" id="resWater">120g</div>
+            <div class="recipe-box-sub" id="resWaterSub">Idratazione 100%</div>
+          </div>
+        </div>
+
+        <button class="btn-feed-action" id="btnExecuteFeed">
+          🥣 Registra Rinfresco & Resetta Cinetica
+        </button>
+      </section>
+
+      <!-- 4. GUIDA CLINICA AL LIEVITO: DIAGNOSTICA & RIMEDI -->
+      <section class="section-card" id="doctorSection">
+        <div class="section-header">
+          <div class="section-title">
+            <span>🩺 Guida Clinica & Diagnostica del Cuoco</span>
+          </div>
+          <span class="badge-tag badge-amber">RISOLUZIONE PROBLEMI</span>
+        </div>
+
+        <div class="doctor-grid">
+          <div class="diagnostic-item">
+            <div class="diag-header">
+              <span>⚠️</span>
+              <span>Odore Troppo Pungente (Acetico)</span>
+            </div>
+            <p class="diag-body">I batteri eterofermentanti hanno prevalso producendo troppo acido acetico. Il glutine del tuo impasto tenderà a strapparsi.</p>
+            <div class="diag-rx">💡 Soluzione: Rinfresco 1:3 o 1:4 con acqua a 26°C. Per il solido: bagnetto in acqua zuccherata (1-2g/L) per 15 min.</div>
+          </div>
+
+          <div class="diagnostic-item">
+            <div class="diag-header">
+              <span>🐌</span>
+              <span>Crescita Lenta / Pigrizia al Raddoppio</span>
+            </div>
+            <p class="diag-body">La popolazione di Saccaromiceti è depressa per il freddo prolungato o farina povera di ceneri e nutrienti.</p>
+            <div class="diag-rx">💡 Soluzione: Due rinfreschi consecutivi ravvicinati a 26-28°C al rapporto 1:1, aggiungendo un 10% di farina di tipo 1 o segale.</div>
+          </div>
+
+          <div class="diagnostic-item">
+            <div class="diag-header">
+              <span>💧</span>
+              <span>Presenza di Liquido Grigio in Superficie</span>
+            </div>
+            <p class="diag-body">È un misto di alcol e acqua rilasciato dai microrganismi in totale esaurimento zuccherino (fame critica).</p>
+            <div class="diag-rx">💡 Soluzione: Getta il liquido scuro, preleva solo il cuore centrale del lievito e rinfresca con rapporto 1:2:2.</div>
+          </div>
+
+          <div class="diagnostic-item">
+            <div class="diag-header">
+              <span>🎯</span>
+              <span>Riconoscere il Vero Picco per l'Impasto</span>
+            </div>
+            <p class="diag-body">Il lievito va usato quando la cupola è convessa e gonfia, prima che il centro diventi piatto o inizi a collassare.</p>
+            <div class="diag-rx">💡 Regola d'oro: Se prendi un cucchiaino di lievito e galleggia in un bicchiere d'acqua tiepida, è pronto per impastare!</div>
+          </div>
+        </div>
+      </section>
+
     </div>
-  </div>
 
-  <!-- SEZIONE BIOTECNOLOGIA & PIANIFICAZIONE IMPEGNO -->
-  <div class="science-hub">
-    <div class="hub-title">
-      <span>🎯 Livello di Impegno in Cucina</span>
-      <span class="pill-mode" id="commitmentBadge">WEEKEND WARRIOR</span>
-    </div>
+  </main>
 
-    <!-- SCELTA IMPEGNO -->
-    <div class="goal-selector">
-      <div class="goal-label">Quanto tempo vuoi dedicare alle panificazioni?</div>
-      <div class="options-grid">
-        <div class="option-btn" data-goal="zen">
-          <span class="opt-icon">🌱</span>
-          <span class="opt-title">Zen (Minimo)</span>
-          <span class="opt-desc">Pane 1 volta ogni 1-2 sett. Dorme in frigo.</span>
-        </div>
-        <div class="option-btn active" data-goal="weekend">
-          <span class="opt-icon">🍕</span>
-          <span class="opt-title">Weekend Chef</span>
-          <span class="opt-desc">Pizza/Pane sabato o domenica. 1 rinfresco preparatorio.</span>
-        </div>
-        <div class="option-btn" data-goal="bakery">
-          <span class="opt-icon">🥖</span>
-          <span class="opt-title">Panettiere Pro</span>
-          <span class="opt-desc">2-3 infornate a settimana. Lievito sempre al picco.</span>
-        </div>
-      </div>
-    </div>
+  <script>
+    // =======================================================
+    // STATO & PERSISTENZA LOCAL STORAGE
+    // =======================================================
+    const STORAGE_KEY = "lievitotchi_pro_v2";
 
-    <!-- CALCOLATORE SCIENTIFICO DI RINFRESCO -->
-    <div class="refresh-calc">
-      <div class="calc-header">
-        <span class="calc-title">🔬 Calcolatore Rinfresco & Rapporto</span>
-        <select id="yeastSelect" style="font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; border: 1px solid #D69E2E;">
-          <option value="licoli">Li.Co.Li (Idr. 100%)</option>
-          <option value="solido">Pasta Madre Solida (Idr. 50%)</option>
-        </select>
-      </div>
+    const DEFAULT_PRO_STATE = {
+      name: "Bubble",
+      yeastType: "licoli",       // 'licoli' o 'solido'
+      inFridge: true,
+      lastFedTimestamp: Date.now() - (36 * 3600 * 1000), // es. 36 ore fa
+      selectedPlan: "weekend",   // 'zen', 'weekend', 'pro'
+      soundEnabled: true,
+      roomTemp: 22,
+      baseGrams: 60,
+      ratio: "1:2",
+      feedHistory: []
+    };
 
-      <div class="inputs-grid">
-        <div class="input-field">
-          <label for="yeastWeightInput">Lievito Madre (g):</label>
-          <input type="number" id="yeastWeightInput" value="50" min="10" max="1000" step="5">
-        </div>
-        <div class="input-field">
-          <label for="ratioSelect">Rapporto Rinfresco:</label>
-          <select id="ratioSelect">
-            <option value="1:1">1 : 1 (Standard rapido)</option>
-            <option value="1:2" selected>1 : 2 (Mantenimento frigo)</option>
-            <option value="1:3">1 : 3 (Lunga maturazione)</option>
-            <option value="1:5">1 : 5 (Grande buffet di zuccheri)</option>
-          </select>
-        </div>
-      </div>
+    let state = loadPersistedState();
 
-      <div class="recipe-cards">
-        <div class="recipe-card">
-          <div class="ing-title">Lievito</div>
-          <div class="ing-value" id="calcYeastGrams">50g</div>
-          <div class="ing-hint">Madre</div>
-        </div>
-        <div class="recipe-card">
-          <div class="ing-title">Farina (W>280)</div>
-          <div class="ing-value" id="calcFlourGrams">100g</div>
-          <div class="ing-hint" id="calcFlourHint">Forza media/alta</div>
-        </div>
-        <div class="recipe-card">
-          <div class="ing-title">Acqua (~24°C)</div>
-          <div class="ing-value" id="calcWaterGrams">100g</div>
-          <div class="ing-hint" id="calcWaterHint">Idratazione 100%</div>
-        </div>
-      </div>
-
-      <button class="action-btn-main" id="btnExecuteFeed" style="margin-top: 12px;">
-        🥣 Registra Rinfresco Eseguito Ora!
-      </button>
-    </div>
-
-    <!-- PROGRAMMA SCIENTIFICO PERSONALIZZATO SULL'OBIETTIVO -->
-    <div class="schedule-box">
-      <div class="schedule-header">
-        <span>⏰ Cronoprogramma Ottimale Calcolato</span>
-        <span id="targetBakeDay">Pizza del Sabato</span>
-      </div>
-      <div class="timeline-steps" id="timelineList">
-        <!-- Generato dinamicamente via JS -->
-      </div>
-    </div>
-
-    <!-- PILLOLA SCIENTIFICA DEL LIEVITO -->
-    <div class="science-card">
-      <div class="icon">💡</div>
-      <div id="scienceFact">
-        <strong>Fisiologia del Lievito Madre:</strong> I batteri lattici (LAB) e i saccaromiceti lavorano in simbiosi perfetta: i batteri producono acido lattico e acetico abbassando il pH a ~3.8-4.2, proteggendo la colonia da muffe e batteri patogeni!
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-// ==========================================
-// STATO APPLICAZIONE (con supporto LocalStorage)
-// ==========================================
-const DEFAULT_STATE = {
-  name: "Bubble",
-  yeastType: "licoli", // "licoli" o "solido"
-  inFridge: true,
-  lastFedTimestamp: Date.now() - (3 * 24 * 3600 * 1000), // es. 3 giorni fa
-  targetGoal: "weekend", // "zen", "weekend", "bakery"
-  hunger: 65,            // 0 - 100 (100 = affamatissimo)
-  vitality: 82,          // 0 - 100
-  acidity: 32,           // 0 - 100 (ottimale 20-45)
-  volumeGrowth: 1.3,     // 1.0x (sgonfio) fino a 2.5x/3.0x (picco)
-  soundEnabled: true,
-  flourBase: 50,
-  ratio: "1:2"
-};
-
-let state = loadState();
-
-function loadState() {
-  try {
-    const saved = localStorage.getItem("lievitotchi_state");
-    return saved ? Object.assign({}, DEFAULT_STATE, JSON.parse(saved)) : Object.assign({}, DEFAULT_STATE);
-  } catch(e) {
-    return Object.assign({}, DEFAULT_STATE);
-  }
-}
-
-function saveState() {
-  try {
-    localStorage.setItem("lievitotchi_state", JSON.stringify(state));
-  } catch(e) {}
-}
-
-// ==========================================
-// AUDIO RETRO CHIPTUNE (Web Audio API)
-// ==========================================
-let audioCtx = null;
-function playSound(type) {
-  if (!state.soundEnabled) return;
-  try {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
+    function loadPersistedState() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? Object.assign({}, DEFAULT_PRO_STATE, JSON.parse(data)) : Object.assign({}, DEFAULT_PRO_STATE);
+      } catch(e) {
+        return Object.assign({}, DEFAULT_PRO_STATE);
+      }
     }
 
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    const now = audioCtx.currentTime;
-
-    if (type === 'feed') {
-      // Arpeggio felice 8-bit
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(440, now);
-      osc.frequency.setValueAtTime(554.37, now + 0.08);
-      osc.frequency.setValueAtTime(659.25, now + 0.16);
-      osc.frequency.setValueAtTime(880, now + 0.24);
-      gain.gain.setValueAtTime(0.2, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-      osc.start(now);
-      osc.stop(now + 0.35);
-    } else if (type === 'click') {
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(320, now);
-      gain.gain.setValueAtTime(0.1, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-      osc.start(now);
-      osc.stop(now + 0.08);
-    } else if (type === 'fridge') {
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, now);
-      osc.frequency.linearRampToValueAtTime(300, now + 0.25);
-      gain.gain.setValueAtTime(0.18, now);
-      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
-      osc.start(now);
-      osc.stop(now + 0.28);
-    }
-  } catch(e) {
-    console.log("Audio not supported or permitted yet", e);
-  }
-}
-
-// ==========================================
-// SIMULAZIONE SCIENTIFICA (Modello Biologico)
-// ==========================================
-function updateBioKinetics() {
-  const hoursSinceFed = (Date.now() - state.lastFedTimestamp) / (3600 * 1000);
-  
-  // Parametri di decadimento:
-  // In frigo (4°C): il metabolismo rallenta del ~85% (fattore Arrhenius Q10)
-  const rateMultiplier = state.inFridge ? 0.12 : 1.0;
-
-  // Fame (0=sazio, 100=digiuno critico)
-  // A temperatura ambiente un 1:1 finisce i nutrienti in ~8-12 ore.
-  // In frigo un 1:2 dura serenamente 7-10 giorni.
-  const hungerPerHour = state.inFridge ? 0.45 : 4.0;
-  state.hunger = Math.min(100, Math.floor(hoursSinceFed * hungerPerHour));
-
-  // Volume: curva a campana (lag phase -> log phase -> picco -> sgonfiamento)
-  // Tempo di picco: ~4h a 24°C per 1:1, ~12h in frigo per iniziare a muoversi
-  if (!state.inFridge) {
-    if (hoursSinceFed < 4.5) {
-      // Salita verso raddoppio / triplo
-      state.volumeGrowth = 1.0 + (1.2 * (hoursSinceFed / 4.5));
-    } else if (hoursSinceFed < 10) {
-      // Zona picco stabile
-      state.volumeGrowth = 2.2 - (0.4 * ((hoursSinceFed - 4.5) / 5.5));
-    } else {
-      // Sgonfiamento da collasso glutinico e consumo zuccheri
-      state.volumeGrowth = Math.max(1.0, 1.8 - (0.05 * (hoursSinceFed - 10)));
-    }
-  } else {
-    // In frigo cresce lentissimamente nelle prime 24-48h poi si stabilizza
-    if (hoursSinceFed < 48) {
-      state.volumeGrowth = 1.0 + (0.6 * (hoursSinceFed / 48));
-    } else {
-      state.volumeGrowth = Math.max(1.1, 1.6 - (0.01 * (hoursSinceFed - 48)));
-    }
-  }
-
-  // Acidità: cresce con l'invecchiamento dell'impasto oltre il picco
-  if (state.hunger < 40) {
-    state.acidity = 25; // Ottimale dolce/aromatico
-  } else if (state.hunger < 75) {
-    state.acidity = 50; // Acido lattico equilibrato
-  } else {
-    state.acidity = Math.min(100, 50 + (state.hunger - 75) * 2); // Eccesso di acido acetico / odore pungente
-  }
-
-  // Vitalità
-  if (state.hunger > 90) {
-    state.vitality = Math.max(20, 100 - (state.hunger - 80) * 3);
-  } else {
-    state.vitality = Math.min(98, 95 - (state.acidity > 70 ? 20 : 0));
-  }
-
-  saveState();
-  updateUI();
-}
-
-// ==========================================
-// PIXEL ART RENDERER (Canvas)
-// ==========================================
-const canvas = document.getElementById("yeastCanvas");
-const ctx = canvas.getContext("2d");
-let tick = 0;
-
-function drawPixelArt() {
-  tick++;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const centerX = canvas.width / 2;
-  const jarWidth = 110;
-  const jarHeight = 120;
-  const jarTop = 20;
-  const jarBottom = jarTop + jarHeight;
-
-  // 1. Disegna il vaso di vetro stile pixel-retro
-  ctx.strokeStyle = "#40543E";
-  ctx.lineWidth = 3;
-  ctx.fillStyle = "rgba(225, 240, 225, 0.45)";
-
-  // Corpo vaso
-  ctx.beginPath();
-  ctx.roundRect(centerX - jarWidth/2, jarTop + 14, jarWidth, jarHeight - 14, [0, 0, 12, 12]);
-  ctx.fill();
-  ctx.stroke();
-
-  // Collo & Tappo
-  ctx.strokeRect(centerX - (jarWidth - 20)/2, jarTop, jarWidth - 20, 14);
-  ctx.fillStyle = "#A3B899";
-  ctx.fillRect(centerX - (jarWidth - 20)/2, jarTop, jarWidth - 20, 14);
-
-  // Linea elastico di riferimento (livello 1x di partenza)
-  const baseLineY = jarBottom - 35;
-  ctx.strokeStyle = "#E53E3E";
-  ctx.lineWidth = 2;
-  ctx.setLineDash([4, 3]);
-  ctx.beginPath();
-  ctx.moveTo(centerX - jarWidth/2 + 3, baseLineY);
-  ctx.lineTo(centerX + jarWidth/2 - 3, baseLineY);
-  ctx.stroke();
-  ctx.setLineDash([]); // reset
-
-  // 2. Calcola altezza della massa di lievito in base al volume simulato
-  // volumeGrowth varia da 1.0 (altezza ~35px) a ~2.4 (altezza ~80px)
-  const yeastHeight = Math.min(88, 30 * state.volumeGrowth);
-  const yeastTop = jarBottom - yeastHeight;
-
-  // Respirazione/Pulse animato
-  const pulse = Math.sin(tick * 0.06) * (state.inFridge ? 0.7 : 2.5);
-  const curYeastTop = yeastTop - pulse;
-
-  // Colore lievito: Licoli (crema chiaro), Solido (più compatto avorio), Acido (ingiallito)
-  let yeastColor = state.yeastType === 'licoli' ? "#FFF2CC" : "#F7E6BE";
-  if (state.acidity > 65) yeastColor = "#ECE0B0";
-  if (state.hunger > 85) yeastColor = "#E2D3A5";
-
-  ctx.fillStyle = yeastColor;
-  ctx.beginPath();
-  ctx.roundRect(centerX - jarWidth/2 + 4, curYeastTop, jarWidth - 8, jarBottom - curYeastTop - 3, [8, 8, 8, 8]);
-  ctx.fill();
-
-  // Texture e bolle di fermentazione
-  ctx.fillStyle = "#D6C492";
-  const numBubbles = state.vitality > 60 ? 9 : 3;
-  for (let i = 0; i < numBubbles; i++) {
-    const bx = centerX - 36 + ((i * 22 + tick) % 72);
-    const by = curYeastTop + 14 + ((i * 17) % Math.max(10, yeastHeight - 20));
-    const bSize = 2 + (i % 3);
-    ctx.beginPath();
-    ctx.arc(bx, by, bSize, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // 3. FACCINA KAWAII DEL TAMAGOTCHI
-  const faceY = curYeastTop + (yeastHeight / 2) - 4;
-  const faceX = centerX;
-
-  if (state.inFridge) {
-    // Occhi addormentati (lineette orizzontali - -)
-    ctx.fillStyle = "#33412E";
-    ctx.fillRect(faceX - 16, faceY, 8, 2);
-    ctx.fillRect(faceX + 8, faceY, 8, 2);
-
-    // Zzz di sonno
-    ctx.font = "8px 'Press Start 2P'";
-    ctx.fillStyle = "#3F5D3A";
-    const zFloat = (tick % 40) / 4;
-    ctx.fillText("z", faceX + 22, faceY - 10 - zFloat);
-    ctx.fillText("Z", faceX + 30, faceY - 18 - zFloat);
-
-    // Boccuccia chiusa
-    ctx.fillRect(faceX - 2, faceY + 6, 4, 2);
-  } else if (state.hunger > 80) {
-    // Faccia affamata / triste
-    ctx.fillStyle = "#33412E";
-    // Occhi abbassati
-    ctx.fillRect(faceX - 14, faceY - 2, 6, 5);
-    ctx.fillRect(faceX + 8, faceY - 2, 6, 5);
-    // Bocca triste ∩
-    ctx.fillRect(faceX - 4, faceY + 8, 8, 2);
-    ctx.fillRect(faceX - 6, faceY + 10, 2, 2);
-    ctx.fillRect(faceX + 4, faceY + 10, 2, 2);
-
-    // Gocciolina di sudore
-    ctx.fillStyle = "#5DADE2";
-    ctx.fillRect(faceX + 18, faceY - 4, 3, 5);
-  } else {
-    // Faccia felice & sveglia
-    ctx.fillStyle = "#2D3E2C";
-    // Occhioni vispi pixelati
-    const eyeBlink = (tick % 120 < 6); // sbatte le palpebre
-    if (eyeBlink) {
-      ctx.fillRect(faceX - 14, faceY, 6, 2);
-      ctx.fillRect(faceX + 8, faceY, 6, 2);
-    } else {
-      ctx.fillRect(faceX - 14, faceY - 3, 6, 6);
-      ctx.fillRect(faceX + 8, faceY - 3, 6, 6);
-      // Luce pupilla
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(faceX - 13, faceY - 3, 2, 2);
-      ctx.fillRect(faceX + 9, faceY - 3, 2, 2);
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch(e) {}
     }
 
-    // Guanciotte rosate
-    ctx.fillStyle = "#F1948A";
-    ctx.fillRect(faceX - 20, faceY + 4, 5, 3);
-    ctx.fillRect(faceX + 15, faceY + 4, 5, 3);
+    // =======================================================
+    // SOUND ENGINE RETRO-CHIPTUNE
+    // =======================================================
+    let audioContext = null;
+    function playBeep(type) {
+      if (!state.soundEnabled) return;
+      try {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') audioContext.resume();
 
-    // Bocca sorridente
-    ctx.fillStyle = "#2D3E2C";
-    ctx.fillRect(faceX - 4, faceY + 6, 8, 2);
-    ctx.fillRect(faceX - 2, faceY + 8, 4, 2);
-  }
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
 
-  requestAnimationFrame(drawPixelArt);
-}
+        const t = audioContext.currentTime;
 
-// ==========================================
-// LOGICA DI AGGIORNAMENTO UI
-// ==========================================
-function updateUI() {
-  document.getElementById("petName").innerText = "Nome: " + state.name.toUpperCase();
-  document.getElementById("yeastTypeLabel").innerText = state.yeastType === "licoli" ? "LICOLI (100%)" : "SOLIDO (50%)";
-  document.getElementById("stateModeBadge").innerText = state.inFridge ? "❄️ IN FRIGO (+4°C)" : "🌡️ STANZA (ATTIVO)";
-
-  // Progress Bar
-  const hungerBar = document.getElementById("hungerBar");
-  hungerBar.style.width = state.hunger + "%";
-  document.getElementById("hungerVal").innerText = state.hunger + "%";
-  hungerBar.style.background = state.hunger > 75 ? "#E53E3E" : (state.hunger > 45 ? "#D69E2E" : "#2D3E2C");
-
-  const vitBar = document.getElementById("vitalityBar");
-  vitBar.style.width = state.vitality + "%";
-  document.getElementById("vitalityVal").innerText = state.vitality + "%";
-
-  const acidBar = document.getElementById("acidityBar");
-  acidBar.style.width = state.acidity + "%";
-  document.getElementById("acidityVal").innerText = state.acidity < 45 ? "OTTIMA" : (state.acidity < 70 ? "VIVACE" : "ECCESSIVA");
-
-  const volBar = document.getElementById("volumeBar");
-  const volPct = Math.min(100, Math.round((state.volumeGrowth - 1) / 1.5 * 100));
-  volBar.style.width = volPct + "%";
-  document.getElementById("volumeVal").innerText = "x" + state.volumeGrowth.toFixed(1);
-
-  // Messaggio vocale del lievito
-  updateSpeech();
-
-  // Calcolo ricetta rinfresco
-  calculateRecipe();
-
-  // Aggiorna Cronoprogramma in base al Goal
-  renderSchedule();
-}
-
-function updateSpeech() {
-  const speech = document.getElementById("petSpeech");
-  if (state.inFridge) {
-    if (state.hunger > 75) {
-      speech.innerText = "❄️ *Sbadiglio congelato*... È passata quasi una settimana, mi fai fare un rinfresco prima del weekend?";
-    } else {
-      speech.innerText = "❄️ Zzz... dormo al fresco (+4°C). Il freddo rallenta i batteri e protegge le mie scorte!";
+        if (type === 'feed') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(392, t);
+          osc.frequency.setValueAtTime(523.25, t + 0.08);
+          osc.frequency.setValueAtTime(659.25, t + 0.16);
+          osc.frequency.setValueAtTime(783.99, t + 0.24);
+          gain.gain.setValueAtTime(0.25, t);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
+          osc.start(t);
+          osc.stop(t + 0.35);
+        } else if (type === 'switch') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(440, t);
+          osc.frequency.setValueAtTime(660, t + 0.05);
+          gain.gain.setValueAtTime(0.12, t);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.12);
+          osc.start(t);
+          osc.stop(t + 0.12);
+        } else if (type === 'fridge') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(650, t);
+          osc.frequency.linearRampToValueAtTime(260, t + 0.25);
+          gain.gain.setValueAtTime(0.2, t);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.28);
+          osc.start(t);
+          osc.stop(t + 0.28);
+        }
+      } catch(e) {}
     }
-  } else {
-    if (state.hunger < 25) {
-      speech.innerText = "😋 Burp! Che banchetto di zuccheri! Sto producendo CO₂ e profumi fantastici!";
-    } else if (state.volumeGrowth >= 2.0) {
-      speech.innerText = "🚀 SONO AL PICCO MASSIMO! È il momento perfetto per impastare la pizza o il pane!";
-    } else if (state.hunger > 75) {
-      speech.innerText = "🚨 Aiuto, gli zuccheri sono finiti! Mi sto sgonfiando e sto diventando troppo acido!";
-    } else {
-      speech.innerText = "🍞 Sto lavorando al calduccio! Temperatura ideale intorno ai 24°C - 26°C.";
+
+    // =======================================================
+    // CINETICA BIOLOGICA (FERMENTAZIONE & ARRHENIUS)
+    // =======================================================
+    function computeBioState() {
+      const hours = (Date.now() - state.lastFedTimestamp) / 3600000;
+      
+      // Impatto Temperatura: Arrhenius empirico per lieviti
+      // In frigo (4°C) fattore di rallentamento ~0.12
+      // A 22°C fattore 1.0; a 28°C fattore 1.45
+      const tempFactor = state.inFridge ? 0.12 : Math.pow(1.08, (state.roomTemp - 20));
+
+      // Fame (0=sazio, 100=digiuno)
+      const hungerHoursMax = state.inFridge ? 192 : (state.ratio === '1:1' ? 8 : 14); // in frigo dura 8 giorni
+      const hungerPct = Math.min(100, Math.floor((hours * tempFactor / (state.inFridge ? 192 * 0.12 : (state.ratio === '1:1' ? 8 : 14))) * 100));
+
+      // Volume & Curva di crescita
+      // Picco a ~4h a 24°C, ~24-36h in frigo
+      let volume = 1.0;
+      const peakHours = state.inFridge ? 36 : (state.ratio === '1:1' ? 3.5 : 5.0) / (state.roomTemp / 22);
+
+      if (hours < peakHours) {
+        // Fase di crescita esponenziale
+        volume = 1.0 + (1.3 * (hours / peakHours));
+      } else if (hours < peakHours * 2) {
+        // Altopiano del picco
+        volume = 2.3 - (0.4 * ((hours - peakHours) / peakHours));
+      } else {
+        // Collasso glutinico
+        volume = Math.max(1.05, 1.9 - (0.04 * (hours - peakHours * 2) * tempFactor));
+      }
+
+      // Acidità (misurata come pH simulato da 4.8 a 3.6)
+      let pH = 4.5;
+      if (hours < peakHours * 0.7) {
+        pH = 4.5 - (0.4 * (hours / (peakHours * 0.7))); // discesa ottimale a 4.1
+      } else {
+        pH = Math.max(3.6, 4.1 - (0.015 * (hours - peakHours * 0.7) * tempFactor));
+      }
+
+      // Vitalità colonia
+      let vitality = 95;
+      if (hungerPct > 80) vitality = Math.max(25, 95 - (hungerPct - 80) * 3);
+      if (pH < 3.8) vitality -= 10;
+
+      return {
+        hoursElapsed: hours.toFixed(1),
+        hunger: hungerPct,
+        volume: volume.toFixed(2),
+        pH: pH.toFixed(2),
+        vitality: Math.round(vitality)
+      };
     }
-  }
-}
 
-// ==========================================
-// CALCOLATORE SCIENTIFICO
-// ==========================================
-function calculateRecipe() {
-  const yeastGrams = parseFloat(document.getElementById("yeastWeightInput").value) || 50;
-  const ratioStr = document.getElementById("ratioSelect").value;
-  const isLicoli = state.yeastType === "licoli";
+    // =======================================================
+    // RENDERING PIXEL ART RETRO LCD
+    // =======================================================
+    const canvas = document.getElementById("pixelCanvas");
+    const ctx = canvas.getContext("2d");
+    let frame = 0;
 
-  // Estrai moltiplicatore farina (es. "1:2" -> ratioMultiplier = 2)
-  const ratioMultiplier = parseInt(ratioStr.split(":")[1]) || 1;
-  const flourGrams = Math.round(yeastGrams * ratioMultiplier);
-  
-  // Acqua: 100% rispetto alla farina se LiCoLi, 50% se pasta madre solida classica
-  const waterGrams = isLicoli ? flourGrams : Math.round(flourGrams * 0.5);
+    function renderPixelPet() {
+      frame++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  document.getElementById("calcYeastGrams").innerText = yeastGrams + "g";
-  document.getElementById("calcFlourGrams").innerText = flourGrams + "g";
-  document.getElementById("calcWaterGrams").innerText = waterGrams + "g";
+      const bio = computeBioState();
+      const centerX = canvas.width / 2;
+      const jarW = 100;
+      const jarH = 115;
+      const jarTop = 15;
+      const jarBottom = jarTop + jarH;
 
-  document.getElementById("calcWaterHint").innerText = isLicoli ? "Idratazione 100% (liquido)" : "Idratazione 50% (solido)";
-}
+      // Disegna Vaso di Vetro Rétro
+      ctx.strokeStyle = "#1E2B1A";
+      ctx.lineWidth = 3;
+      ctx.fillStyle = "rgba(180, 205, 170, 0.35)";
 
-// ==========================================
-// PROGRAMMA & BIO-TIMELINE SECONDO OBIETTIVO
-// ==========================================
-function renderSchedule() {
-  const timeline = document.getElementById("timelineList");
-  const targetLabel = document.getElementById("targetBakeDay");
-  const badge = document.getElementById("commitmentBadge");
+      // Corpo vaso
+      ctx.beginPath();
+      ctx.roundRect(centerX - jarW/2, jarTop + 12, jarW, jarH - 12, [0, 0, 10, 10]);
+      ctx.fill();
+      ctx.stroke();
 
-  let steps = [];
+      // Coperchio / Bocca vaso
+      ctx.fillStyle = "#6F8663";
+      ctx.fillRect(centerX - (jarW - 16)/2, jarTop, jarW - 16, 12);
+      ctx.strokeRect(centerX - (jarW - 16)/2, jarTop, jarW - 16, 12);
 
-  if (state.targetGoal === "zen") {
-    badge.innerText = "MINIMO SFORZO (ZEN)";
-    targetLabel.innerText = "Mantenimento Rilassato in Frigo";
-    steps = [
-      { time: "Domenica Sera", desc: "<strong>Rinfresco di mantenimento (1:2 o 1:3)</strong>: fallo con farina forte, lascialo partire 1h a temperatura ambiente." },
-      { time: "Notte -> Settimana", desc: "<strong>Nanna in frigorifero (+4°C)</strong>: le colonie consumano lentamente gli amidi per 7-10 giorni senza stress." },
-      { time: "Giorno dell'Impasto", desc: "<strong>Tira fuori 4 ore prima</strong> e fai un rinfresco veloce 1:1 al raddoppio prima dell'uso." }
-    ];
-  } else if (state.targetGoal === "weekend") {
-    badge.innerText = "WEEKEND WARRIOR";
-    targetLabel.innerText = "Pizza o Pane del Sabato Sera";
-    steps = [
-      { time: "Venerdì h 19:00", desc: "<strong>Sveglia dal frigo & Rinfresco preparatorio</strong> (1:2): riportalo a 24°C per riattivare la carica microbica." },
-      { time: "Sabato h 08:30", desc: "<strong>Rinfresco di potenza</strong> (1:1): lievitazione rapida di 3.5 - 4 ore verso il picco massimo." },
-      { time: "Sabato h 12:30", desc: "<strong>IMPASTO PIZZA / PANE!</strong> Il lievito è al triplo con pH aromatico perfetto." },
-      { time: "Sabato h 20:00", desc: "<strong>Infornata & Rimetti il lievito avanzato in frigo</strong> ben nutrito fino al prossimo weekend." }
-    ];
-  } else {
-    badge.innerText = "PANETTIERE PRO";
-    targetLabel.innerText = "Produzione Continua (2-3 infornate)";
-    steps = [
-      { time: "Ogni 48 ore", desc: "<strong>Rinfresco costante (1:1 o 1:2)</strong> a temperatura ambiente fresca o cantina (18-20°C)." },
-      { time: "Prima di impastare", desc: "Usa sempre il lievito appena prima che inizi il cedimento centrale a cupola." },
-      { time: "Controllo Acidità", desc: "Se l'odore vira su aceto forte, effettua un bagnetto zuccherato o un rinfresco 1:3." }
-    ];
-  }
+      // Tacca dell'elastico di partenza
+      const bandY = jarBottom - 30;
+      ctx.strokeStyle = "#991B1B";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(centerX - jarW/2 + 2, bandY);
+      ctx.lineTo(centerX + jarW/2 - 2, bandY);
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-  timeline.innerHTML = steps.map(s => `
-    <div class="step-item">
-      <span class="step-time">${s.time}</span>
-      <span class="step-desc">${s.desc}</span>
-    </div>
-  `).join("");
-}
+      // Altezza Lievito
+      const yeastMaxH = 75;
+      const curH = Math.min(yeastMaxH, 28 * parseFloat(bio.volume));
+      const yeastY = jarBottom - curH;
 
-// ==========================================
-// GESTIONE EVENTI & INTERAZIONI
-// ==========================================
-function triggerHearts() {
-  for (let i = 0; i < 5; i++) {
-    const heart = document.createElement("div");
-    heart.className = "floating-heart";
-    heart.innerText = ["❤️", "✨", "🌾", "🍞", "🫧"][Math.floor(Math.random() * 5)];
-    heart.style.left = (canvas.offsetLeft + 50 + Math.random() * 120) + "px";
-    heart.style.top = (canvas.offsetTop + 40 + Math.random() * 30) + "px";
-    document.querySelector(".stage-wrapper").appendChild(heart);
-    setTimeout(() => heart.remove(), 1200);
-  }
-}
+      // Respirazione
+      const breathe = Math.sin(frame * 0.08) * (state.inFridge ? 0.8 : 2.2);
+      const topPos = yeastY - breathe;
 
-// Nutri / Rinfresca
-function performFeed() {
-  playSound('feed');
-  triggerHearts();
+      // Colore Massa
+      let doughColor = state.yeastType === 'licoli' ? "#EAE3C9" : "#DFD5B5";
+      if (parseFloat(bio.pH) < 3.8) doughColor = "#D5CAA0";
 
-  state.lastFedTimestamp = Date.now();
-  state.hunger = 0;
-  state.vitality = Math.min(100, state.vitality + 15);
-  state.acidity = 25; // riequilibrato
-  state.volumeGrowth = 1.0; // rinfrescato e mescolato, torna alla base dell'elastico
+      ctx.fillStyle = doughColor;
+      ctx.beginPath();
+      ctx.roundRect(centerX - jarW/2 + 4, topPos, jarW - 8, jarBottom - topPos - 3, [6, 6, 6, 6]);
+      ctx.fill();
 
-  saveState();
-  updateUI();
-}
+      // Bollicine di fermentazione
+      ctx.fillStyle = "#A89A72";
+      const bubbleCount = bio.vitality > 70 ? 8 : 3;
+      for (let i = 0; i < bubbleCount; i++) {
+        const bx = centerX - 32 + ((i * 19 + frame) % 64);
+        const by = topPos + 10 + ((i * 13) % Math.max(8, curH - 16));
+        ctx.beginPath();
+        ctx.arc(bx, by, 2 + (i % 2), 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-document.getElementById("btnFeed").addEventListener("click", performFeed);
-document.getElementById("btnExecuteFeed").addEventListener("click", performFeed);
+      // Faccina Pixel Tamagotchi
+      const faceX = centerX;
+      const faceY = topPos + (curH / 2) - 4;
 
-// Toggle Frigorifero
-document.getElementById("btnFridgeToggle").addEventListener("click", () => {
-  playSound('fridge');
-  state.inFridge = !state.inFridge;
-  saveState();
-  updateUI();
-});
+      if (state.inFridge) {
+        // Dorme Zzz
+        ctx.fillStyle = "#1E2B1A";
+        ctx.fillRect(faceX - 14, faceY, 7, 2);
+        ctx.fillRect(faceX + 7, faceY, 7, 2);
+        ctx.fillRect(faceX - 2, faceY + 5, 4, 2);
 
-// Pulsante Switch Tipo di Lievito (LiCoLi vs Solido)
-document.getElementById("yeastSelect").addEventListener("change", (e) => {
-  playSound('click');
-  state.yeastType = e.target.value;
-  saveState();
-  updateUI();
-});
+        ctx.font = "8px 'Press Start 2P'";
+        const zOff = (frame % 36) / 3.5;
+        ctx.fillText("z", faceX + 18, faceY - 8 - zOff);
+        ctx.fillText("Z", faceX + 26, faceY - 16 - zOff);
+      } else if (bio.hunger > 80) {
+        // Triste / Affamato
+        ctx.fillStyle = "#1E2B1A";
+        ctx.fillRect(faceX - 12, faceY - 2, 5, 5);
+        ctx.fillRect(faceX + 7, faceY - 2, 5, 5);
+        // Bocca all'ingiù
+        ctx.fillRect(faceX - 3, faceY + 7, 6, 2);
+        ctx.fillRect(faceX - 5, faceY + 9, 2, 2);
+        ctx.fillRect(faceX + 3, faceY + 9, 2, 2);
+      } else {
+        // Felice & Attivo
+        ctx.fillStyle = "#1E2B1A";
+        const blink = (frame % 130 < 6);
+        if (blink) {
+          ctx.fillRect(faceX - 12, faceY, 6, 2);
+          ctx.fillRect(faceX + 6, faceY, 6, 2);
+        } else {
+          ctx.fillRect(faceX - 12, faceY - 2, 6, 6);
+          ctx.fillRect(faceX + 6, faceY - 2, 6, 6);
+          ctx.fillStyle = "#FFF";
+          ctx.fillRect(faceX - 11, faceY - 2, 2, 2);
+          ctx.fillRect(faceX + 7, faceY - 2, 2, 2);
+        }
+        // Sorriso
+        ctx.fillStyle = "#1E2B1A";
+        ctx.fillRect(faceX - 4, faceY + 6, 8, 2);
+        ctx.fillRect(faceX - 2, faceY + 8, 4, 2);
+      }
 
-// Modifica Grammi o Rapporto
-document.getElementById("yeastWeightInput").addEventListener("input", calculateRecipe);
-document.getElementById("ratioSelect").addEventListener("change", (e) => {
-  playSound('click');
-  calculateRecipe();
-});
+      requestAnimationFrame(renderPixelPet);
+    }
 
-// Selezione Obiettivo Cucina
-document.querySelectorAll(".option-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    playSound('click');
-    document.querySelectorAll(".option-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    state.targetGoal = btn.getAttribute("data-goal");
-    saveState();
-    updateUI();
-  });
-});
+    // =======================================================
+    // AGGIORNAMENTO STATI & DISPLAY
+    // =======================================================
+    function refreshDashboard() {
+      const bio = computeBioState();
 
-// Suono ON/OFF
-document.getElementById("soundToggle").addEventListener("click", () => {
-  state.soundEnabled = !state.soundEnabled;
-  document.getElementById("soundToggle").innerText = state.soundEnabled ? "🔊 Suoni ON" : "🔇 Muto";
-  saveState();
-});
+      // Top Status LCD
+      document.getElementById("lcdYeastType").innerText = state.yeastType === 'licoli' ? "LICOLI 100%" : "SOLIDO 50%";
+      document.getElementById("lcdThermalState").innerText = state.inFridge ? "❄️ FRIGO (+4°C)" : `🌡️ ATTIVO (${state.roomTemp}°C)`;
 
-// Scroll al piano con tasto C
-document.getElementById("btnPlan").addEventListener("click", () => {
-  playSound('click');
-  document.querySelector(".schedule-box").scrollIntoView({ behavior: 'smooth' });
-});
+      // Metriche numeriche LCD
+      document.getElementById("statHunger").innerText = bio.hunger + "%";
+      document.getElementById("barHunger").style.width = bio.hunger + "%";
 
-// ==========================================
-// AVVIO
-// ==========================================
-document.getElementById("yeastSelect").value = state.yeastType;
-document.querySelectorAll(".option-btn").forEach(b => {
-  if (b.getAttribute("data-goal") === state.targetGoal) {
-    b.classList.add("active");
-  } else {
-    b.classList.remove("active");
-  }
-});
+      document.getElementById("statStrength").innerText = bio.vitality + "%";
+      document.getElementById("barStrength").style.width = bio.vitality + "%";
 
-updateBioKinetics();
-drawPixelArt();
+      document.getElementById("statAcidity").innerText = "pH " + bio.pH;
+      const acidPct = Math.min(100, Math.max(10, (4.8 - parseFloat(bio.pH)) / 1.2 * 100));
+      document.getElementById("barAcidity").style.width = acidPct + "%";
 
-// Controllo periodico dello stato biologico
-setInterval(updateBioKinetics, 30000);
-</script>
+      document.getElementById("statVolume").innerText = "x" + bio.volume;
+      const volPct = Math.min(100, Math.max(10, (parseFloat(bio.volume) - 1.0) / 1.4 * 100));
+      document.getElementById("barVolume").style.width = volPct + "%";
+
+      // Baloon Speech
+      const speech = document.getElementById("lcdSpeech");
+      if (state.inFridge) {
+        if (bio.hunger > 75) {
+          speech.innerText = "❄️ *Yawn*... Sono in frigo da giorni. Mi dai un rinfresco prima del weekend?";
+        } else {
+          speech.innerText = "❄️ Zzz... dormo sereno al freddo. Metabolismo al minimo sindacale!";
+        }
+      } else {
+        if (parseFloat(bio.volume) >= 2.0 && parseFloat(bio.pH) >= 4.0) {
+          speech.innerText = "🚀 SONO AL PICCO MASSIMO! Cupola gonfia e pH ideale: IMPASTA ORA!";
+        } else if (bio.hunger > 75) {
+          speech.innerText = "⚠️ Ho finito tutti gli zuccheri! Sto diventando troppo acido!";
+        } else {
+          speech.innerText = `🥖 Sto fermentando a ${state.roomTemp}°C! Tutto procede a gonfie vele.`;
+        }
+      }
+
+      // Ricetta
+      updateCalculatorFormula();
+
+      // Cronoprogramma
+      renderScheduleTimeline();
+    }
+
+    // =======================================================
+    // CALCOLATORE SCIENTIFICO DI RINFRESCO
+    // =======================================================
+    function updateCalculatorFormula() {
+      const baseGrams = parseFloat(document.getElementById("inputYeastGrams").value) || 50;
+      const ratio = document.getElementById("selectRatio").value;
+      const isLicoli = state.yeastType === 'licoli';
+
+      const ratioMult = parseInt(ratio.split(":")[1]) || 1;
+      const flourGrams = Math.round(baseGrams * ratioMult);
+      const waterGrams = isLicoli ? flourGrams : Math.round(flourGrams * 0.5);
+
+      document.getElementById("resYeast").innerText = baseGrams + "g";
+      document.getElementById("resFlour").innerText = flourGrams + "g";
+      document.getElementById("resWater").innerText = waterGrams + "g";
+
+      document.getElementById("typeHintText").innerText = isLicoli ? "Idratazione 100% (liquido)" : "Idratazione 50% (solido)";
+      document.getElementById("resWaterSub").innerText = isLicoli ? "Idratazione 100% (stesso peso farina)" : "Idratazione 50% (metà peso farina)";
+    }
+
+    // =======================================================
+    // CRONOPROGRAMMA GUIDATO PER IL CUOCO
+    // =======================================================
+    function renderScheduleTimeline() {
+      const container = document.getElementById("scheduleTimeline");
+      const badge = document.getElementById("strategyBadge");
+
+      let steps = [];
+
+      if (state.selectedPlan === 'zen') {
+        badge.innerText = "STRATEGIA ZEN (MINIMO SFORZO)";
+        steps = [
+          { time: "Domenica Sera", title: "Rinfresco di Riposo (1:3)", desc: "Esegui un rinfresco con rapporto 1:3 usando farina di forza (W 300+). Lascialo partire a temperatura ambiente per 45 minuti." },
+          { time: "Lunedì - Venerdì", title: "Letargo in Frigorifero (+4°C)", desc: "Mettilo nel ripiano centrale del frigo. Il freddo protegge la maglia glutinica e mantiene la colonia viva senza acidificazioni estreme." },
+          { time: "Prima dell'Uso", title: "Risveglio Dolce", desc: "Estrai il lievito 4-5 ore prima di impastare, fai un rinfresco rapido 1:1 e attendi il raddoppio al caldo (26°C)." }
+        ];
+      } else if (state.selectedPlan === 'weekend') {
+        badge.innerText = "STRATEGIA WEEKEND CHEF";
+        steps = [
+          { time: "Venerdì h 19:30", title: "Risveglio & Primo Rinfresco (1:2)", desc: "Estrai dal frigo. Pesa 50g di madre + 100g farina + acqua opportuna. Lascia a 20-22°C tutta la notte." },
+          { time: "Sabato h 08:30", title: "Rinfresco di Potenza (1:1)", desc: "Il lievito si è svegliato. Rinfresca in rapporto 1:1 al caldo (26-28°C o forno spento con luce accesa)." },
+          { time: "Sabato h 12:30", title: "🔥 ORA DI IMPASTARE! (Picco Massimizzato)", desc: "Volume triplicato, alveoli fitti, profumo lattico dolce. Preleva la quota per il tuo impasto della pizza o pane!" },
+          { time: "Sabato h 13:00", title: "Ritorno in Letargo", desc: "Rinfresca il rimasuglio (1:2) e riponilo in frigorifero fino al weekend successivo." }
+        ];
+      } else {
+        badge.innerText = "STRATEGIA BAKERY PRO (PRODUZIONE CONTINUA)";
+        steps = [
+          { time: "Ogni Mattina", title: "Rinfresco Quotidiano di Mantenimento", desc: "Mantenere a cantina/temperatura ambiente controllata (18-20°C). Rinfrescare 1:1 o 1:2 ogni 24-36 ore." },
+          { time: "3 Ore Prima", title: "Prelievo Diretto al Picco", desc: "Usa direttamente la coltura nel momento in cui la cupola è perfettamente bombata." },
+          { time: "Ogni 15 gg", title: "Lavaggio o Bagnetto del Glutine", desc: "Per la pasta madre solida: bagnetto di 15 min in acqua zuccherata a 22°C per eliminare gli acidi acetici in eccesso." }
+        ];
+      }
+
+      container.innerHTML = steps.map(s => `
+        <div class="timeline-step">
+          <div class="step-time-badge">${s.time}</div>
+          <div class="step-content">
+            <h4>${s.title}</h4>
+            <p>${s.desc}</p>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // =======================================================
+    // INTERAZIONI EVENTI UI
+    // =======================================================
+    function spawnReaction(emoji) {
+      const box = document.querySelector(".canvas-box");
+      const span = document.createElement("div");
+      span.className = "floating-reaction";
+      span.innerText = emoji;
+      span.style.left = (canvas.offsetLeft + 40 + Math.random() * 80) + "px";
+      span.style.top = (canvas.offsetTop + 40 + Math.random() * 20) + "px";
+      box.appendChild(span);
+      setTimeout(() => span.remove(), 1200);
+    }
+
+    function doFeed() {
+      playBeep('feed');
+      spawnReaction("✨");
+      spawnReaction("🍞");
+
+      state.lastFedTimestamp = Date.now();
+      state.feedHistory.unshift({
+        time: new Date().toLocaleString(),
+        type: state.yeastType,
+        ratio: document.getElementById("selectRatio").value
+      });
+      if (state.feedHistory.length > 20) state.feedHistory.pop();
+
+      saveState();
+      refreshDashboard();
+    }
+
+    document.getElementById("btnExecuteFeed").addEventListener("click", doFeed);
+    document.getElementById("btnDeviceFeed").addEventListener("click", doFeed);
+
+    // Cambio Ambiente Frigo / Stanza
+    document.getElementById("btnDeviceTemp").addEventListener("click", () => {
+      playBeep('fridge');
+      state.inFridge = !state.inFridge;
+      spawnReaction(state.inFridge ? "❄️" : "🌡️");
+      saveState();
+      refreshDashboard();
+    });
+
+    // Diagnostica Guida Rapida
+    document.getElementById("btnDeviceSync").addEventListener("click", () => {
+      playBeep('switch');
+      document.getElementById("doctorSection").scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Tipo di Lievito
+    document.getElementById("selectYeastType").addEventListener("change", (e) => {
+      playBeep('switch');
+      state.yeastType = e.target.value;
+      saveState();
+      refreshDashboard();
+    });
+
+    // Rapporto e Grammi
+    document.getElementById("selectRatio").addEventListener("change", () => {
+      playBeep('switch');
+      updateCalculatorFormula();
+      refreshDashboard();
+    });
+    document.getElementById("inputYeastGrams").addEventListener("input", updateCalculatorFormula);
+
+    // Slider Temperatura
+    document.getElementById("inputRoomTemp").addEventListener("input", (e) => {
+      state.roomTemp = parseInt(e.target.value);
+      document.getElementById("tempCelsiusVal").innerText = state.roomTemp + "°C";
+      saveState();
+      refreshDashboard();
+    });
+
+    // Selezione Strategia
+    document.querySelectorAll(".commit-card").forEach(card => {
+      card.addEventListener("click", () => {
+        playBeep('switch');
+        document.querySelectorAll(".commit-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        state.selectedPlan = card.getAttribute("data-plan");
+        saveState();
+        refreshDashboard();
+      });
+    });
+
+    // Fast Forward Time Machine (Dev Mode)
+    function fastForwardHours(hours) {
+      playBeep('switch');
+      state.lastFedTimestamp -= (hours * 3600 * 1000);
+      spawnReaction(`⏩ +${hours}h`);
+      saveState();
+      refreshDashboard();
+    }
+
+    document.getElementById("btnFastForwardHours").addEventListener("click", () => fastForwardHours(6));
+    document.getElementById("btnFastForwardDay").addEventListener("click", () => fastForwardHours(24));
+    document.getElementById("btnFastForward3Days").addEventListener("click", () => fastForwardHours(72));
+
+    // Toggle Audio
+    document.getElementById("btnAudioToggle").addEventListener("click", () => {
+      state.soundEnabled = !state.soundEnabled;
+      document.getElementById("btnAudioToggle").innerText = state.soundEnabled ? "🔊 Audio Retro: ON" : "🔇 Audio Retro: MUTO";
+      saveState();
+    });
+
+    // Log Rinfreschi
+    document.getElementById("btnExportLog").addEventListener("click", () => {
+      const count = state.feedHistory.length;
+      alert(`📋 Storico Rinfreschi (${count} registrati):\n` + 
+        (count > 0 
+          ? state.feedHistory.slice(0, 5).map(h => `• ${h.time} [${h.type.toUpperCase()}] Rapporto ${h.ratio}`).join("\n") 
+          : "Nessun rinfresco recente salvato in cronologia. Clicca su 'Registra Rinfresco'!")
+      );
+    });
+
+    // =======================================================
+    // INIT
+    // =======================================================
+    document.getElementById("selectYeastType").value = state.yeastType;
+    document.getElementById("inputRoomTemp").value = state.roomTemp;
+    document.getElementById("tempCelsiusVal").innerText = state.roomTemp + "°C";
+    document.querySelectorAll(".commit-card").forEach(c => {
+      c.classList.toggle("active", c.getAttribute("data-plan") === state.selectedPlan);
+    });
+
+    refreshDashboard();
+    renderPixelPet();
+
+    // Check bio-stato ogni minuto
+    setInterval(refreshDashboard, 60000);
+  </script>
 </body>
 </html>
