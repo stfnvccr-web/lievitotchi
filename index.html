@@ -15,9 +15,9 @@
       --accent-sparkle: #FFD166;
       --bg-gradient: radial-gradient(circle at 50% 10%, #FFF3E3 0%, #FFE5EC 45%, #E8D5F5 100%);
       
-      --lcd-screen-bg: #E3F5DC;
-      --lcd-screen-inner: #D1ECD0;
-      --lcd-pixel-ink: #182C17;
+      --lcd-screen-bg: #DDF3D5;
+      --lcd-screen-inner: #C9E8C0;
+      --lcd-pixel-ink: #1C331B;
       
       --card-bg: rgba(255, 255, 255, 0.94);
       --card-border: rgba(255, 255, 255, 0.95);
@@ -250,7 +250,7 @@
       color: var(--text-muted);
     }
 
-    /* 2. TAMAGOTCHI CONSOLE CHASSIS: ORA MOLTO PIÙ GRANDE PER IL LIEVITINO! */
+    /* 2. TAMAGOTCHI CONSOLE CHASSIS */
     .tamagotchi-chassis {
       background: linear-gradient(160deg, #FFA8BD 0%, #FF6584 45%, #E93B66 100%);
       border-radius: 44% 44% 40% 40% / 36% 36% 48% 48%;
@@ -280,19 +280,20 @@
 
     .tmg-lcd {
       background: var(--lcd-screen-bg);
-      border: 3px solid #577553;
+      border: 3px solid #688265;
       border-radius: 16px;
       padding: 10px 10px 12px;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 3px 8px rgba(24, 44, 23, 0.25);
+      box-shadow: inset 0 3px 8px rgba(28, 51, 27, 0.25);
     }
 
+    /* Pixel Grid Retro 8-bit */
     .tmg-lcd::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(#182c17 0.75px, transparent 0.75px);
+      background: radial-gradient(#1c331b 0.75px, transparent 0.75px);
       background-size: 3.5px 3.5px;
       opacity: 0.08;
       pointer-events: none;
@@ -317,19 +318,19 @@
       font-weight: 700;
     }
 
-    /* AREA STAGE DEL LIEVITINO: ALTEZZA AUMENTATA PER DETTAGLI */
     .pet-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      min-height: 220px;
+      min-height: 180px;
       justify-content: center;
     }
 
+    /* Rendering pixelated per nitidezza 8-bit perfetta */
     canvas#petCanvas {
-      image-rendering: auto;
-      max-width: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
     }
 
     .lcd-speech-pill {
@@ -790,7 +791,7 @@
       </div>
     </div>
 
-    <!-- 2. TAMAGOTCHI CONSOLE: ILLUSTRATION DEL LIEVITINO IN PRIMO PIANO -->
+    <!-- 2. TAMAGOTCHI CONSOLE RETRO 8-BIT PIXEL ART -->
     <div class="tamagotchi-chassis">
       <div class="keychain-ring"></div>
 
@@ -803,8 +804,7 @@
           </div>
 
           <div class="pet-stage">
-            <!-- CANVAS PIÙ ALTO E DETTAGLIATO (240x190) -->
-            <canvas id="petCanvas" width="240" height="190"></canvas>
+            <canvas id="petCanvas" width="220" height="150"></canvas>
             <div class="lcd-speech-pill" id="lcdSpeech">
               "Brrr! Sto sonnecchiando in frigo (+4°C)... Svegliami prima dell'impasto!"
             </div>
@@ -1043,7 +1043,7 @@
     // ==========================================
     // STATO & PERSISTENZA LOCAL STORAGE
     // ==========================================
-    const STORAGE_KEY = "lievitotchi_quest_state_v3";
+    const STORAGE_KEY = "lievitotchi_quest_state_v4";
 
     const DEFAULT_STATE = {
       yeastType: "licoli",
@@ -1233,306 +1233,151 @@
     }
 
     // ==========================================
-    // NUOVO MOTORE DI ILLUSTRAZIONE DEL LIEVITINO!
+    // ANIMAZIONE PIXEL-ART RETRO 8-BIT AUTENTICA
     // ==========================================
     const canvas = document.getElementById("petCanvas");
     const ctx = canvas.getContext("2d");
     let tickCount = 0;
 
-    // Particelle di anidride carbonica fluttuanti dentro e fuori dal vasetto
-    let yeastBubbles = [];
-    for (let i = 0; i < 15; i++) {
-      yeastBubbles.push({
-        x: Math.random() * 80 - 40,
-        y: Math.random() * 70,
-        radius: 2 + Math.random() * 4,
-        speed: 0.4 + Math.random() * 0.7,
-        alpha: 0.3 + Math.random() * 0.5,
-        wobble: Math.random() * 10
-      });
-    }
-
-    function renderRichIllustration() {
+    function renderPixelPet() {
       tickCount++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const kin = calculateKinetics();
 
       const cx = canvas.width / 2;
-      const jarW = 120;
-      const jarH = 142;
-      const jarTop = 18;
+      const jarW = 96;
+      const jarH = 112;
+      const jarTop = 16;
       const jarBottom = jarTop + jarH;
 
-      // 1. OMBRA DEL VASO DI VETRO ALLA BASE
-      ctx.save();
-      ctx.fillStyle = "rgba(24, 44, 23, 0.15)";
-      ctx.beginPath();
-      ctx.ellipse(cx, jarBottom + 6, jarW / 2 + 8, 8, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
+      // 1. VASO DI VETRO PIXEL ART
+      ctx.fillStyle = "rgba(180, 215, 175, 0.45)";
+      ctx.fillRect(cx - jarW/2, jarTop + 10, jarW, jarH - 10);
 
-      // 2. CORPO DEL VASO DI VETRO (Design bombato Weck / Bormioli)
-      ctx.save();
-      ctx.fillStyle = "rgba(195, 230, 190, 0.35)";
-      ctx.strokeStyle = "#1C351B";
-      ctx.lineWidth = 3;
+      // Bordi vaso pixel-perfect
+      ctx.fillStyle = "#1C331B";
+      ctx.fillRect(cx - jarW/2, jarTop + 10, 3, jarH - 10); // bordo sx
+      ctx.fillRect(cx + jarW/2 - 3, jarTop + 10, 3, jarH - 10); // bordo dx
+      ctx.fillRect(cx - jarW/2, jarBottom - 3, jarW, 3); // fondo
 
-      ctx.beginPath();
-      ctx.roundRect(cx - jarW/2, jarTop + 14, jarW, jarH - 14, [4, 4, 18, 18]);
-      ctx.fill();
-      ctx.stroke();
+      // Coperchietto Weck pixel
+      ctx.fillStyle = "#6F8E68";
+      ctx.fillRect(cx - (jarW - 14)/2, jarTop, jarW - 14, 10);
+      ctx.fillStyle = "#1C331B";
+      ctx.fillRect(cx - (jarW - 14)/2, jarTop, jarW - 14, 2);
+      ctx.fillRect(cx - (jarW - 14)/2, jarTop + 9, jarW - 14, 2);
+      ctx.fillRect(cx - (jarW - 14)/2, jarTop, 2, 10);
+      ctx.fillRect(cx + (jarW - 14)/2 - 2, jarTop, 2, 10);
 
-      // Riflessi di luce sul vetro (sinistra e destra)
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      ctx.beginPath();
-      ctx.roundRect(cx - jarW/2 + 6, jarTop + 20, 8, jarH - 34, 4);
-      ctx.fill();
-
-      // Collo e Coperchio Weck con guarnizione
-      ctx.fillStyle = "#E58F65"; // guarnizione arancio tipica
-      ctx.fillRect(cx - (jarW - 14)/2, jarTop + 10, jarW - 14, 5);
-
-      ctx.fillStyle = "#5E7C59"; // coperchio verde salvia
-      ctx.strokeStyle = "#1C351B";
-      ctx.beginPath();
-      ctx.roundRect(cx - (jarW - 8)/2, jarTop, jarW - 8, 12, [6, 6, 2, 2]);
-      ctx.fill();
-      ctx.stroke();
-
-      // Tacca Elastico Rosso di Partenza (livello 1x)
-      const rubberBandY = jarBottom - 38;
-      ctx.strokeStyle = "#D81B60";
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([5, 4]);
-      ctx.beginPath();
-      ctx.moveTo(cx - jarW/2 + 2, rubberBandY);
-      ctx.lineTo(cx + jarW/2 - 2, rubberBandY);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.restore();
-
-      // 3. IL LIEVITINO: MASSA VIVENTE ORGANICA CHE CRESCE!
-      const currentVol = parseFloat(kin.volume); // da 1.0x a 2.3x
-      const targetHeight = Math.min(105, 36 * currentVol);
-
-      // Respirazione organica pulsante
-      const breathe = Math.sin(tickCount * 0.06) * (appState.inFridge ? 0.8 : 2.8);
-      const yeastTopY = jarBottom - targetHeight - breathe;
-
-      // Colore Massa del Lievito (Gradiente soffice)
-      const grad = ctx.createLinearGradient(cx, yeastTopY, cx, jarBottom);
-      if (appState.yeastType === 'licoli') {
-        grad.addColorStop(0, "#FFF9E6");
-        grad.addColorStop(1, "#F5E2B3");
-      } else {
-        grad.addColorStop(0, "#FBF1D3");
-        grad.addColorStop(1, "#E8D099");
+      // Linea tratteggiata elastico rosso
+      const bandY = jarBottom - 28;
+      ctx.fillStyle = "#D81B60";
+      for (let x = cx - jarW/2 + 4; x < cx + jarW/2 - 4; x += 8) {
+        ctx.fillRect(x, bandY, 4, 2);
       }
 
-      ctx.save();
-      ctx.fillStyle = grad;
-      ctx.strokeStyle = "#1C351B";
-      ctx.lineWidth = 2.5;
+      // 2. MASSA LIEVITATA PIXEL (con altezza dipendente dal volume)
+      const currentVol = parseFloat(kin.volume);
+      const yeastHeight = Math.min(76, Math.floor(28 * currentVol));
+      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2.5));
+      const topY = jarBottom - yeastHeight - pulse;
 
-      // Forma organica con cupola arrotondata in cima
-      ctx.beginPath();
-      ctx.moveTo(cx - jarW/2 + 4, jarBottom - 4);
-      ctx.lineTo(cx - jarW/2 + 4, yeastTopY + 14);
+      // Colore farinoso caldo del lievito
+      ctx.fillStyle = appState.yeastType === 'licoli' ? "#FFF2CC" : "#F8E5BA";
+      ctx.fillRect(cx - jarW/2 + 3, topY, jarW - 6, jarBottom - topY - 3);
 
-      // Curva della cupola a cupola morbida (cupola attiva al picco o piatta se affamata)
-      const domeBulge = kin.hunger > 75 ? 2 : 12; // se ha fame si sgonfia al centro!
-      ctx.bezierCurveTo(
-        cx - jarW/4, yeastTopY - domeBulge,
-        cx + jarW/4, yeastTopY - domeBulge,
-        cx + jarW/2 - 4, yeastTopY + 14
-      );
+      // Bordo superiore pixelato a gradini (cupola pixel)
+      ctx.fillStyle = "#1C331B";
+      ctx.fillRect(cx - jarW/2 + 3, topY, jarW - 6, 2);
 
-      ctx.lineTo(cx + jarW/2 - 4, jarBottom - 4);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
+      // Bollicine di fermentazione pixelate che salgono
+      ctx.fillStyle = "#D4C294";
+      const bubbleCount = kin.vigor > 70 ? 8 : 3;
+      for (let i = 0; i < bubbleCount; i++) {
+        const bx = cx - 32 + ((i * 18 + tickCount) % 64);
+        const by = topY + 8 + ((i * 13) % Math.max(6, yeastHeight - 16));
+        ctx.fillRect(bx, by, 3, 3);
+        ctx.fillRect(bx + 1, by - 1, 1, 1); // punto luce pixel
+      }
 
-      // 4. ALVEOLI E BOLLICINE VIVE CHE SALGONO IN SUPERFICIE!
-      ctx.fillStyle = "rgba(180, 150, 100, 0.4)";
-      yeastBubbles.forEach(b => {
-        b.y -= b.speed;
-        b.wobble += 0.05;
-        const curX = cx + b.x + Math.sin(b.wobble) * 2;
-        const curY = jarBottom - 10 - b.y;
-
-        if (curY > yeastTopY + 8) {
-          ctx.beginPath();
-          ctx.arc(curX, curY, b.radius, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Riflesso su bolla
-          ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-          ctx.beginPath();
-          ctx.arc(curX - b.radius * 0.3, curY - b.radius * 0.3, b.radius * 0.35, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "rgba(180, 150, 100, 0.4)";
-        } else {
-          b.y = 0; // reset alla base
-          b.x = (Math.random() * (jarW - 30)) - (jarW - 30) / 2;
-        }
-      });
-
-      // 5. IL VOLTO ESPRESSIVO E TENERO DEL LIEVITINO!
-      const faceY = yeastTopY + (targetHeight / 2) - 2;
-      const faceX = cx;
+      // 3. FACCINA PIXEL TAMAGOTCHI
+      const fX = cx;
+      const fY = topY + Math.floor(yeastHeight / 2) - 4;
+      ctx.fillStyle = "#1C331B";
 
       if (appState.inFridge) {
-        // --- STATO LETARGO (In Frigo a +4°C) ---
-        // Occhietti chiusi a mezzaluna felice (sonno beato)
-        ctx.strokeStyle = "#1C351B";
-        ctx.lineWidth = 2.5;
-        ctx.lineCap = "round";
+        // --- IN FRIGO: DORME BEATO (Zzz) ---
+        // Occhi a fessura orizzontale
+        ctx.fillRect(fX - 14, fY, 8, 2);
+        ctx.fillRect(fX + 6, fY, 8, 2);
+        // Boccuccia chiusa
+        ctx.fillRect(fX - 2, fY + 6, 4, 2);
 
-        // Occhio SX
-        ctx.beginPath();
-        ctx.arc(faceX - 16, faceY, 7, Math.PI * 0.15, Math.PI * 0.85);
-        ctx.stroke();
-
-        // Occhio DX
-        ctx.beginPath();
-        ctx.arc(faceX + 16, faceY, 7, Math.PI * 0.15, Math.PI * 0.85);
-        ctx.stroke();
-
-        // Guanciotte rosa sognanti
-        ctx.fillStyle = "rgba(255, 128, 171, 0.55)";
-        ctx.beginPath();
-        ctx.arc(faceX - 22, faceY + 5, 5, 0, Math.PI * 2);
-        ctx.arc(faceX + 22, faceY + 5, 5, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Boccuccia 'o' addormentata
-        ctx.fillStyle = "#1C351B";
-        ctx.beginPath();
-        ctx.arc(faceX, faceY + 7, 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Cuffietta da notte pixel Zzz fluttuanti
+        // Zzz animate
         ctx.font = "8px 'Press Start 2P'";
-        ctx.fillStyle = "#335C2F";
-        const zOff = (tickCount % 45) / 3;
-        ctx.fillText("z", faceX + 26, faceY - 14 - zOff);
-        ctx.fillText("Z", faceX + 38, faceY - 26 - zOff);
+        const zFloat = (tickCount % 36) / 3;
+        ctx.fillText("z", fX + 18, fY - 8 - zFloat);
+        ctx.fillText("Z", fX + 28, fY - 18 - zFloat);
 
       } else if (kin.hunger > 75) {
-        // --- STATO FAME CRITICA / ACIDO ---
-        ctx.strokeStyle = "#1C351B";
-        ctx.lineWidth = 2.5;
+        // --- FAME: OCCHI TRISTI E GOCCIA ---
+        ctx.fillRect(fX - 12, fY - 2, 6, 5);
+        ctx.fillRect(fX + 6, fY - 2, 6, 5);
+        // Bocca all'ingiù
+        ctx.fillRect(fX - 4, fY + 8, 8, 2);
+        ctx.fillRect(fX - 6, fY + 10, 2, 2);
+        ctx.fillRect(fX + 4, fY + 10, 2, 2);
 
-        // Occhi abbassati e tristi
-        ctx.beginPath();
-        ctx.moveTo(faceX - 22, faceY - 4);
-        ctx.lineTo(faceX - 10, faceY + 2);
-        ctx.moveTo(faceX + 22, faceY - 4);
-        ctx.lineTo(faceX + 10, faceY + 2);
-        ctx.stroke();
-
-        // Boccuccia ondulata tremolante
-        ctx.beginPath();
-        ctx.moveTo(faceX - 8, faceY + 10);
-        ctx.quadraticCurveTo(faceX, faceY + 4, faceX + 8, faceY + 10);
-        ctx.stroke();
-
-        // Gocciolina di sudore / fame azzurra
+        // Goccia sudore pixel
         ctx.fillStyle = "#42A5F5";
-        ctx.beginPath();
-        ctx.moveTo(faceX + 26, faceY - 6);
-        ctx.quadraticCurveTo(faceX + 30, faceY, faceX + 26, faceY + 4);
-        ctx.quadraticCurveTo(faceX + 22, faceY, faceX + 26, faceY - 6);
-        ctx.fill();
+        ctx.fillRect(fX + 20, fY - 4, 3, 5);
+        ctx.fillRect(fX + 21, fY - 6, 1, 2);
 
       } else if (currentVol >= 2.0) {
-        // --- STATO PICCO SUPREMO (Pronto per la pizza/pane!) ---
-        // Occhioni giganti luminosi spalancati di gioia!
-        const eyeW = 7;
-        const eyeH = 10;
-
-        ctx.fillStyle = "#1C351B";
-        ctx.beginPath();
-        ctx.ellipse(faceX - 16, faceY, eyeW, eyeH, 0, 0, Math.PI * 2);
-        ctx.ellipse(faceX + 16, faceY, eyeW, eyeH, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Punti luce stellari negli occhi (stile anime/kawaii)
+        // --- PICCO MASSIMO: FELICISSIMO & OCCHIONI VISPI ---
+        // Occhi grandi pixel
+        ctx.fillRect(fX - 14, fY - 3, 7, 7);
+        ctx.fillRect(fX + 7, fY - 3, 7, 7);
+        // Punti luce bianchi
         ctx.fillStyle = "#FFFFFF";
-        ctx.beginPath();
-        ctx.arc(faceX - 18, faceY - 3, 3, 0, Math.PI * 2);
-        ctx.arc(faceX - 13, faceY + 4, 1.5, 0, Math.PI * 2);
-        ctx.arc(faceX + 14, faceY - 3, 3, 0, Math.PI * 2);
-        ctx.arc(faceX + 19, faceY + 4, 1.5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillRect(fX - 13, fY - 3, 3, 3);
+        ctx.fillRect(fX + 8, fY - 3, 3, 3);
 
-        // Guance rosate vivacissime
-        ctx.fillStyle = "#FF6584";
-        ctx.beginPath();
-        ctx.arc(faceX - 25, faceY + 6, 6, 0, Math.PI * 2);
-        ctx.arc(faceX + 25, faceY + 6, 6, 0, Math.PI * 2);
-        ctx.fill();
+        // Guance rosa pixel
+        ctx.fillStyle = "#FF80AB";
+        ctx.fillRect(fX - 20, fY + 4, 4, 3);
+        ctx.fillRect(fX + 16, fY + 4, 4, 3);
 
-        // Sorriso spalancato aperto felice con linguetta
-        ctx.fillStyle = "#1C351B";
-        ctx.beginPath();
-        ctx.arc(faceX, faceY + 4, 9, 0, Math.PI);
-        ctx.fill();
-
-        // Linguetta rosa dentro la bocca
-        ctx.save();
-        ctx.clip();
-        ctx.fillStyle = "#FF8DA1";
-        ctx.beginPath();
-        ctx.arc(faceX, faceY + 11, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
+        // Sorrisone aperto
+        ctx.fillStyle = "#1C331B";
+        ctx.fillRect(fX - 4, fY + 6, 8, 2);
+        ctx.fillRect(fX - 2, fY + 8, 4, 3);
 
       } else {
-        // --- STATO STANDARD (Attivo in lievitazione) ---
-        // Occhi vivaci con battito di ciglia
-        const blink = (tickCount % 120 < 7);
+        // --- LIEVITAZIONE STANDARD: VISPO CON BLINK ---
+        const blink = (tickCount % 120 < 6);
         if (blink) {
-          ctx.strokeStyle = "#1C351B";
-          ctx.lineWidth = 2.5;
-          ctx.beginPath();
-          ctx.moveTo(faceX - 22, faceY);
-          ctx.lineTo(faceX - 10, faceY);
-          ctx.moveTo(faceX + 10, faceY);
-          ctx.lineTo(faceX + 22, faceY);
-          ctx.stroke();
+          ctx.fillRect(fX - 12, fY, 6, 2);
+          ctx.fillRect(fX + 6, fY, 6, 2);
         } else {
-          ctx.fillStyle = "#1C351B";
-          ctx.beginPath();
-          ctx.arc(faceX - 16, faceY, 6, 0, Math.PI * 2);
-          ctx.arc(faceX + 16, faceY, 6, 0, Math.PI * 2);
-          ctx.fill();
-
+          ctx.fillRect(fX - 12, fY - 2, 6, 6);
+          ctx.fillRect(fX + 6, fY - 2, 6, 6);
           ctx.fillStyle = "#FFFFFF";
-          ctx.beginPath();
-          ctx.arc(faceX - 18, faceY - 2, 2.2, 0, Math.PI * 2);
-          ctx.arc(faceX + 14, faceY - 2, 2.2, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.fillRect(fX - 11, fY - 2, 2, 2);
+          ctx.fillRect(fX + 7, fY - 2, 2, 2);
         }
 
-        // Guance carine
-        ctx.fillStyle = "rgba(255, 128, 171, 0.6)";
-        ctx.beginPath();
-        ctx.arc(faceX - 22, faceY + 6, 4.5, 0, Math.PI * 2);
-        ctx.arc(faceX + 22, faceY + 6, 4.5, 0, Math.PI * 2);
-        ctx.fill();
+        // Guanciotte
+        ctx.fillStyle = "#FF80AB";
+        ctx.fillRect(fX - 18, fY + 4, 4, 2);
+        ctx.fillRect(fX + 14, fY + 4, 4, 2);
 
-        // Sorrisetto a cupola
-        ctx.strokeStyle = "#1C351B";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.arc(faceX, faceY + 4, 6, 0.1 * Math.PI, 0.9 * Math.PI);
-        ctx.stroke();
+        // Boccuccia
+        ctx.fillStyle = "#1C331B";
+        ctx.fillRect(fX - 3, fY + 6, 6, 2);
       }
 
-      ctx.restore();
-
-      requestAnimationFrame(renderRichIllustration);
+      requestAnimationFrame(renderPixelPet);
     }
 
     // ==========================================
@@ -1763,7 +1608,7 @@
     // ==========================================
     updateNotifBtn();
     updateUI();
-    renderRichIllustration();
+    renderPixelPet();
     setInterval(updateUI, 60000);
   </script>
 </body>
