@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lievitotchi 🍞 - Il tuo Tamagotchi da Forno</title>
+  <title>Lievitotchi 🍞 - Percorso Lievito Madre & Assistente da Forno</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Palette Bakery Pastel & Y2K Tamagotchi */
       --shell-primary: #FF7597;
       --shell-secondary: #FF4E78;
       --shell-trim: #FFE066;
@@ -20,13 +19,16 @@
       --lcd-screen-inner: #C9E8C0;
       --lcd-pixel-ink: #1C331B;
       
-      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-bg: rgba(255, 255, 255, 0.92);
       --card-border: rgba(255, 255, 255, 0.95);
       --card-shadow: 0 16px 36px rgba(220, 80, 130, 0.12);
       
       --text-dark: #2A1A2E;
       --text-muted: #7E6C84;
       --text-pink: #D81B60;
+      --accent-green: #2E7D32;
+      --accent-amber: #E65100;
+      --accent-purple: #7C3AED;
       
       --pixel-font: 'Press Start 2P', monospace;
       --title-font: 'Fredoka', cursive, sans-serif;
@@ -48,12 +50,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 14px 60px;
+      padding: 16px 12px 60px;
       overflow-x: hidden;
       position: relative;
     }
 
-    /* SFONDO ANIMATO CON ELEMENTI FLUTTUANTI */
     .bg-bubble-flair {
       position: fixed;
       border-radius: 50%;
@@ -67,13 +68,13 @@
 
     .app-container {
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
-    /* TOP BAR CON TIME MACHINE CARINA & GIOCOSA */
+    /* TOP BAR CON NOTIFICHE E DEV TIME MACHINE */
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -83,40 +84,60 @@
 
     .brand-logo {
       font-family: var(--title-font);
-      font-size: 1.55rem;
+      font-size: 1.45rem;
       font-weight: 700;
       color: var(--text-pink);
       display: flex;
       align-items: center;
       gap: 6px;
-      text-shadow: 0 2px 8px rgba(216, 27, 96, 0.15);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-notif {
+      background: white;
+      border: 1.5px solid #FFCCD5;
+      color: var(--text-pink);
+      padding: 5px 9px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      transition: all 0.15s;
+    }
+
+    .btn-notif.active {
+      background: #E8F5E9;
+      color: #2E7D32;
+      border-color: #A5D6A7;
     }
 
     .dev-time-pill {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.9);
       border: 1.5px solid #FFCCD5;
-      padding: 4px 8px;
-      border-radius: 20px;
+      padding: 3px 6px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
-      gap: 5px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
-    }
-
-    .dev-time-pill span {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--text-pink);
+      gap: 4px;
     }
 
     .pill-btn {
       background: #FFF0F3;
       border: 1px solid #FFCCD5;
       color: var(--text-pink);
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 12px;
+      padding: 2px 6px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -124,91 +145,122 @@
     .pill-btn:hover {
       background: var(--shell-primary);
       color: white;
-      transform: scale(1.05);
     }
 
-    /* BANNER OBIETTIVO KAWAII & MODIFICABILE */
-    .goal-card-pill {
+    /* 1. ROADMAP DEL PERCORSO & LIVELLO DI FORZA */
+    .quest-card {
       background: var(--card-bg);
       border: 2px solid white;
       backdrop-filter: blur(12px);
       border-radius: 20px;
-      padding: 12px 16px;
+      padding: 14px 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quest-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: var(--card-shadow);
-      transition: transform 0.2s;
     }
 
-    .goal-card-pill:hover {
-      transform: translateY(-2px);
-    }
-
-    .goal-left {
+    .quest-title-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .goal-emoji-bubble {
-      width: 44px;
-      height: 44px;
+    .target-badge-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #FFE3EC, #FFCCD5);
-      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       box-shadow: 0 4px 10px rgba(255, 78, 120, 0.18);
     }
 
-    .goal-meta h3 {
+    .quest-target-name {
       font-family: var(--title-font);
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 0.98rem;
       color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .goal-meta p {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      font-weight: 500;
+    .quest-stage-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-pink);
     }
 
-    .btn-quiz-open {
-      background: linear-gradient(135deg, #FF6584, #FF4368);
-      color: white;
-      border: none;
+    .btn-change-quest {
+      background: #FFF0F3;
+      border: 1.5px solid #FFCCD5;
+      color: var(--text-pink);
       font-family: var(--sans-font);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 7px 14px;
-      border-radius: 14px;
+      padding: 6px 10px;
+      border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(255, 67, 104, 0.3);
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
 
-    .btn-quiz-open:hover {
-      filter: brightness(1.1);
-      transform: scale(1.03);
+    .btn-change-quest:hover {
+      background: var(--shell-primary);
+      color: white;
     }
 
-    /* IL TAMAGOTCHI CONSOLE ADORABILE */
+    /* REGOLARITÀ & FORZA DEL LIEVITO */
+    .readiness-meter-box {
+      background: #FFF8F9;
+      border: 1px solid #FFE4EC;
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .readiness-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .readiness-track {
+      height: 8px;
+      background: #F0E6ED;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .readiness-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #FF6584, #10B981);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    .readiness-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* IL TAMAGOTCHI CANDY CHASSIS */
     .tamagotchi-chassis {
       background: linear-gradient(160deg, #FFA8BD 0%, #FF6584 45%, #E93B66 100%);
-      border-radius: 46% 46% 42% 42% / 38% 38% 50% 50%;
-      padding: 22px 18px 28px;
+      border-radius: 44% 44% 40% 40% / 38% 38% 48% 48%;
+      padding: 20px 16px 26px;
       border: 5px solid #FFFFFF;
-      box-shadow: 0 20px 40px rgba(233, 59, 102, 0.35), inset 0 6px 14px rgba(255, 255, 255, 0.6), inset 0 -6px 14px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 18px 36px rgba(233, 59, 102, 0.32), inset 0 5px 12px rgba(255, 255, 255, 0.6), inset 0 -5px 12px rgba(0, 0, 0, 0.15);
       position: relative;
     }
 
-    /* Portachiavi Tamagotchi in alto a destra */
     .keychain-ring {
       position: absolute;
       top: -12px;
@@ -222,22 +274,21 @@
 
     .tamagotchi-screen-frame {
       background: #FFFFFF;
-      border-radius: 24px;
-      padding: 12px;
-      box-shadow: inset 0 3px 8px rgba(0,0,0,0.12), 0 6px 15px rgba(0,0,0,0.06);
+      border-radius: 22px;
+      padding: 10px;
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.12);
     }
 
     .tmg-lcd {
       background: var(--lcd-screen-bg);
       border: 3px solid #688265;
-      border-radius: 14px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 8px;
       position: relative;
       overflow: hidden;
       box-shadow: inset 0 3px 8px rgba(28, 51, 27, 0.25);
     }
 
-    /* Griglia Pixel a puntini stile Tamagotchi Connexion */
     .tmg-lcd::before {
       content: "";
       position: absolute;
@@ -253,16 +304,16 @@
       justify-content: space-between;
       align-items: center;
       font-family: var(--pixel-font);
-      font-size: 0.55rem;
+      font-size: 0.52rem;
       color: var(--lcd-pixel-ink);
       border-bottom: 2px dashed #92AB8F;
-      padding-bottom: 6px;
-      margin-bottom: 6px;
+      padding-bottom: 5px;
+      margin-bottom: 5px;
     }
 
     .lcd-badge-tag {
       background: rgba(28, 51, 27, 0.15);
-      padding: 3px 6px;
+      padding: 2px 6px;
       border-radius: 4px;
       font-weight: 700;
     }
@@ -272,7 +323,7 @@
       flex-direction: column;
       align-items: center;
       position: relative;
-      min-height: 140px;
+      min-height: 135px;
       justify-content: center;
     }
 
@@ -283,49 +334,37 @@
     .lcd-speech-pill {
       background: rgba(255, 255, 255, 0.95);
       border: 2px solid var(--lcd-pixel-ink);
-      border-radius: 10px;
-      padding: 6px 10px;
+      border-radius: 8px;
+      padding: 6px 8px;
       font-family: var(--pixel-font);
-      font-size: 0.54rem;
-      line-height: 1.4;
+      font-size: 0.52rem;
+      line-height: 1.35;
       color: var(--lcd-pixel-ink);
-      margin-top: 6px;
+      margin-top: 5px;
       text-align: center;
-      min-height: 38px;
+      min-height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.1);
     }
 
-    /* STATS VITALI RETRO-PIXEL */
     .lcd-bars-grid {
-      margin-top: 10px;
+      margin-top: 8px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 6px 12px;
+      gap: 5px 10px;
       font-family: var(--pixel-font);
-      font-size: 0.5rem;
+      font-size: 0.48rem;
       color: var(--lcd-pixel-ink);
     }
 
-    .bar-row {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .bar-label-line {
-      display: flex;
-      justify-content: space-between;
-    }
-
     .bar-frame {
-      height: 7px;
+      height: 6px;
       background: rgba(28, 51, 27, 0.2);
-      border: 1.5px solid var(--lcd-pixel-ink);
+      border: 1px solid var(--lcd-pixel-ink);
       border-radius: 2px;
       overflow: hidden;
+      margin-top: 2px;
     }
 
     .bar-fill {
@@ -334,62 +373,62 @@
       transition: width 0.3s ease;
     }
 
-    /* 3 PULSANTI RETRO IN STILE CARAMELLA */
+    /* 3 PULSANTI RETRO */
     .candy-buttons-row {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      margin-top: 20px;
-      padding: 0 10px;
+      margin-top: 16px;
+      padding: 0 8px;
     }
 
     .btn-capsule {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .candy-btn {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, #FFF08A, #F59E0B);
       border: 3px solid #B45309;
-      box-shadow: 0 5px 0 #78350F, 0 8px 14px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 0 #78350F, 0 6px 12px rgba(0,0,0,0.3);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: #78350F;
       transition: all 0.1s ease;
     }
 
     .candy-btn:active {
-      transform: translateY(4px);
-      box-shadow: 0 1px 0 #78350F, 0 3px 6px rgba(0,0,0,0.3);
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #78350F;
     }
 
     .candy-btn-label {
       font-family: var(--pixel-font);
-      font-size: 0.52rem;
+      font-size: 0.5rem;
       color: #FFFFFF;
       font-weight: 700;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
     }
 
-    /* CARD GUIDA DEL CUOCO (CLEAN, MODERNA E CONFORTEVOLE) */
+    /* CARD GUIDA ATTIVA DEL CUOCO (CON RILEVAMENTO STORICO & CORREZIONI) */
     .chef-guide-box {
       background: var(--card-bg);
       border: 2px solid white;
       backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 20px;
+      border-radius: 22px;
+      padding: 16px;
       box-shadow: var(--card-shadow);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
 
     .guide-box-header {
@@ -400,57 +439,37 @@
 
     .guide-box-title {
       font-family: var(--title-font);
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       color: var(--text-dark);
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .status-pill {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-    }
-
-    .status-chill {
-      background: #E8F5E9;
-      color: #2E7D32;
-      border: 1px solid #A5D6A7;
-    }
-
-    .status-alert {
-      background: #FFF3E0;
-      color: #E65100;
-      border: 1px solid #FFCC80;
-    }
-
-    .status-bake {
-      background: #FCE4EC;
-      color: #C2185B;
-      border: 1px solid #F8BBD0;
-      animation: pulseBake 1.5s infinite alternate;
-    }
-
-    @keyframes pulseBake {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.04); }
-    }
-
-    /* CARD PROSSIMO PASSAGGIO */
-    .next-action-card {
-      background: linear-gradient(135deg, #FFF8F0, #FFF3F6);
-      border: 1.5px solid #FFDEE6;
-      border-radius: 18px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
       gap: 6px;
     }
 
+    .status-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 14px;
+    }
+
+    .status-chill { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+    .status-alert { background: #FFF3E0; color: #E65100; border: 1px solid #FFCC80; }
+    .status-bake { background: #FCE4EC; color: #C2185B; border: 1px solid #F8BBD0; animation: pulseBake 1.5s infinite alternate; }
+
+    /* ACTION CARD CON CONSIGLIO PERSONALIZZATO */
+    .next-action-card {
+      background: linear-gradient(135deg, #FFF8F0, #FFF3F6);
+      border: 1.5px solid #FFDEE6;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
     .action-timing {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
       color: var(--text-pink);
       text-transform: uppercase;
@@ -459,35 +478,48 @@
 
     .action-headline {
       font-family: var(--title-font);
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text-dark);
     }
 
     .action-explanation {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
-    /* DOSI E RICETTA IN 3 CARD TONDE */
+    /* ALERT CORREZIONE STORICO (SE IL LIEVITO È STATO TRASCURATO O È TROPPO ACIDO) */
+    .correction-box {
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 0.74rem;
+      color: #92400E;
+      line-height: 1.35;
+    }
+
+    /* DOSI RAPIDE */
     .recipe-doses-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 8px;
       text-align: center;
     }
 
     .dose-tile {
       background: white;
       border: 1.5px solid #FFE3EC;
-      border-radius: 16px;
-      padding: 10px 6px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+      border-radius: 14px;
+      padding: 8px 4px;
     }
 
     .dose-tile .tile-title {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -495,89 +527,97 @@
 
     .dose-tile .tile-grams {
       font-family: var(--title-font);
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-pink);
-      margin: 2px 0;
+      margin: 1px 0;
     }
 
     .dose-tile .tile-hint {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: #A094A8;
     }
 
-    /* PULSANTE GRANDE NUTRI */
     .btn-main-feed {
       background: linear-gradient(135deg, #FF6584, #FF3366);
       color: white;
       border: none;
-      padding: 14px;
-      border-radius: 16px;
+      padding: 13px;
+      border-radius: 14px;
       font-family: var(--title-font);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 6px 18px rgba(255, 51, 102, 0.35);
+      gap: 8px;
+      box-shadow: 0 6px 16px rgba(255, 51, 102, 0.32);
       transition: all 0.2s;
     }
 
-    .btn-main-feed:hover {
-      filter: brightness(1.08);
-      transform: translateY(-2px);
-    }
+    .btn-main-feed:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-main-feed:active { transform: translateY(1px); }
 
-    .btn-main-feed:active {
-      transform: translateY(1px);
-    }
-
-    /* ACCORDION PER APPROFONDIMENTI E PROGRAMMA */
+    /* ACCORDIONS PER STORICO & DETTAGLI */
     .details-accordion {
       background: var(--card-bg);
       border: 2px solid white;
       backdrop-filter: blur(12px);
-      border-radius: 20px;
+      border-radius: 18px;
       overflow: hidden;
       box-shadow: var(--card-shadow);
     }
 
     .accordion-header {
-      padding: 14px 18px;
+      padding: 12px 16px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--title-font);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-dark);
       user-select: none;
-      transition: background 0.2s;
     }
 
-    .accordion-header:hover {
-      background: #FFF5F7;
-    }
+    .accordion-header:hover { background: #FFF5F7; }
 
     .accordion-content {
-      padding: 16px 18px;
+      padding: 14px 16px;
       display: none;
       border-top: 1.5px solid #FFE8EE;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
-    .details-accordion.active .accordion-content {
-      display: block;
+    .details-accordion.active .accordion-content { display: block; }
+
+    /* STORICO RINFRESCHI & STREAK */
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #FEF3C7;
+      color: #B45309;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
     }
 
-    /* MODALE QUIZ INIZIALE / CAMBIO IN CORSA */
+    .history-entry {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed #FFE0E8;
+    }
+
+    /* MODALE PERCORSO RICETTE & LIVELLI */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(42, 26, 46, 0.7);
+      background: rgba(42, 26, 46, 0.72);
       backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
@@ -596,25 +636,21 @@
 
     .quiz-window {
       background: white;
-      border-radius: 28px;
+      border-radius: 26px;
       width: 100%;
-      max-width: 420px;
-      padding: 24px 20px;
+      max-width: 430px;
+      padding: 22px 18px;
       box-shadow: 0 24px 50px rgba(0,0,0,0.3);
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      transform: scale(0.95);
-      transition: transform 0.25s ease;
-    }
-
-    .modal-backdrop.open .quiz-window {
-      transform: scale(1);
+      gap: 14px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .quiz-h2 {
       font-family: var(--title-font);
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       color: var(--text-dark);
       display: flex;
       align-items: center;
@@ -622,22 +658,22 @@
     }
 
     .quiz-lead {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
-    .quiz-choices {
+    .path-choices {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .choice-card-btn {
+    .path-card-btn {
       background: #FFF9FA;
       border: 2px solid #FFE3EC;
-      border-radius: 18px;
-      padding: 14px;
+      border-radius: 16px;
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -646,31 +682,46 @@
       transition: all 0.2s;
     }
 
-    .choice-card-btn:hover {
+    .path-card-btn:hover {
       border-color: var(--text-pink);
       background: #FFF0F4;
-      transform: translateY(-1px);
     }
 
-    .choice-icon {
-      font-size: 1.7rem;
+    .path-card-btn.active-path {
+      border-color: var(--text-pink);
+      background: #FFF0F4;
+      box-shadow: 0 2px 8px rgba(216, 27, 96, 0.15);
+    }
+
+    .path-icon {
+      font-size: 1.6rem;
       flex-shrink: 0;
     }
 
-    .choice-text h4 {
+    .path-info h4 {
       font-family: var(--title-font);
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       color: var(--text-dark);
-      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .choice-text p {
-      font-size: 0.74rem;
+    .path-level-tag {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: #E0E7FF;
+      color: #3730A3;
+    }
+
+    .path-info p {
+      font-size: 0.73rem;
       color: var(--text-muted);
-      line-height: 1.3;
+      line-height: 1.25;
+      margin-top: 2px;
     }
 
-    /* PARTICELLE FLOATING DI CUORI E BRILLANTINI */
     .sparkle-pop {
       position: absolute;
       pointer-events: none;
@@ -686,38 +737,58 @@
 </head>
 <body>
 
-  <!-- SFONDO DECORATIVO BLURRY -->
   <div class="bg-bubble-flair flair-1"></div>
   <div class="bg-bubble-flair flair-2"></div>
 
   <div class="app-container">
 
-    <!-- TOP NAVIGATION -->
+    <!-- TOP NAVIGATION CON DEV TIME MACHINE & NOTIFICHE BROWSER -->
     <header class="top-nav">
       <div class="brand-logo">
         <span>🍞 Lievitotchi</span>
       </div>
-      <div class="dev-time-pill">
-        <span>⏩ TEST:</span>
-        <button class="pill-btn" id="btnFast6h" title="+6 ore">+6h</button>
-        <button class="pill-btn" id="btnFast24h" title="+1 giorno">+1g</button>
-        <button class="pill-btn" id="btnFast72h" title="+3 giorni">+3g</button>
+      <div class="nav-actions">
+        <button class="btn-notif" id="btnNotifToggle" title="Attiva/disattiva notifiche quando serve rinfrescare">
+          <span id="notifIcon">🔔</span>
+          <span id="notifText">Notifiche</span>
+        </button>
+        <div class="dev-time-pill">
+          <button class="pill-btn" id="btnFast6h" title="+6 ore">+6h</button>
+          <button class="pill-btn" id="btnFast24h" title="+1 giorno">+1g</button>
+          <button class="pill-btn" id="btnFast72h" title="+3 giorni">+3g</button>
+        </div>
       </div>
     </header>
 
-    <!-- BANNER OBIETTIVO ATTIVO -->
-    <div class="goal-card-pill">
-      <div class="goal-left">
-        <div class="goal-emoji-bubble" id="activeGoalIcon">🍕</div>
-        <div class="goal-meta">
-          <h3 id="activeGoalName">Weekend Chef</h3>
-          <p id="activeGoalDesc">Pizza al sabato • Dorme sereno in frigo</p>
+    <!-- 1. PERCORSO RICETTE & INDICE DI PRONTEZZA DEL LIEVITO -->
+    <div class="quest-card">
+      <div class="quest-header">
+        <div class="quest-title-group">
+          <div class="target-badge-icon" id="questIcon">🍕</div>
+          <div>
+            <div class="quest-target-name" id="questTargetName">Pizza & Focaccia ad Alta Idratazione</div>
+            <div class="quest-stage-label" id="questStageLabel">Livello 2: Spinta aromatica media</div>
+          </div>
+        </div>
+        <button class="btn-change-quest" id="btnOpenQuestModal">Cambia Percorso</button>
+      </div>
+
+      <!-- BARRA DI REGOLARITÀ & FORZA ACCUMULATA -->
+      <div class="readiness-meter-box">
+        <div class="readiness-meta">
+          <span>Stabilità & Regolarità Storica:</span>
+          <span id="readinessScore">78% • Quasi Pronto</span>
+        </div>
+        <div class="readiness-track">
+          <div class="readiness-fill" id="readinessFill" style="width: 78%;"></div>
+        </div>
+        <div class="readiness-sub" id="readinessSubText">
+          🔥 Striscia di regolarità: <strong>3 rinfreschi precisi</strong>. Lievito vivace e privo di note acide sgradevoli.
         </div>
       </div>
-      <button class="btn-quiz-open" id="btnTriggerQuiz">Cambia Obiettivo</button>
     </div>
 
-    <!-- IL TAMAGOTCHI CHASSIS RETRO CANDY -->
+    <!-- 2. TAMAGOTCHI CONSOLE CHASSIS RETRO -->
     <div class="tamagotchi-chassis">
       <div class="keychain-ring"></div>
 
@@ -725,63 +796,56 @@
         <div class="tmg-lcd">
           <div class="lcd-top-icons">
             <span id="lcdYeastPill" class="lcd-badge-tag">LICOLI 100%</span>
+            <span id="lcdStreakBadge" class="lcd-badge-tag">🔥 STREAK: x3</span>
             <span id="lcdTempPill" class="lcd-badge-tag">❄️ IN FRIGO</span>
           </div>
 
           <div class="pet-stage">
-            <canvas id="petCanvas" width="200" height="135"></canvas>
+            <canvas id="petCanvas" width="200" height="130"></canvas>
             <div class="lcd-speech-pill" id="lcdSpeech">
-              "Brrr! Sto sonnecchiando al fresco (+4°C)... Svegliami per il weekend!"
+              "Brrr! Sto sonnecchiando in frigo (+4°C)... Svegliami prima dell'impasto!"
             </div>
           </div>
 
-          <!-- LE 4 STATISTICHE BIOLOGICHE RETRO -->
+          <!-- 4 STATISTICHE DINAMICHE -->
           <div class="lcd-bars-grid">
-            <div class="bar-row">
-              <div class="bar-label-line">
+            <div>
+              <div style="display:flex; justify-content:space-between;">
                 <span>FAME</span>
-                <span id="valHunger">25%</span>
+                <span id="valHunger">32%</span>
               </div>
-              <div class="bar-frame">
-                <div class="bar-fill" id="barHunger" style="width: 25%;"></div>
-              </div>
+              <div class="bar-frame"><div class="bar-fill" id="barHunger" style="width: 32%;"></div></div>
             </div>
 
-            <div class="bar-row">
-              <div class="bar-label-line">
+            <div>
+              <div style="display:flex; justify-content:space-between;">
                 <span>VIGORE</span>
-                <span id="valVigor">94%</span>
+                <span id="valVigor">90%</span>
               </div>
-              <div class="bar-frame">
-                <div class="bar-fill" id="barVigor" style="width: 94%;"></div>
-              </div>
+              <div class="bar-frame"><div class="bar-fill" id="barVigor" style="width: 90%;"></div></div>
             </div>
 
-            <div class="bar-row">
-              <div class="bar-label-line">
+            <div>
+              <div style="display:flex; justify-content:space-between;">
                 <span>ACIDITÀ</span>
                 <span id="valAcidity">OK</span>
               </div>
-              <div class="bar-frame">
-                <div class="bar-fill" id="barAcidity" style="width: 20%;"></div>
-              </div>
+              <div class="bar-frame"><div class="bar-fill" id="barAcidity" style="width: 25%;"></div></div>
             </div>
 
-            <div class="bar-row">
-              <div class="bar-label-line">
+            <div>
+              <div style="display:flex; justify-content:space-between;">
                 <span>VOLUME</span>
                 <span id="valVolume">x1.3</span>
               </div>
-              <div class="bar-frame">
-                <div class="bar-fill" id="barVolume" style="width: 35%;"></div>
-              </div>
+              <div class="bar-frame"><div class="bar-fill" id="barVolume" style="width: 35%;"></div></div>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- 3 PULSANTI RETRO -->
+      <!-- 3 TASTI RETRO TAMAGOTCHI -->
       <div class="candy-buttons-row">
         <div class="btn-capsule">
           <button class="candy-btn" id="btnDeviceFeed" title="Rinfresca con farina e acqua">🥣</button>
@@ -798,24 +862,33 @@
       </div>
     </div>
 
-    <!-- CHEF GUIDANCE BOX: COSA FARE ORA -->
+    <!-- 3. ASSISTENTE & CORREZIONE BASATA SULLO STORICO -->
     <div class="chef-guide-box">
       <div class="guide-box-header">
         <div class="guide-box-title">
-          <span>👨‍🍳 Il Consiglio del Mastro Fornaio</span>
+          <span>👨‍🍳 Guida al Tuo Obiettivo</span>
         </div>
         <span class="status-pill status-chill" id="guideStatusPill">A RIPOSO IN FRIGO</span>
       </div>
 
+      <!-- BOX CORREZIONE DINAMICO (SE C'È BISOGNO DI CORREGGERE IL LIEVITO) -->
+      <div class="correction-box" id="correctionBox" style="display: none;">
+        <span style="font-size: 1.1rem;">⚠️</span>
+        <div id="correctionText">
+          <strong>Correzione consigliata:</strong> Il lievito è rimasto a digiuno oltre 6 giorni. Per evitare che l'eccesso di acido acetico rovini la maglia glutinica, esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C.
+        </div>
+      </div>
+
+      <!-- PROSSIMO PASSAGGIO CONSIGLIATO -->
       <div class="next-action-card">
         <div class="action-timing" id="guideTiming">PROSSIMO PASSAGGIO: VENERDÌ SERA</div>
         <div class="action-headline" id="guideHeadline">Lascialo riposare al fresco</div>
         <div class="action-explanation" id="guideExplanation">
-          Il tuo lievito è nutrito e protetto a +4°C. I batteri consumano gli amidi molto lentamente: goditi la settimana, ci pensiamo venerdì!
+          Il tuo lievito è nutrito e protetto a +4°C. Per il tuo obiettivo (Pizza ad Alta Idratazione), sveglieremo il lievito venerdì sera per un doppio rinfresco di potenza!
         </div>
       </div>
 
-      <!-- DOSI PRECALCOLATE A COLPO D'OCCHIO -->
+      <!-- DOSI PRECALCOLATE AL GRAMMO -->
       <div class="recipe-doses-grid">
         <div class="dose-tile">
           <div class="tile-title">Lievito Madre</div>
@@ -825,7 +898,7 @@
         <div class="dose-tile">
           <div class="tile-title">Farina Forte</div>
           <div class="tile-grams" id="doseFarina">100g</div>
-          <div class="tile-hint">W 280-320</div>
+          <div class="tile-hint" id="doseFarinaHint">W 280-320</div>
         </div>
         <div class="dose-tile">
           <div class="tile-title">Acqua (~24°C)</div>
@@ -835,96 +908,112 @@
       </div>
 
       <button class="btn-main-feed" id="btnExecuteFeed">
-        🥣 Ho appena fatto il rinfresco! Registra
+        🥣 Ho fatto il rinfresco! Registra nello Storico
       </button>
     </div>
 
-    <!-- ACCORDION 1: CRONOPROGRAMMA COMPLETO -->
-    <div class="details-accordion" id="accSchedule">
-      <div class="accordion-header" onclick="toggleAccordion('accSchedule')">
-        <span>📅 Visualizza Cronoprogramma Dettagliato</span>
-        <span>▼</span>
+    <!-- ACCORDION 1: STORICO RINFRESCHI & FEDELTÀ ALLA REGOLARITÀ -->
+    <div class="details-accordion" id="accHistory">
+      <div class="accordion-header" onclick="toggleAccordion('accHistory')">
+        <span>📜 Storico & Frequenza Rinfreschi</span>
+        <span class="streak-badge" id="streakLabel">🔥 Streak: 3</span>
       </div>
-      <div class="accordion-content" id="accScheduleBody">
-        <!-- Riempito dinamicamente -->
+      <div class="accordion-content">
+        <div id="historyList">
+          <!-- Popolato dinamicamente -->
+        </div>
+        <p style="margin-top: 8px; font-size: 0.72rem; color: #9E8295;">
+          💡 <em>I grandi maestri fornai insegnano: la qualità del lievito madre non dipende dalla ricetta, ma dalla costanza dei rinfreschi negli ultimi 15 giorni!</em>
+        </p>
       </div>
     </div>
 
-    <!-- ACCORDION 2: GUIDA SOS FORNO -->
+    <!-- ACCORDION 2: GUIDA SOS CLINICA AL LIEVITO -->
     <div class="details-accordion" id="accDoctor">
       <div class="accordion-header" onclick="toggleAccordion('accDoctor')">
-        <span>🩺 Guida SOS: Odori, Picco e Rimedi Rapidi</span>
+        <span>🩺 Guida Clinica SOS: Odori, Picco e Correzioni</span>
         <span>▼</span>
       </div>
       <div class="accordion-content">
-        <p><strong>🎯 Come riconoscere il picco per impastare?</strong><br>
-        Fai la prova del galleggiamento: prendi un cucchiaino di lievito e poggialo delicatamente in un bicchiere d'acqua a 24°C. Se galleggia come una nuvola, la maglia glutinica trattiene CO₂ ed è pronto!</p>
+        <p><strong>🎯 Test del Galleggiamento:</strong> Prendi un cucchiaino di lievito al picco e poggialo in un bicchiere d'acqua a 24°C. Se galleggia, la spinta gassosa è ideale per impastare.</p>
         <br>
-        <p><strong>🍋 Odore pungente di aceto?</strong><br>
-        I batteri eterofermentanti hanno prevalso. Fai un rinfresco con più farina (rapporto 1:3: 30g lievito + 90g farina + acqua opportuna) usando acqua a 26°C.</p>
+        <p><strong>🍋 Odore pungente / Acetico:</strong> I batteri lattici eterofermentanti hanno prevalso. Rinfresca con rapporto 1:3 (30g madre + 90g farina + acqua) con acqua a 26°C.</p>
         <br>
-        <p><strong>💧 Presenza di liquido scuro sopra?</strong><br>
-        È fame prolungata. Rimuovi e getta il liquido, togli la crosticina e preleva 30g dal cuore centrale per rinfrescarlo.</p>
+        <p><strong>💧 Presenza di Liquido Grigio in Superficie:</strong> Fame prolungata. Rimuovi e butta il liquido, togli la crosta e rinfresca solo 30g dal cuore centrale.</p>
       </div>
     </div>
 
   </div>
 
-  <!-- MODALE QUIZ ONBOARDING & SCELTA OBIETTIVI -->
-  <div class="modal-backdrop" id="quizModal">
+  <!-- MODALE SCELTA PERCORSO RICETTA & OBIETTIVO -->
+  <div class="modal-backdrop" id="questModal">
     <div class="quiz-window">
 
-      <!-- STEP 1: QUALE LIEVITO HAI? -->
-      <div id="quizStep1">
+      <!-- STEP 1: SCELTA TIPO DI LIEVITO (SE NON FATTO) -->
+      <div id="stepYeastType" style="display: none;">
         <div class="quiz-h2">🌾 Che lievito madre hai?</div>
-        <div class="quiz-lead" style="margin-bottom: 12px;">Calcoleremo esattamente la percentuale di acqua idonea:</div>
-
-        <div class="quiz-choices">
-          <div class="choice-card-btn" onclick="handleSelectYeast('licoli')">
-            <span class="choice-icon">🫧</span>
-            <div class="choice-text">
+        <div class="quiz-lead" style="margin-bottom: 12px;">Impostiamo l'idratazione esatta dell'acqua per ogni rinfresco:</div>
+        <div class="path-choices">
+          <div class="path-card-btn" onclick="selectYeastType('licoli')">
+            <span class="path-icon">🫧</span>
+            <div class="path-info">
               <h4>Li.Co.Li (Lievito Liquido)</h4>
-              <p>Idratazione 100%: stessa dose di farina e acqua. Cremoso e rapido da mescolare.</p>
+              <p>Idratazione 100%: pari peso farina e acqua. Facilissimo da dosare e mescolare.</p>
             </div>
           </div>
-
-          <div class="choice-card-btn" onclick="handleSelectYeast('solido')">
-            <span class="choice-icon">🍞</span>
-            <div class="choice-text">
+          <div class="path-card-btn" onclick="selectYeastType('solido')">
+            <span class="path-icon">🍞</span>
+            <div class="path-info">
               <h4>Pasta Madre Solida</h4>
-              <p>Idratazione ~50%: l'acqua è la metà della farina. Tradizionale, a pagnotta soda.</p>
+              <p>Idratazione 50%: acqua al 50% rispetto alla farina. Tradizionale, a pagnotta.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- STEP 2: QUAL È IL TUO IMPEGNO IN CUCINA? -->
-      <div id="quizStep2" style="display: none;">
-        <div class="quiz-h2">🎯 Quanto tempo vuoi dedicargli?</div>
-        <div class="quiz-lead" style="margin-bottom: 12px;">Scegli il ritmo di panificazione più comodo per te:</div>
+      <!-- STEP 2: SCELTA PERCORSO RICETTE (DA PANE SEMPLICE A GRANDI LIEVITATI) -->
+      <div id="stepTargetQuest">
+        <div class="quiz-h2">🎯 Scegli il tuo Percorso di Cottura</div>
+        <div class="quiz-lead" style="margin-bottom: 12px;">Il Lievitotchi adatterà il programma per allenare il tuo lievito al momento giusto:</div>
 
-        <div class="quiz-choices">
-          <div class="choice-card-btn" onclick="handleSelectGoal('zen')">
-            <span class="choice-icon">🌱</span>
-            <div class="choice-text">
-              <h4>Minimo Impegno (Zen)</h4>
-              <p>Panifico ogni 10-15 giorni. Lievito sempre in frigo, zero ansia da rinfresco.</p>
+        <div class="path-choices">
+          <div class="path-card-btn" data-quest="easy-bread" onclick="selectQuest('easy-bread')">
+            <span class="path-icon">🥖</span>
+            <div class="path-info">
+              <h4>Pane Semplice Casalingo <span class="path-level-tag">Livello 1</span></h4>
+              <p>Ideale per iniziare. Richiede solo 1 rinfresco preparatorio. Molto tollerante.</p>
             </div>
           </div>
 
-          <div class="choice-card-btn" onclick="handleSelectGoal('weekend')">
-            <span class="choice-icon">🍕</span>
-            <div class="choice-text">
-              <h4>Weekend Chef (Consigliato)</h4>
-              <p>Pizza o pane al sabato/domenica. Dorme in frigo in settimana e si attiva nel weekend.</p>
+          <div class="path-card-btn" data-quest="pizza" onclick="selectQuest('pizza')">
+            <span class="path-icon">🍕</span>
+            <div class="path-info">
+              <h4>Pizza in Teglia / Focaccia <span class="path-level-tag">Livello 2</span></h4>
+              <p>Alta idratazione (75-80%). Richiede lievito ben sveglio e privo di note acide per non strappare il glutine.</p>
             </div>
           </div>
 
-          <div class="choice-card-btn" onclick="handleSelectGoal('pro')">
-            <span class="choice-icon">🥖</span>
-            <div class="choice-text">
-              <h4>Panettiere Quotidiano (Pro)</h4>
-              <p>Infornate frequenti (2-3 a settimana). Lievito sempre al picco dell'attività.</p>
+          <div class="path-card-btn" data-quest="artisan" onclick="selectQuest('artisan')">
+            <span class="path-icon">🍞</span>
+            <div class="path-info">
+              <h4>Pane Rustico ad Alveolatura Aperta <span class="path-level-tag">Livello 3</span></h4>
+              <p>Pagnotta a fette stile San Francisco Sourdough. Necessita di 2 rinfreschi consecutivi per massima spinta.</p>
+            </div>
+          </div>
+
+          <div class="path-card-btn" data-quest="brioche" onclick="selectQuest('brioche')">
+            <span class="path-icon">🥐</span>
+            <div class="path-info">
+              <h4>Brioche, Pan bauletto & Dolci <span class="path-level-tag">Livello 4</span></h4>
+              <p>Impasti arricchiti con burro e uova. Il lievito deve essere dolcissimo e raddoppiare in 3.5 ore.</p>
+            </div>
+          </div>
+
+          <div class="path-card-btn" data-quest="panettone" onclick="selectQuest('panettone')">
+            <span class="path-icon">👑</span>
+            <div class="path-info">
+              <h4>Grandi Lievitati (Panettone / Colomba) <span class="path-level-tag">Livello Maestro</span></h4>
+              <p>La sfida suprema. Richiede 5-7 giorni di preparazione costante e triplo rinfresco nella stessa giornata.</p>
             </div>
           </div>
         </div>
@@ -935,18 +1024,79 @@
 
   <script>
     // ==========================================
+    // DATABASE PERCORSI RICETTA & REQUISITI
+    // ==========================================
+    const RECIPE_QUESTS = {
+      "easy-bread": {
+        name: "Pane Semplice Casalingo",
+        icon: "🥖",
+        stage: "Livello 1: Tollerante & Facile",
+        minReadiness: 40,
+        prepRefreshesNeeded: 1,
+        ratioSuggested: "1:2",
+        flourStrength: "W 260-280",
+        notes: "Richiede solo 1 rinfresco 4-5 ore prima di impastare."
+      },
+      "pizza": {
+        name: "Pizza & Focaccia ad Alta Idratazione",
+        icon: "🍕",
+        stage: "Livello 2: Spinta aromatica media",
+        minReadiness: 65,
+        prepRefreshesNeeded: 2,
+        ratioSuggested: "1:2",
+        flourStrength: "W 280-320",
+        notes: "Dorme in frigo in settimana, 1 rinfresco il venerdì sera e 1 il sabato mattina prima dell'impasto."
+      },
+      "artisan": {
+        name: "Pane Rustico ad Alveoli Aperti",
+        icon: "🍞",
+        stage: "Livello 3: Spinta elastica alta",
+        minReadiness: 75,
+        prepRefreshesNeeded: 2,
+        ratioSuggested: "1:1",
+        flourStrength: "W 320+",
+        notes: "2 rinfreschi ravvicinati a 26°C al raddoppio rapido per azzerare l'acidità acetica."
+      },
+      "brioche": {
+        name: "Brioche & Impasti Dolci Arricchiti",
+        icon: "🥐",
+        stage: "Livello 4: Acidità controllata",
+        minReadiness: 85,
+        prepRefreshesNeeded: 3,
+        ratioSuggested: "1:2",
+        flourStrength: "W 330+",
+        notes: "I grassi (burro/uova) rallentano la fermentazione: serve un lievito dolcissimo e al picco."
+      },
+      "panettone": {
+        name: "Grandi Lievitati (Panettone/Colomba)",
+        icon: "👑",
+        stage: "Livello Maestro: Potenza pura e pH 4.1",
+        minReadiness: 95,
+        prepRefreshesNeeded: 3,
+        ratioSuggested: "1:1",
+        flourStrength: "W 380-400 (Manitoba pura)",
+        notes: "3 rinfreschi di 3.5 ore ciascuno a 28°C nella stessa giornata prima del primo impasto serale."
+      }
+    };
+
+    // ==========================================
     // STATO & PERSISTENZA LOCAL STORAGE
     // ==========================================
-    const STORAGE_KEY = "lievitotchi_candy_state_v1";
+    const STORAGE_KEY = "lievitotchi_quest_state_v2";
 
-    const DEFAULT_DATA = {
-      quizCompleted: false,
-      yeastType: "licoli",      // 'licoli' o 'solido'
-      goal: "weekend",          // 'zen', 'weekend', 'pro'
+    const DEFAULT_STATE = {
+      yeastType: "licoli",          // 'licoli' o 'solido'
+      activeQuest: "pizza",
       inFridge: true,
-      lastFedTimestamp: Date.now() - (40 * 3600 * 1000), // es. 40 ore fa
+      lastFedTimestamp: Date.now() - (42 * 3600 * 1000), // es. 42 ore fa
       soundEnabled: true,
-      baseWeight: 50
+      notifEnabled: false,
+      streakCount: 3,
+      history: [
+        { time: new Date(Date.now() - 42 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), hoursInterval: 48, status: "Regolare" },
+        { time: new Date(Date.now() - 90 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), hoursInterval: 52, status: "Regolare" },
+        { time: new Date(Date.now() - 142 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), hoursInterval: 46, status: "Regolare" }
+      ]
     };
 
     let appState = loadState();
@@ -954,9 +1104,9 @@
     function loadState() {
       try {
         const item = localStorage.getItem(STORAGE_KEY);
-        return item ? Object.assign({}, DEFAULT_DATA, JSON.parse(item)) : Object.assign({}, DEFAULT_DATA);
+        return item ? Object.assign({}, DEFAULT_STATE, JSON.parse(item)) : Object.assign({}, DEFAULT_STATE);
       } catch(e) {
-        return Object.assign({}, DEFAULT_DATA);
+        return Object.assign({}, DEFAULT_STATE);
       }
     }
 
@@ -967,7 +1117,75 @@
     }
 
     // ==========================================
-    // SINTETIZZATORE AUDIO RETRO 8-BIT
+    // SISTEMA NOTIFICHE PUSH BROWSER
+    // ==========================================
+    function checkNotificationNeed(kin) {
+      if (!appState.notifEnabled || !("Notification" in window)) return;
+      if (Notification.permission !== "granted") return;
+
+      // Se il lievito raggiunge il picco massimo fuori frigo
+      if (!appState.inFridge && parseFloat(kin.volume) >= 2.0 && !sessionStorage.getItem("notified_peak")) {
+        new Notification("🍞 Lievitotchi al Picco!", {
+          body: "Il tuo lievito è al massimo volume e pieno di zuccheri: è il momento perfetto per impastare!",
+          icon: "favicon.ico"
+        });
+        sessionStorage.setItem("notified_peak", "true");
+      }
+
+      // Se è in frigo da oltre 6 giorni (fame critica)
+      const daysInFridge = (Date.now() - appState.lastFedTimestamp) / (24 * 3600000);
+      if (appState.inFridge && daysInFridge >= 6 && !sessionStorage.getItem("notified_starve")) {
+        new Notification("❄️ Lievitotchi ha fame!", {
+          body: "Sono passati quasi 7 giorni in frigorifero. Fai un rinfresco per mantenere viva la colonia!",
+          icon: "favicon.ico"
+        });
+        sessionStorage.setItem("notified_starve", "true");
+      }
+    }
+
+    function toggleNotifications() {
+      if (!("Notification" in window)) {
+        alert("Il tuo browser non supporta le notifiche native.");
+        return;
+      }
+
+      if (Notification.permission === "granted") {
+        appState.notifEnabled = !appState.notifEnabled;
+        saveState();
+        updateNotifBtn();
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            appState.notifEnabled = true;
+            saveState();
+            updateNotifBtn();
+            new Notification("🍞 Lievitotchi Notifiche Attivate!", {
+              body: "Ti avviseremo quando il lievito raggiunge il picco o ha bisogno del rinfresco settimanale."
+            });
+          }
+        });
+      } else {
+        alert("Hai bloccato le notifiche nelle impostazioni del browser. Sbloccale dall'icona del lucchetto a sinistra dell'URL per attivarle!");
+      }
+    }
+
+    function updateNotifBtn() {
+      const btn = document.getElementById("btnNotifToggle");
+      const icon = document.getElementById("notifIcon");
+      const text = document.getElementById("notifText");
+      if (appState.notifEnabled && Notification.permission === "granted") {
+        btn.classList.add("active");
+        icon.innerText = "🔔";
+        text.innerText = "Notifiche ON";
+      } else {
+        btn.classList.remove("active");
+        icon.innerText = "🔕";
+        text.innerText = "Notifiche";
+      }
+    }
+
+    // ==========================================
+    // AUDIO RETRO CHIPTUNE
     // ==========================================
     let audioCtx = null;
     function playRetroBeep(type) {
@@ -983,37 +1201,36 @@
         const t = audioCtx.currentTime;
 
         if (type === 'feed') {
-          // Melodia felice arpeggiata
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(440, t);
           osc.frequency.setValueAtTime(554.37, t + 0.08);
           osc.frequency.setValueAtTime(659.25, t + 0.16);
           osc.frequency.setValueAtTime(880, t + 0.24);
-          gain.gain.setValueAtTime(0.22, t);
+          gain.gain.setValueAtTime(0.2, t);
           gain.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
           osc.start(t);
           osc.stop(t + 0.35);
         } else if (type === 'click') {
           osc.type = 'square';
-          osc.frequency.setValueAtTime(480, t);
+          osc.frequency.setValueAtTime(460, t);
           gain.gain.setValueAtTime(0.1, t);
           gain.gain.exponentialRampToValueAtTime(0.01, t + 0.08);
           osc.start(t);
           osc.stop(t + 0.08);
         } else if (type === 'fridge') {
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(600, t);
-          osc.frequency.linearRampToValueAtTime(280, t + 0.22);
+          osc.frequency.setValueAtTime(620, t);
+          osc.frequency.linearRampToValueAtTime(260, t + 0.24);
           gain.gain.setValueAtTime(0.18, t);
-          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.26);
           osc.start(t);
-          osc.stop(t + 0.25);
+          osc.stop(t + 0.26);
         }
       } catch(e) {}
     }
 
     // ==========================================
-    // CINETICA BIOLOGICA (FERMENTAZIONE REALE)
+    // CINETICA BIOLOGICA & CALCOLO REGOLARITÀ
     // ==========================================
     function calculateKinetics() {
       const hours = (Date.now() - appState.lastFedTimestamp) / 3600000;
@@ -1023,7 +1240,7 @@
       const hungerHoursMax = appState.inFridge ? 192 : 12;
       const hunger = Math.min(100, Math.floor((hours * rate / (appState.inFridge ? 192 * 0.12 : 12)) * 100));
 
-      // Volume & Picco
+      // Volume & Curva di crescita
       let volume = 1.0;
       const peakHours = appState.inFridge ? 36 : 4.5;
       if (hours < peakHours) {
@@ -1036,40 +1253,59 @@
 
       // Acidità
       let acidity = "OTTIMA";
-      if (hunger > 80) acidity = "ECCESSIVA";
-      else if (hunger > 50) acidity = "VIVACE";
+      let needCorrection = false;
+      let correctionMsg = "";
 
-      // Vigore / Vitalità
-      let vigor = Math.max(25, 96 - (hunger > 75 ? (hunger - 75) * 2.8 : 0));
+      if (hunger > 80 || hours > 160) {
+        acidity = "ECCESSIVA";
+        needCorrection = true;
+        correctionMsg = "⚠️ <strong>Correzione necessaria:</strong> Il lievito è a digiuno da oltre 6 giorni. I batteri acetici hanno abbassato eccessivamente il pH. Per riequilibrare la colonia, effettua un rinfresco di scarico con rapporto 1:3 o 1:4 usando acqua tiepida a 26°C.";
+      } else if (hunger > 50) {
+        acidity = "VIVACE";
+      }
+
+      // Calcolo Indice di Prontezza (Readiness) per il percorso scelto
+      const currentQuest = RECIPE_QUESTS[appState.activeQuest] || RECIPE_QUESTS["pizza"];
+      let readiness = 60;
+      // Bonus streak rinfreschi regolari
+      readiness += Math.min(25, appState.streakCount * 5);
+      // Malus se troppa fame o acidità
+      if (hunger > 75) readiness -= 30;
+      if (hunger < 40 && parseFloat(volume) >= 1.8) readiness += 15;
+      readiness = Math.max(15, Math.min(100, readiness));
 
       return {
         hoursElapsed: hours.toFixed(1),
         hunger,
         volume: volume.toFixed(1),
         acidity,
-        vigor: Math.round(vigor)
+        vigor: Math.max(20, Math.min(98, Math.round(96 - (hunger > 75 ? (hunger - 75) * 2.8 : 0)))),
+        readiness,
+        needCorrection,
+        correctionMsg,
+        currentQuest
       };
     }
 
     // ==========================================
-    // CANVAS PIXEL ART: IL LIEVITO KAWAII
+    // CANVAS PIXEL ART: IL LIEVITO ANIMATO
     // ==========================================
     const canvas = document.getElementById("petCanvas");
     const ctx = canvas.getContext("2d");
     let frameCount = 0;
 
-    function drawPixelOrganism() {
+    function drawPixelPet() {
       frameCount++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const kin = calculateKinetics();
 
       const cx = canvas.width / 2;
       const jarW = 86;
-      const jarH = 100;
+      const jarH = 96;
       const jarTop = 15;
       const jarBottom = jarTop + jarH;
 
-      // Vasetto di vetro pixel-cute
+      // Vasetto di vetro
       ctx.strokeStyle = "#1C331B";
       ctx.lineWidth = 2.5;
       ctx.fillStyle = "rgba(180, 215, 175, 0.45)";
@@ -1083,7 +1319,7 @@
       ctx.fillRect(cx - (jarW - 14)/2, jarTop, jarW - 14, 10);
       ctx.strokeRect(cx - (jarW - 14)/2, jarTop, jarW - 14, 10);
 
-      // Tacca dell'elastico rosso di partenza
+      // Tacca elastico rosso di partenza
       const bandY = jarBottom - 26;
       ctx.strokeStyle = "#D81B60";
       ctx.lineWidth = 2;
@@ -1094,9 +1330,9 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Corpo del lievito che lievita
-      const yeastH = Math.min(68, 26 * parseFloat(kin.volume));
-      const breathe = Math.sin(frameCount * 0.08) * (appState.inFridge ? 0.7 : 2.2);
+      // Corpo del lievito
+      const yeastH = Math.min(66, 25 * parseFloat(kin.volume));
+      const breathe = Math.sin(frameCount * 0.08) * (appState.inFridge ? 0.6 : 2.0);
       const yeastTop = jarBottom - yeastH - breathe;
 
       ctx.fillStyle = appState.yeastType === 'licoli' ? "#FFF2CC" : "#F8E5BA";
@@ -1104,7 +1340,7 @@
       ctx.roundRect(cx - jarW/2 + 3, yeastTop, jarW - 6, jarBottom - yeastTop - 2, [6, 6, 6, 6]);
       ctx.fill();
 
-      // Bollicine di fermentazione
+      // Bollicine
       ctx.fillStyle = "#D6C492";
       for (let i = 0; i < (kin.vigor > 70 ? 7 : 2); i++) {
         const bx = cx - 26 + ((i * 18 + frameCount) % 52);
@@ -1120,22 +1356,18 @@
       ctx.fillStyle = "#1C331B";
 
       if (appState.inFridge) {
-        // Occhi chiusi addormentati
         ctx.fillRect(fX - 12, fY, 6, 2);
         ctx.fillRect(fX + 6, fY, 6, 2);
         ctx.fillRect(fX - 2, fY + 4, 4, 2);
 
-        // Zzz di sonno carine
         ctx.font = "7px 'Press Start 2P'";
         const zOff = (frameCount % 30) / 3;
         ctx.fillText("z", fX + 16, fY - 6 - zOff);
       } else if (kin.hunger > 75) {
-        // Faccina affamata
         ctx.fillRect(fX - 10, fY - 1, 5, 4);
         ctx.fillRect(fX + 5, fY - 1, 5, 4);
         ctx.fillRect(fX - 3, fY + 6, 6, 2);
       } else {
-        // Faccina vispa & felice
         const blink = (frameCount % 120 < 6);
         if (blink) {
           ctx.fillRect(fX - 10, fY, 5, 2);
@@ -1147,7 +1379,6 @@
           ctx.fillRect(fX - 9, fY - 2, 2, 2);
           ctx.fillRect(fX + 6, fY - 2, 2, 2);
         }
-        // Sorriso e guance rosa
         ctx.fillStyle = "#FF80AB";
         ctx.fillRect(fX - 15, fY + 3, 3, 2);
         ctx.fillRect(fX + 12, fY + 3, 3, 2);
@@ -1156,20 +1387,21 @@
         ctx.fillRect(fX - 3, fY + 5, 6, 2);
       }
 
-      requestAnimationFrame(drawPixelOrganism);
+      requestAnimationFrame(drawPixelPet);
     }
 
     // ==========================================
-    // AGGIORNAMENTO COMPONENTI UI
+    // AGGIORNAMENTO DASHBOARD & GUIDA CUOCO
     // ==========================================
-    function updateDashboard() {
+    function updateUI() {
       const kin = calculateKinetics();
 
-      // Top badge LCD
+      // Top info LCD
       document.getElementById("lcdYeastPill").innerText = appState.yeastType === 'licoli' ? "LICOLI 100%" : "SOLIDO 50%";
       document.getElementById("lcdTempPill").innerText = appState.inFridge ? "❄️ IN FRIGO" : "🌡️ STANZA";
+      document.getElementById("lcdStreakBadge").innerText = `🔥 STREAK: x${appState.streakCount}`;
 
-      // Statistiche numeriche e barre
+      // Statistiche barre LCD
       document.getElementById("valHunger").innerText = kin.hunger + "%";
       document.getElementById("barHunger").style.width = kin.hunger + "%";
 
@@ -1182,49 +1414,42 @@
       document.getElementById("valVolume").innerText = "x" + kin.volume;
       document.getElementById("barVolume").style.width = Math.min(100, (parseFloat(kin.volume) - 1.0) / 1.3 * 100) + "%";
 
-      // Fumetto Tamagotchi
+      // Baloon
       const speech = document.getElementById("lcdSpeech");
       if (appState.inFridge) {
         if (kin.hunger > 75) {
-          speech.innerText = "❄️ *Sbadiglio*... Sono in frigo da giorni, che ne dici di un rinfresco prima del weekend?";
+          speech.innerText = "❄️ *Sbadiglio congelato*... Sono in frigo da oltre 5 giorni, rinfrescami per non acidificare!";
         } else {
-          speech.innerText = "❄️ Zzz... dormo al fresco (+4°C). Il freddo protegge le mie scorte!";
+          speech.innerText = "❄️ Zzz... dormo tranquillo a +4°C. Mantengo le energie per il prossimo impasto!";
         }
       } else {
         if (parseFloat(kin.volume) >= 2.0) {
-          speech.innerText = "🚀 SONO AL PICCO MASSIMO! Cupola gonfia: impasta adesso!";
+          speech.innerText = `🚀 SONO AL PICCO! Perfetto per il tuo obiettivo: ${kin.currentQuest.name}!`;
         } else if (kin.hunger > 75) {
-          speech.innerText = "🚨 Aiuto, gli zuccheri sono finiti! Ho troppa fame!";
+          speech.innerText = "🚨 Aiuto, zuccheri finiti! Ho troppa fame!";
         } else {
-          speech.innerText = "🥖 Sto fermentando al calduccio! Cresco a vista d'occhio.";
+          speech.innerText = "🥖 Fermento a temperatura ambiente. La maglia glutinica si gonfia!";
         }
       }
 
-      // Banner Obiettivo
-      updateGoalPill();
+      // Card Quest
+      document.getElementById("questIcon").innerText = kin.currentQuest.icon;
+      document.getElementById("questTargetName").innerText = kin.currentQuest.name;
+      document.getElementById("questStageLabel").innerText = kin.currentQuest.stage;
 
-      // Guida Mastro Fornaio
+      // Barra di prontezza e regolarità
+      document.getElementById("readinessFill").style.width = kin.readiness + "%";
+      document.getElementById("readinessScore").innerText = `${kin.readiness}% • ${kin.readiness >= kin.currentQuest.minReadiness ? "PRONTO PER IMPASTARE!" : "IN FASE DI RINFORZO"}`;
+      document.getElementById("readinessSubText").innerHTML = `🔥 Striscia di regolarità: <strong>${appState.streakCount} rinfreschi costanti</strong>. Forza richiesta per questo obiettivo: ${kin.currentQuest.minReadiness}%.`;
+
+      // Card Guida
       updateChefGuide(kin);
-    }
 
-    function updateGoalPill() {
-      const icon = document.getElementById("activeGoalIcon");
-      const name = document.getElementById("activeGoalName");
-      const desc = document.getElementById("activeGoalDesc");
+      // Storico rinfreschi
+      renderHistory();
 
-      if (appState.goal === 'zen') {
-        icon.innerText = "🌱";
-        name.innerText = "Minimo Impegno (Zen)";
-        desc.innerText = "Panifico ogni 10-15 gg • Dorme sereno in frigo";
-      } else if (appState.goal === 'weekend') {
-        icon.innerText = "🍕";
-        name.innerText = "Weekend Chef";
-        desc.innerText = "Pizza o pane al sabato • Dorme in frigo in settimana";
-      } else {
-        icon.innerText = "🥖";
-        name.innerText = "Panettiere Quotidiano (Pro)";
-        desc.innerText = "Infornate frequenti (2-3 a sett.) • Sempre al massimo";
-      }
+      // Controllo Notifiche Browser
+      checkNotificationNeed(kin);
     }
 
     function updateChefGuide(kin) {
@@ -1232,78 +1457,82 @@
       const timing = document.getElementById("guideTiming");
       const headline = document.getElementById("guideHeadline");
       const explanation = document.getElementById("guideExplanation");
+      const correctionBox = document.getElementById("correctionBox");
+      const correctionText = document.getElementById("correctionText");
 
+      // Visualizza / Nascondi box di correzione
+      if (kin.needCorrection) {
+        correctionBox.style.display = "flex";
+        correctionText.innerHTML = kin.correctionMsg;
+      } else {
+        correctionBox.style.display = "none";
+      }
+
+      // Dosi calcolate al grammo
       const isLicoli = appState.yeastType === 'licoli';
-      const yeastG = appState.baseWeight;
-      const flourG = yeastG * 2; // rapporto 1:2
+      const yeastG = 50;
+      const ratioMultiplier = kin.needCorrection ? 3 : 2; // se deve correggere acido usa 1:3
+      const flourG = yeastG * ratioMultiplier;
       const waterG = isLicoli ? flourG : Math.round(flourG * 0.5);
 
       document.getElementById("doseMadre").innerText = yeastG + "g";
       document.getElementById("doseFarina").innerText = flourG + "g";
       document.getElementById("doseAcqua").innerText = waterG + "g";
       document.getElementById("doseIdraHint").innerText = isLicoli ? "100% idratazione" : "50% idratazione";
+      document.getElementById("doseFarinaHint").innerText = kin.currentQuest.flourStrength;
 
       if (appState.inFridge) {
         if (kin.hunger > 75) {
           pill.className = "status-pill status-alert";
-          pill.innerText = "RINFRESCO CONSIGLIATO";
-          timing.innerText = "QUANDO VUOI OGGI O DOMANI";
-          headline.innerText = "Rinfresco prima del weekend";
-          explanation.innerText = `È in frigo da diversi giorni. Pesa ${yeastG}g di madre, aggiungi ${flourG}g di farina e ${waterG}g di acqua. Lascialo partire 45 min a temperatura ambiente e rimettilo in frigo.`;
+          pill.innerText = "RINFRESCO DI MANTENIMENTO";
+          timing.innerText = "ENTRO OGGI O DOMANI";
+          headline.innerText = "Rinfresco salvavita pre-weekend";
+          explanation.innerText = `È in frigo da oltre 5 giorni. Esegui il rinfresco indicato, lascia partire 45 minuti a temperatura ambiente e riponi in frigo.`;
         } else {
           pill.className = "status-pill status-chill";
           pill.innerText = "A RIPOSO IN FRIGO";
-          timing.innerText = appState.goal === 'weekend' ? "PROSSIMO STEP: VENERDÌ SERA" : "PROSSIMA SETTIMANA";
+          timing.innerText = "IN ATTESA DEL GIORNO DI IMPASTO";
           headline.innerText = "Lascialo riposare al fresco";
-          explanation.innerText = `Il lievito è sazio e al sicuro in frigo a +4°C. Nessun impegno richiesto per oggi!`;
+          explanation.innerText = `Il lievito è protetto a +4°C. Per il tuo obiettivo (${kin.currentQuest.name}), estrailo e preparalo secondo i passaggi previsti!`;
         }
       } else {
         if (parseFloat(kin.volume) >= 2.0) {
           pill.className = "status-pill status-bake";
-          pill.innerText = "🔥 MOMENTO PERFETTO!";
-          timing.innerText = "ORA!";
-          headline.innerText = "È ora di impastare!";
-          explanation.innerText = `Volume più che raddoppiato e profumo dolce/aromatico. Preleva la quota per la tua ricetta e rinfresca la madre rimanente!`;
+          pill.innerText = "🔥 PICCO PERFETTO!";
+          timing.innerText = "IMPASTA ORA!";
+          headline.innerText = `È il momento di fare: ${kin.currentQuest.name}!`;
+          explanation.innerText = `Il lievito è raddoppiato/triplicato, gli zuccheri sono al massimo e gli alveoli fitti. Preleva la dose per il tuo impasto e rinfresca la madre avanzata!`;
         } else {
           pill.className = "status-pill status-alert";
           pill.innerText = "IN LIEVITAZIONE";
           timing.innerText = "TRA CIRCA 2-3 ORE";
-          headline.innerText = "Attendi il raddoppio";
-          explanation.innerText = `Sta lievitando a temperatura ambiente. Tienilo al riparo da correnti d'aria (ideale 24-26°C).`;
+          headline.innerText = "Attendi il massimo sviluppo";
+          explanation.innerText = `Sta lievitando verso il picco. Tienilo al riparo da correnti d'aria a 24-26°C.`;
         }
       }
-
-      // Aggiorna anche il cronoprogramma accordion
-      renderScheduleDetails();
     }
 
-    function renderScheduleDetails() {
-      const container = document.getElementById("accScheduleBody");
-      if (appState.goal === 'zen') {
-        container.innerHTML = `
-          <p><strong>Domenica Sera:</strong> Rinfresco sereno 1:2 o 1:3 con farina forte. Lascialo 45 min a temperatura ambiente.</p>
-          <p style="margin-top:6px;"><strong>Lunedì - Venerdì:</strong> Dorme in frigo a +4°C senza pensieri.</p>
-          <p style="margin-top:6px;"><strong>Giorno dell'impasto:</strong> Tira fuori 4 ore prima, fai un rinfresco rapido 1:1 e impasta al raddoppio.</p>
-        `;
-      } else if (appState.goal === 'weekend') {
-        container.innerHTML = `
-          <p><strong>Venerdì h 19:30:</strong> Tira fuori dal frigo, fai un rinfresco preparatorio (1:2) e lascialo a temperatura ambiente tutta la notte.</p>
-          <p style="margin-top:6px;"><strong>Sabato h 08:30:</strong> Rinfresco di forza rapido (1:1) in luogo tiepido (~26°C).</p>
-          <p style="margin-top:6px;"><strong>Sabato h 12:30:</strong> 🍕 PICCO MASSIMO! Impasta pizza o pane.</p>
-          <p style="margin-top:6px;"><strong>Sabato Pomeriggio:</strong> Rinfresca il lievito avanzato e rimettilo in frigo per la settimana.</p>
-        `;
-      } else {
-        container.innerHTML = `
-          <p><strong>Ogni 24-48 ore:</strong> Rinfresco costante (1:1 o 1:2) tenuto in ambiente fresco (18-20°C).</p>
-          <p style="margin-top:6px;"><strong>3 ore prima dell'impasto:</strong> Usa direttamente quando la cupola è al massimo rigonfiamento.</p>
-        `;
+    function renderHistory() {
+      const container = document.getElementById("historyList");
+      document.getElementById("streakLabel").innerText = `🔥 Streak: ${appState.streakCount}`;
+
+      if (!appState.history || appState.history.length === 0) {
+        container.innerHTML = `<p style="color:#A094A8;">Nessun rinfresco registrato di recente.</p>`;
+        return;
       }
+
+      container.innerHTML = appState.history.slice(0, 4).map(h => `
+        <div class="history-entry">
+          <span>📅 ${h.time}</span>
+          <span style="font-weight:700; color:var(--text-pink);">${h.status} (${h.hoursInterval}h fa)</span>
+        </div>
+      `).join("");
     }
 
     // ==========================================
-    // INTERAZIONI EVENTI & TIME MACHINE
+    // INTERAZIONI EVENTI & AZIONI
     // ==========================================
-    function createSparkle(txt) {
+    function triggerPop(txt) {
       const stage = document.querySelector(".pet-stage");
       const sp = document.createElement("div");
       sp.className = "sparkle-pop";
@@ -1316,24 +1545,46 @@
 
     function executeFeed() {
       playRetroBeep('feed');
-      createSparkle("✨");
-      createSparkle("🥣");
-      createSparkle("❤️");
+      triggerPop("✨");
+      triggerPop("🥣");
+      triggerPop("❤️");
+
+      const hoursPassed = (Date.now() - appState.lastFedTimestamp) / 3600000;
+      let statusNote = "Regolare";
+
+      // Calcola se il rinfresco è stato puntuale per lo streak
+      if (hoursPassed > 168) { // oltre 7 giorni
+        appState.streakCount = 1; // reset streak
+        statusNote = "Ritardo (Correzione)";
+      } else {
+        appState.streakCount += 1;
+      }
+
+      appState.history.unshift({
+        time: new Date().toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}),
+        hoursInterval: Math.round(hoursPassed),
+        status: statusNote
+      });
+      if (appState.history.length > 10) appState.history.pop();
+
       appState.lastFedTimestamp = Date.now();
+      sessionStorage.removeItem("notified_peak");
+      sessionStorage.removeItem("notified_starve");
+
       saveState();
-      updateDashboard();
+      updateUI();
     }
 
     document.getElementById("btnExecuteFeed").addEventListener("click", executeFeed);
     document.getElementById("btnDeviceFeed").addEventListener("click", executeFeed);
 
-    // Toggle Frigo / Temperatura
+    // Toggle Frigo
     document.getElementById("btnDeviceTemp").addEventListener("click", () => {
       playRetroBeep('fridge');
       appState.inFridge = !appState.inFridge;
-      createSparkle(appState.inFridge ? "❄️" : "🌡️");
+      triggerPop(appState.inFridge ? "❄️" : "🌡️");
       saveState();
-      updateDashboard();
+      updateUI();
     });
 
     // Toggle Audio
@@ -1343,65 +1594,79 @@
       saveState();
     });
 
-    // Time Machine Dev buttons
-    function advanceHours(h) {
+    // Toggle Notifiche
+    document.getElementById("btnNotifToggle").addEventListener("click", toggleNotifications);
+
+    // Dev Time Machine
+    function fastForwardHours(h) {
       playRetroBeep('click');
       appState.lastFedTimestamp -= (h * 3600 * 1000);
-      createSparkle(`⏩ +${h}h`);
+      triggerPop(`⏩ +${h}h`);
       saveState();
-      updateDashboard();
+      updateUI();
     }
 
-    document.getElementById("btnFast6h").addEventListener("click", () => advanceHours(6));
-    document.getElementById("btnFast24h").addEventListener("click", () => advanceHours(24));
-    document.getElementById("btnFast72h").addEventListener("click", () => advanceHours(72));
+    document.getElementById("btnFast6h").addEventListener("click", () => fastForwardHours(6));
+    document.getElementById("btnFast24h").addEventListener("click", () => fastForwardHours(24));
+    document.getElementById("btnFast72h").addEventListener("click", () => fastForwardHours(72));
 
-    // Accordion handler
+    // Accordion toggle
     function toggleAccordion(id) {
       document.getElementById(id).classList.toggle("active");
     }
 
     // ==========================================
-    // QUIZ DI CONFIGURAZIONE & CAMBIO OBIETTIVO
+    // MODALE PERCORSO RICETTE & CAMBIO IN CORSA
     // ==========================================
-    const quizModal = document.getElementById("quizModal");
-    const step1 = document.getElementById("quizStep1");
-    const step2 = document.getElementById("quizStep2");
+    const questModal = document.getElementById("questModal");
+    const stepTargetQuest = document.getElementById("stepTargetQuest");
+    const stepYeastType = document.getElementById("stepYeastType");
 
-    document.getElementById("btnTriggerQuiz").addEventListener("click", openQuizModal);
+    document.getElementById("btnOpenQuestModal").addEventListener("click", () => {
+      openQuestSelector();
+    });
 
-    function openQuizModal() {
-      step1.style.display = "block";
-      step2.style.display = "none";
-      quizModal.classList.add("open");
+    function openQuestSelector() {
+      stepYeastType.style.display = "none";
+      stepTargetQuest.style.display = "block";
+      highlightActiveQuestCard();
+      questModal.classList.add("open");
     }
 
-    function handleSelectYeast(type) {
+    function highlightActiveQuestCard() {
+      document.querySelectorAll(".path-card-btn").forEach(card => {
+        if (card.getAttribute("data-quest") === appState.activeQuest) {
+          card.classList.add("active-path");
+        } else {
+          card.classList.remove("active-path");
+        }
+      });
+    }
+
+    function selectQuest(questKey) {
+      playRetroBeep('feed');
+      appState.activeQuest = questKey;
+      questModal.classList.remove("open");
+      saveState();
+      updateUI();
+    }
+
+    function selectYeastType(type) {
       playRetroBeep('click');
       appState.yeastType = type;
-      step1.style.display = "none";
-      step2.style.display = "block";
-    }
-
-    function handleSelectGoal(goal) {
-      playRetroBeep('feed');
-      appState.goal = goal;
-      appState.quizCompleted = true;
-      quizModal.classList.remove("open");
+      stepYeastType.style.display = "none";
+      stepTargetQuest.style.display = "block";
       saveState();
-      updateDashboard();
+      updateUI();
     }
 
     // ==========================================
     // AVVIO
     // ==========================================
-    updateDashboard();
-    drawPixelOrganism();
-
-    // Se primo avvio, mostra quiz
-    if (!appState.quizCompleted) {
-      openQuizModal();
-    }
+    updateNotifBtn();
+    updateUI();
+    drawPixelPet();
+    setInterval(updateUI, 60000); // refresh biologico continuo ogni minuto
   </script>
 </body>
 </html>
