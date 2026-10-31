@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lievitotchi 🍞 - Il tuo Assistente Lievito Madre</title>
+  <title>Lievitotchi 🍞 - Bio-Colonia & Assistente Panificazione</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #F8FAFC;
@@ -25,15 +25,18 @@
 
       --emerald: #059669;
       --emerald-light: #D1FAE5;
+      --cyan: #0284C7;
+      --cyan-light: #E0F2FE;
       --amber: #D97706;
       --rose: #E11D48;
       --rose-light: #FFE4E6;
 
       --pixel-font: 'Press Start 2P', monospace;
       --sans-font: 'Plus Jakarta Sans', sans-serif;
+      --mono-font: 'JetBrains Mono', monospace;
 
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 6px 20px -3px rgba(15, 23, 42, 0.07);
     }
 
     * {
@@ -57,7 +60,7 @@
 
     .app-shell {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -68,7 +71,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
     }
 
     .brand {
@@ -78,11 +81,11 @@
     }
 
     .brand-icon {
-      font-size: 1.4rem;
+      font-size: 1.45rem;
     }
 
     .brand-name {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: var(--text-main);
@@ -124,7 +127,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 3px 5px;
+      padding: 3px 6px;
       display: flex;
       align-items: center;
       gap: 4px;
@@ -142,7 +145,7 @@
       color: var(--text-muted);
       font-size: 0.68rem;
       font-weight: 700;
-      padding: 2px 5px;
+      padding: 2px 6px;
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.15s;
@@ -154,11 +157,11 @@
       border-color: #FDE68A;
     }
 
-    /* CARD 1: HERO DEL LIEVITO (PIXEL ART IN CORNICE MODERNA E PULITA) */
+    /* CARD 1: HERO DEL LIEVITO (STARDEW VALLEY HI-RES PIXEL ART & BIO-SCANNER) */
     .hero-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 20px 18px;
       box-shadow: var(--shadow-md);
       display: flex;
@@ -199,39 +202,92 @@
       border-color: #FDE68A;
     }
 
-    /* AREA STAGE DEL PIXEL PET */
+    /* AREA STAGE DEL PIXEL PET INGRANDITA E DETTAGLIATA */
     .pixel-display {
-      background: #F1F7EE; /* sfondo verde menta tenue e riposante */
-      border: 1px solid #D5E5CF;
-      border-radius: 14px;
-      padding: 14px;
+      background: #EFF6E9; /* verde menta/prato Stardew soft */
+      border: 1.5px solid #D1E5C7;
+      border-radius: 16px;
+      padding: 16px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
     }
 
     canvas#petCanvas {
       image-rendering: pixelated;
       image-rendering: crisp-edges;
+      max-width: 100%;
     }
 
+    /* SPEECH BUBBLE MODERNA & PIXEL COMBINATA */
     .speech-box {
       margin-top: 10px;
       background: #FFFFFF;
-      border: 1px solid #D5E5CF;
-      border-radius: 8px;
+      border: 1.5px solid #D1E5C7;
+      border-radius: 10px;
       padding: 8px 12px;
       font-family: var(--pixel-font);
       font-size: 0.52rem;
-      line-height: 1.4;
-      color: #1C331B;
+      line-height: 1.45;
+      color: #1A3319;
       text-align: center;
       width: 100%;
       box-shadow: var(--shadow-sm);
     }
 
-    /* 4 STATISTICHE VITALI (BARRE CHIARE) */
+    /* BIO-METRICHE SCIENTIFICHE (COLONIE & CHIMICA) */
+    .bio-micro-panel {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .bio-panel-title {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .bio-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+    }
+
+    .bio-stat-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .bio-stat-label {
+      font-size: 0.62rem;
+      color: var(--text-light);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: var(--sans-font);
+    }
+
+    .bio-stat-val {
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* 4 STATISTICHE VITALI */
     .stats-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -369,7 +425,6 @@
       background: var(--surface-subtle);
     }
 
-    /* STABILITÀ & REGOLARITÀ BAR */
     .readiness-box {
       background: var(--surface-subtle);
       border-radius: 10px;
@@ -477,7 +532,6 @@
       line-height: 1.4;
     }
 
-    /* DOSI IN TABELLA PULITA */
     .doses-table {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -531,7 +585,7 @@
       background: var(--primary-dark);
     }
 
-    /* TENDINE ACCORDION PER APPROFONDIMENTI */
+    /* TENDINE ACCORDION */
     .accordion-block {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -716,7 +770,7 @@
       </div>
     </header>
 
-    <!-- CARD 1: IL LIEVITO IN PIXEL ART (CORNICE MODERNA SENZA GUSCIO TAMAGOTCHI) -->
+    <!-- CARD 1: IL LIEVITO IN HI-RES PIXEL ART (STARDEW STYLE & BIO-SCANNER) -->
     <section class="hero-card">
       <div class="hero-header">
         <div class="yeast-badges">
@@ -727,9 +781,32 @@
       </div>
 
       <div class="pixel-display">
-        <canvas id="petCanvas" width="200" height="135"></canvas>
+        <!-- Canvas ingrandito a 280x180 px per ricchezza di dettagli pixel -->
+        <canvas id="petCanvas" width="280" height="180"></canvas>
         <div class="speech-box" id="speechBubble">
           "Brrr! Sto riposando a +4°C. Gli amidi dureranno tutta la settimana!"
+        </div>
+      </div>
+
+      <!-- SCANNER SCIENTIFICO MICROBIOLOGICO -->
+      <div class="bio-micro-panel">
+        <div class="bio-panel-title">
+          <span>🔬 BIO-SCANNER DELLA COLONIA</span>
+          <span id="bioTempLabel">TEMP: 4.0°C</span>
+        </div>
+        <div class="bio-stats-grid">
+          <div class="bio-stat-item">
+            <span class="bio-stat-label">Saccaromiceti</span>
+            <span class="bio-stat-val" id="bioYeastPop">~1.2 × 10⁷</span>
+          </div>
+          <div class="bio-stat-item">
+            <span class="bio-stat-label">Batteri Lattici</span>
+            <span class="bio-stat-val" id="bioLabPop">~1.5 × 10⁸</span>
+          </div>
+          <div class="bio-stat-item">
+            <span class="bio-stat-label">Rapporto Latt./Acet.</span>
+            <span class="bio-stat-val" id="bioAcidRatio">3.8 : 1 (Ottimale)</span>
+          </div>
         </div>
       </div>
 
@@ -749,7 +826,7 @@
 
         <div class="stat-block">
           <span class="stat-title">Acidità</span>
-          <span class="stat-value" id="valAcidity">OK</span>
+          <span class="stat-value" id="valAcidity">pH 4.1</span>
           <div class="stat-bar-track"><div class="stat-bar-fill" id="barAcidity" style="width: 25%;"></div></div>
         </div>
 
@@ -763,7 +840,7 @@
       <div class="controls-row">
         <button class="btn-mode-toggle" id="btnToggleFridge">
           <span id="fridgeToggleIcon">🌡️</span>
-          <span id="fridgeToggleText">Sposta a Temperatura Ambiente</span>
+          <span id="fridgeToggleText">Sposta a Temp. Ambiente</span>
         </button>
         <button class="btn-mode-toggle" id="btnToggleAudio">
           <span id="audioToggleIcon">🔊</span>
@@ -949,7 +1026,7 @@
         flourStrength: "W 320+"
       },
       "brioche": {
-        name: "Brioche & Impasti Dolci Arricchiti",
+        name: "Brioche & Dolci Arricchiti",
         icon: "🥐",
         stage: "Livello 4: Acidità controllata",
         minReadiness: 85,
@@ -967,7 +1044,7 @@
     // ==========================================
     // STATO & PERSISTENZA LOCAL STORAGE
     // ==========================================
-    const STORAGE_KEY = "lievitotchi_clean_ui_v1";
+    const STORAGE_KEY = "lievitotchi_clean_ui_v2";
 
     const DEFAULT_STATE = {
       yeastType: "licoli",
@@ -1106,7 +1183,7 @@
     }
 
     // ==========================================
-    // CINETICA BIOLOGICA
+    // CINETICA BIOLOGICA & MICROBIOLOGICA
     // ==========================================
     function calculateKinetics() {
       const hours = (Date.now() - appState.lastFedTimestamp) / 3600000;
@@ -1124,17 +1201,25 @@
         volume = Math.max(1.05, 1.9 - (0.045 * (hours - peakHours * 2) * rate));
       }
 
-      let acidity = "OTTIMA";
+      // pH simulato
+      let pH = 4.2;
+      let acidRatio = "3.8 : 1 (Ottimale)";
       let needCorrection = false;
       let correctionMsg = "";
 
       if (hunger > 80 || hours > 160) {
-        acidity = "ECCESSIVA";
+        pH = 3.65;
+        acidRatio = "1.8 : 1 (Eccesso Acetico!)";
         needCorrection = true;
-        correctionMsg = "Il lievito è a digiuno da oltre 6 giorni. I batteri acetici hanno abbassato eccessivamente il pH: effettua un rinfresco con rapporto 1:3 con acqua a 26°C.";
+        correctionMsg = "Il lievito è a digiuno da oltre 6 giorni. I batteri acetici hanno abbassato eccessivamente il pH (3.6): effettua un rinfresco con rapporto 1:3 con acqua a 26°C.";
       } else if (hunger > 50) {
-        acidity = "VIVACE";
+        pH = 3.9;
+        acidRatio = "2.9 : 1 (Vivace)";
       }
+
+      // Popolazione microbica stimata (CFU/g)
+      const yeastPopulation = appState.inFridge ? "0.8 × 10⁷" : (hunger < 40 ? "2.4 × 10⁷" : "1.1 × 10⁷");
+      const labPopulation = appState.inFridge ? "1.1 × 10⁸" : (hunger < 40 ? "3.2 × 10⁸" : "1.6 × 10⁸");
 
       const currentQuest = RECIPE_QUESTS[appState.activeQuest] || RECIPE_QUESTS["pizza"];
       let readiness = 60;
@@ -1147,7 +1232,10 @@
         hoursElapsed: hours.toFixed(1),
         hunger,
         volume: volume.toFixed(1),
-        acidity,
+        pH: pH.toFixed(2),
+        acidRatio,
+        yeastPopulation,
+        labPopulation,
         vigor: Math.max(20, Math.min(98, Math.round(96 - (hunger > 75 ? (hunger - 75) * 2.8 : 0)))),
         readiness,
         needCorrection,
@@ -1157,136 +1245,247 @@
     }
 
     // ==========================================
-    // RENDERING PIXEL ART 8-BIT
+    // STARDEW VALLEY HI-RES PIXEL ART RENDERING
     // ==========================================
     const canvas = document.getElementById("petCanvas");
     const ctx = canvas.getContext("2d");
     let tickCount = 0;
 
-    function renderPixelPet() {
+    // Array particelle di CO2 a pixel per Stardew
+    const pixelBubbles = [];
+    for (let i = 0; i < 12; i++) {
+      pixelBubbles.push({
+        x: Math.floor(Math.random() * 80) - 40,
+        y: Math.floor(Math.random() * 60),
+        size: (i % 2 === 0 ? 3 : 2),
+        speed: 0.35 + Math.random() * 0.4
+      });
+    }
+
+    // Microrganismi pixelati che nuotano nella coltura
+    const microCritters = [
+      { x: -25, y: 20, type: 'yeast', speed: 0.2, phase: 0 },
+      { x: 18, y: 35, type: 'yeast', speed: 0.25, phase: 1.5 },
+      { x: -10, y: 48, type: 'lab', speed: 0.3, phase: 2.8 },
+      { x: 30, y: 15, type: 'lab', speed: 0.22, phase: 4.1 }
+    ];
+
+    function renderStardewPixelYeast() {
       tickCount++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const kin = calculateKinetics();
 
       const cx = canvas.width / 2;
-      const jarW = 86;
-      const jarH = 100;
-      const jarTop = 15;
+      const jarW = 124;
+      const jarH = 138;
+      const jarTop = 18;
       const jarBottom = jarTop + jarH;
 
-      // 1. VASO DI VETRO PIXEL
-      ctx.fillStyle = "rgba(180, 215, 175, 0.4)";
-      ctx.fillRect(cx - jarW/2, jarTop + 10, jarW, jarH - 10);
+      // 1. OMBRA A TERRA PIXELATA
+      ctx.fillStyle = "rgba(24, 44, 23, 0.12)";
+      for (let w = jarW + 8; w >= 20; w -= 16) {
+        ctx.fillRect(cx - w/2, jarBottom + 4 + (jarW + 8 - w)/8, w, 3);
+      }
 
-      // Bordi vaso pixel-perfect
-      ctx.fillStyle = "#1C331B";
-      ctx.fillRect(cx - jarW/2, jarTop + 10, 2, jarH - 10);
-      ctx.fillRect(cx + jarW/2 - 2, jarTop + 10, 2, jarH - 10);
-      ctx.fillRect(cx - jarW/2, jarBottom - 2, jarW, 2);
+      // 2. CORPO DEL VASO IN HI-RES PIXEL ART
+      // Vetro interno sfumato a pixel
+      ctx.fillStyle = "rgba(205, 235, 200, 0.45)";
+      ctx.fillRect(cx - jarW/2, jarTop + 14, jarW, jarH - 14);
 
-      // Coperchio Weck pixel
-      ctx.fillStyle = "#6F8E68";
-      ctx.fillRect(cx - (jarW - 14)/2, jarTop, jarW - 14, 10);
-      ctx.fillStyle = "#1C331B";
-      ctx.fillRect(cx - (jarW - 14)/2, jarTop, jarW - 14, 2);
-      ctx.fillRect(cx - (jarW - 14)/2, jarTop + 9, jarW - 14, 2);
-      ctx.fillRect(cx - (jarW - 14)/2, jarTop, 2, 10);
-      ctx.fillRect(cx + (jarW - 14)/2 - 2, jarTop, 2, 10);
+      // Riflessi di luce stile Stardew (sinistra)
+      ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+      ctx.fillRect(cx - jarW/2 + 6, jarTop + 20, 3, jarH - 34);
+      ctx.fillRect(cx - jarW/2 + 11, jarTop + 24, 2, jarH - 42);
 
-      // Linea tratteggiata elastico rosso
-      const bandY = jarBottom - 26;
+      // Bordo vaso nero/verde scuro pixel-perfect
+      ctx.fillStyle = "#182C17";
+      ctx.fillRect(cx - jarW/2, jarTop + 14, 3, jarH - 14);
+      ctx.fillRect(cx + jarW/2 - 3, jarTop + 14, 3, jarH - 14);
+      ctx.fillRect(cx - jarW/2, jarBottom - 3, jarW, 3);
+
+      // Angoli arrotondati a pixel (smussi)
+      ctx.fillRect(cx - jarW/2 + 3, jarBottom - 1, 3, 1);
+      ctx.fillRect(cx + jarW/2 - 6, jarBottom - 1, 3, 1);
+
+      // Collo e Coperchio in Legno/Metallo Weck
+      // Guarnizione arancio
+      ctx.fillStyle = "#E06D53";
+      ctx.fillRect(cx - (jarW - 16)/2, jarTop + 10, jarW - 16, 4);
+
+      // Coperchio legno rustico
+      ctx.fillStyle = "#8D5B4C";
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 10);
+      ctx.fillStyle = "#B27C66"; // luce legno
+      ctx.fillRect(cx - (jarW - 10)/2 + 2, jarTop + 2, jarW - 14, 2);
+      ctx.fillStyle = "#182C17"; // bordo coperchio
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 2);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop + 9, jarW - 10, 2);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, 2, 10);
+      ctx.fillRect(cx + (jarW - 10)/2 - 2, jarTop, 2, 10);
+
+      // Tacca Elastico Rosso di partenza (livello 1x)
+      const bandY = jarBottom - 38;
       ctx.fillStyle = "#E11D48";
       for (let x = cx - jarW/2 + 4; x < cx + jarW/2 - 4; x += 6) {
         ctx.fillRect(x, bandY, 3, 2);
       }
 
-      // 2. MASSA LIEVITATA PIXEL
+      // 3. MASSA DEL LIEVITO (HI-RES PIXEL VOLUMETRICA)
       const currentVol = parseFloat(kin.volume);
-      const yeastHeight = Math.min(68, Math.floor(26 * currentVol));
-      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2));
+      const yeastHeight = Math.min(96, Math.floor(38 * currentVol));
+      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2.5));
       const topY = jarBottom - yeastHeight - pulse;
 
-      ctx.fillStyle = appState.yeastType === 'licoli' ? "#FFF2CC" : "#F8E5BA";
-      ctx.fillRect(cx - jarW/2 + 2, topY, jarW - 4, jarBottom - topY - 2);
+      // Colore base farinoso
+      const baseDough = appState.yeastType === 'licoli' ? "#FFF3D1" : "#F7E6BD";
+      const shadowDough = appState.yeastType === 'licoli' ? "#EADBB5" : "#E2CF9F";
+      const highlightDough = "#FFFBEB";
 
-      // Bordo superiore pixel
-      ctx.fillStyle = "#1C331B";
-      ctx.fillRect(cx - jarW/2 + 2, topY, jarW - 4, 2);
+      ctx.fillStyle = baseDough;
+      ctx.fillRect(cx - jarW/2 + 3, topY + 4, jarW - 6, jarBottom - topY - 7);
 
-      // Bollicine di fermentazione pixel
-      ctx.fillStyle = "#D4C294";
-      const bubbleCount = kin.vigor > 70 ? 7 : 3;
-      for (let i = 0; i < bubbleCount; i++) {
-        const bx = cx - 28 + ((i * 16 + tickCount) % 56);
-        const by = topY + 6 + ((i * 11) % Math.max(6, yeastHeight - 14));
-        ctx.fillRect(bx, by, 3, 3);
-        ctx.fillRect(bx + 1, by - 1, 1, 1);
-      }
+      // Ombra inferiore a pixel
+      ctx.fillStyle = shadowDough;
+      ctx.fillRect(cx - jarW/2 + 3, jarBottom - 10, jarW - 6, 7);
 
-      // 3. FACCINA PIXEL
+      // Luce superiore a pixel
+      ctx.fillStyle = highlightDough;
+      ctx.fillRect(cx - jarW/2 + 6, topY + 4, jarW - 12, 3);
+
+      // Bordo a cupola a gradini pixel-perfect
+      ctx.fillStyle = "#182C17";
+      ctx.fillRect(cx - jarW/2 + 3, topY + 4, 6, 2);
+      ctx.fillRect(cx - jarW/2 + 9, topY + 2, 8, 2);
+      ctx.fillRect(cx - jarW/2 + 17, topY, jarW - 34, 2);
+      ctx.fillRect(cx + jarW/2 - 17, topY + 2, 8, 2);
+      ctx.fillRect(cx + jarW/2 - 9, topY + 4, 6, 2);
+
+      // 4. BOLLICINE DI CO2 PIXELATE CHE SALGONO
+      pixelBubbles.forEach(b => {
+        b.y += b.speed;
+        const curX = cx + b.x;
+        const curY = jarBottom - 12 - Math.floor(b.y);
+
+        if (curY > topY + 6) {
+          ctx.fillStyle = "#D4C294";
+          ctx.fillRect(curX, curY, b.size, b.size);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(curX, curY, 1, 1);
+        } else {
+          b.y = 0;
+          b.x = Math.floor(Math.random() * (jarW - 36)) - (jarW - 36) / 2;
+        }
+      });
+
+      // 5. MICRO-BIOMA SCIENTIFICO SIMPATICO (Saccaromiceti & LAB a pixel)
+      microCritters.forEach(c => {
+        const floatY = Math.sin(tickCount * 0.05 + c.phase) * 3;
+        const cX = cx + c.x;
+        const cY = jarBottom - c.y + floatY;
+
+        if (cY > topY + 12 && cY < jarBottom - 10) {
+          if (c.type === 'yeast') {
+            // Piccolo saccaromicete tondo (4x4 pixel con occhietto)
+            ctx.fillStyle = "#F59E0B";
+            ctx.fillRect(cX, cY, 4, 4);
+            ctx.fillStyle = "#182C17";
+            ctx.fillRect(cX + 1, cY + 1, 1, 1);
+          } else {
+            // Batterino lattico a bastoncino (6x3 pixel)
+            ctx.fillStyle = "#10B981";
+            ctx.fillRect(cX, cY, 6, 3);
+            ctx.fillStyle = "#182C17";
+            ctx.fillRect(cX + 2, cY + 1, 1, 1);
+          }
+        }
+      });
+
+      // 6. VOLTO DEL LIEVITO (STARDEW ESPRESSIVO & KAWAII)
       const fX = cx;
-      const fY = topY + Math.floor(yeastHeight / 2) - 3;
-      ctx.fillStyle = "#1C331B";
+      const fY = topY + Math.floor(yeastHeight / 2) - 4;
+      ctx.fillStyle = "#182C17";
 
       if (appState.inFridge) {
-        // Zzz
-        ctx.fillRect(fX - 12, fY, 6, 2);
-        ctx.fillRect(fX + 6, fY, 6, 2);
-        ctx.fillRect(fX - 2, fY + 4, 4, 2);
+        // --- SONNO BEATO IN FRIGO ---
+        // Occhietti chiusi a trattino
+        ctx.fillRect(fX - 16, fY, 8, 2);
+        ctx.fillRect(fX + 8, fY, 8, 2);
+        // Guanciotte rosa pixel
+        ctx.fillStyle = "#FF80AB";
+        ctx.fillRect(fX - 22, fY + 4, 4, 3);
+        ctx.fillRect(fX + 18, fY + 4, 4, 3);
+        // Boccuccia
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 2, fY + 6, 4, 2);
 
-        ctx.font = "7px 'Press Start 2P'";
-        const zFloat = (tickCount % 36) / 3;
-        ctx.fillText("z", fX + 16, fY - 6 - zFloat);
-        ctx.fillText("Z", fX + 26, fY - 14 - zFloat);
+        // Zzz animate fluttuanti
+        ctx.font = "8px 'Press Start 2P'";
+        const zFloat = (tickCount % 40) / 3;
+        ctx.fillText("z", fX + 24, fY - 12 - zFloat);
+        ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
       } else if (kin.hunger > 75) {
-        // Fame
-        ctx.fillRect(fX - 10, fY - 1, 5, 4);
-        ctx.fillRect(fX + 5, fY - 1, 5, 4);
-        ctx.fillRect(fX - 3, fY + 6, 6, 2);
+        // --- FAME / ACIDITÀ CRITICA ---
+        // Occhi tristi
+        ctx.fillRect(fX - 14, fY - 2, 7, 6);
+        ctx.fillRect(fX + 7, fY - 2, 7, 6);
+        // Bocca all'ingiù
+        ctx.fillRect(fX - 4, fY + 10, 8, 2);
+        ctx.fillRect(fX - 6, fY + 12, 2, 2);
+        ctx.fillRect(fX + 4, fY + 12, 2, 2);
 
-        ctx.fillStyle = "#3B82F6";
-        ctx.fillRect(fX + 18, fY - 3, 3, 4);
+        // Gocciolina di sudore pixel azzurra
+        ctx.fillStyle = "#38BDF8";
+        ctx.fillRect(fX + 24, fY - 4, 4, 6);
+        ctx.fillRect(fX + 25, fY - 7, 2, 3);
 
       } else if (currentVol >= 2.0) {
-        // Picco massimo felice
-        ctx.fillRect(fX - 12, fY - 2, 6, 6);
-        ctx.fillRect(fX + 6, fY - 2, 6, 6);
+        // --- AL PICCO MASSIMO (Pronto per impastare!) ---
+        // Occhi grandi luminosi
+        ctx.fillRect(fX - 16, fY - 4, 8, 9);
+        ctx.fillRect(fX + 8, fY - 4, 8, 9);
+        // Riflessi bianchi a stella
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(fX - 11, fY - 2, 2, 2);
-        ctx.fillRect(fX + 7, fY - 2, 2, 2);
+        ctx.fillRect(fX - 15, fY - 4, 3, 3);
+        ctx.fillRect(fX - 11, fY + 2, 2, 2);
+        ctx.fillRect(fX + 9, fY - 4, 3, 3);
+        ctx.fillRect(fX + 13, fY + 2, 2, 2);
 
-        ctx.fillStyle = "#F43F5E";
-        ctx.fillRect(fX - 18, fY + 3, 4, 2);
-        ctx.fillRect(fX + 14, fY + 3, 4, 2);
+        // Guance rosate vivacissime
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 24, fY + 4, 5, 4);
+        ctx.fillRect(fX + 19, fY + 4, 5, 4);
 
-        ctx.fillStyle = "#1C331B";
-        ctx.fillRect(fX - 3, fY + 5, 6, 2);
-        ctx.fillRect(fX - 1, fY + 7, 2, 2);
+        // Sorrisone aperto con linguetta
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 5, fY + 6, 10, 3);
+        ctx.fillRect(fX - 3, fY + 9, 6, 3);
+        ctx.fillStyle = "#FDA4AF";
+        ctx.fillRect(fX - 2, fY + 8, 4, 3);
 
       } else {
-        // Standard vispo con battito di ciglia
-        const blink = (tickCount % 120 < 6);
+        // --- LIEVITAZIONE NORMALE ATTIVA ---
+        const blink = (tickCount % 120 < 7);
         if (blink) {
-          ctx.fillRect(fX - 10, fY, 5, 2);
-          ctx.fillRect(fX + 5, fY, 5, 2);
+          ctx.fillRect(fX - 14, fY, 8, 2);
+          ctx.fillRect(fX + 6, fY, 8, 2);
         } else {
-          ctx.fillRect(fX - 10, fY - 2, 5, 5);
-          ctx.fillRect(fX + 5, fY - 2, 5, 5);
+          ctx.fillRect(fX - 14, fY - 3, 7, 7);
+          ctx.fillRect(fX + 7, fY - 3, 7, 7);
           ctx.fillStyle = "#FFFFFF";
-          ctx.fillRect(fX - 9, fY - 2, 2, 2);
-          ctx.fillRect(fX + 6, fY - 2, 2, 2);
+          ctx.fillRect(fX - 13, fY - 3, 3, 3);
+          ctx.fillRect(fX + 8, fY - 3, 3, 3);
         }
 
-        ctx.fillStyle = "#F43F5E";
-        ctx.fillRect(fX - 16, fY + 3, 3, 2);
-        ctx.fillRect(fX + 13, fY + 3, 3, 2);
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 20, fY + 4, 4, 3);
+        ctx.fillRect(fX + 16, fY + 4, 4, 3);
 
-        ctx.fillStyle = "#1C331B";
-        ctx.fillRect(fX - 3, fY + 5, 6, 2);
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 4, fY + 6, 8, 2);
       }
 
-      requestAnimationFrame(renderPixelPet);
+      requestAnimationFrame(renderStardewPixelYeast);
     }
 
     // ==========================================
@@ -1301,27 +1500,36 @@
       const tempBadge = document.getElementById("badgeTemp");
       const toggleIcon = document.getElementById("fridgeToggleIcon");
       const toggleText = document.getElementById("fridgeToggleText");
+      const bioTemp = document.getElementById("bioTempLabel");
 
       if (appState.inFridge) {
         tempBadge.className = "badge-pill status-fridge";
         tempBadge.innerText = "❄️ IN FRIGORIFERO";
         toggleIcon.innerText = "🌡️";
         toggleText.innerText = "Sposta a Temp. Ambiente";
+        bioTemp.innerText = "TEMP: 4.0°C";
       } else {
         tempBadge.className = "badge-pill status-room";
         tempBadge.innerText = "🌡️ STANZA (ATTIVO)";
         toggleIcon.innerText = "❄️";
         toggleText.innerText = "Metti a Riposo in Frigo";
+        bioTemp.innerText = "TEMP: 24.5°C";
       }
 
+      // Scanner Scientifico
+      document.getElementById("bioYeastPop").innerText = `~${kin.yeastPopulation}`;
+      document.getElementById("bioLabPop").innerText = `~${kin.labPopulation}`;
+      document.getElementById("bioAcidRatio").innerText = kin.acidRatio;
+
+      // Barre Statistiche
       document.getElementById("valHunger").innerText = kin.hunger + "%";
       document.getElementById("barHunger").style.width = kin.hunger + "%";
 
       document.getElementById("valVigor").innerText = kin.vigor + "%";
       document.getElementById("barVigor").style.width = kin.vigor + "%";
 
-      document.getElementById("valAcidity").innerText = kin.acidity;
-      document.getElementById("barAcidity").style.width = (kin.acidity === "OTTIMA" ? 20 : (kin.acidity === "VIVACE" ? 55 : 90)) + "%";
+      document.getElementById("valAcidity").innerText = "pH " + kin.pH;
+      document.getElementById("barAcidity").style.width = (kin.pH > 4.0 ? 25 : (kin.pH > 3.8 ? 55 : 90)) + "%";
 
       document.getElementById("valVolume").innerText = "x" + kin.volume;
       document.getElementById("barVolume").style.width = Math.min(100, (parseFloat(kin.volume) - 1.0) / 1.3 * 100) + "%";
@@ -1329,7 +1537,7 @@
       const speech = document.getElementById("speechBubble");
       if (appState.inFridge) {
         if (kin.hunger > 75) {
-          speech.innerText = "❄️ *Sbadiglio*... Sono in frigo da oltre 5 giorni, facciamoci un rinfresco per non acidificare!";
+          speech.innerText = "❄️ *Sbadiglio*... Sono in frigo da oltre 5 giorni, rinfrescami per non acidificare!";
         } else {
           speech.innerText = "❄️ Zzz... dormo tranquillo a +4°C. Mantengo le energie per il prossimo impasto!";
         }
@@ -1439,8 +1647,8 @@
       const sp = document.createElement("div");
       sp.className = "toast-pop";
       sp.innerText = txt;
-      sp.style.left = (canvas.offsetLeft + 30 + Math.random() * 80) + "px";
-      sp.style.top = (canvas.offsetTop + 35) + "px";
+      sp.style.left = (canvas.offsetLeft + 40 + Math.random() * 80) + "px";
+      sp.style.top = (canvas.offsetTop + 45) + "px";
       box.appendChild(sp);
       setTimeout(() => sp.remove(), 1000);
     }
@@ -1525,7 +1733,6 @@
       updateUI();
     }
 
-    // Chiudi modale cliccando fuori
     questModal.addEventListener("click", (e) => {
       if (e.target === questModal) questModal.classList.remove("open");
     });
@@ -1535,7 +1742,7 @@
     // ==========================================
     updateNotifBtn();
     updateUI();
-    renderPixelPet();
+    renderStardewPixelYeast();
     setInterval(updateUI, 60000);
   </script>
 </body>
