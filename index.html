@@ -66,7 +66,7 @@
       gap: 14px;
     }
 
-    /* TOP HEADER PULITO & STRUMENTI */
+    /* TOP HEADER PULITO */
     .top-header {
       display: flex;
       justify-content: space-between;
@@ -171,7 +171,7 @@
       color: var(--amber-dark);
     }
 
-    /* CARD 1: HERO DEL LIEVITO (FOCALIZZATA SULL'ILLUSTRAZIONE CON TASTI D'AZIONE IMMEDIATI) */
+    /* CARD 1: HERO DEL LIEVITO (FOCALIZZATA SULL'ILLUSTRAZIONE + AMBIENTE DI CONSERVAZIONE) */
     .hero-stage-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -205,8 +205,43 @@
 
     .badge-type { background: var(--card-subtle); color: var(--text-muted); border-color: var(--border); }
     .badge-streak { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
-    .badge-fridge { background: var(--blue-light); color: var(--blue); border-color: #BFDBFE; }
-    .badge-room { background: var(--amber-light); color: var(--amber-dark); border-color: var(--amber-border); }
+
+    /* SELETTORE AMBIENTE (FRIGO / TEMPERATURA AMBIENTE) BEN SEPARATO */
+    .location-selector {
+      display: flex;
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .loc-btn {
+      background: transparent;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .loc-btn.active.loc-fridge {
+      background: #FFFFFF;
+      color: var(--blue);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .loc-btn.active.loc-room {
+      background: #FFFFFF;
+      color: var(--amber-dark);
+      box-shadow: var(--shadow-sm);
+    }
 
     /* CANVAS STAGE STARDEW VALLEY */
     .pet-canvas-viewport {
@@ -241,69 +276,13 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* I DUE TASTI DI GESTIONE SUBITO SOTTO IL VASO */
-    .primary-controls {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 8px;
-      margin-top: 2px;
-    }
-
-    .btn-feed-action {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
-      color: white;
-      border: none;
-      padding: 13px 14px;
-      border-radius: 12px;
-      font-family: var(--sans-font);
-      font-size: 0.9rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);
-      transition: all 0.15s;
-    }
-
-    .btn-feed-action:hover {
-      filter: brightness(1.08);
-      transform: translateY(-1px);
-    }
-
-    .btn-feed-action:active {
-      transform: translateY(1px);
-    }
-
-    .btn-temp-action {
-      background: var(--card-bg);
-      border: 1.5px solid var(--border);
-      color: var(--text-main);
-      padding: 13px 10px;
-      border-radius: 12px;
-      font-family: var(--sans-font);
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.15s;
-    }
-
-    .btn-temp-action:hover {
-      background: var(--card-subtle);
-      border-color: var(--border-strong);
-    }
-
     /* 4 METRICHE BIOLOGICHE SINTETICHE */
     .metrics-bar-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
       text-align: center;
+      margin-top: 2px;
     }
 
     .metric-cell {
@@ -344,7 +323,7 @@
       transition: width 0.3s;
     }
 
-    /* CARD 2: GUIDA OPERATIVA & DOSI ESATTE AL GRAMMO */
+    /* CARD 2: RINFRESCO & DOSI ESATTE AL GRAMMO */
     .guide-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -456,6 +435,34 @@
       color: var(--text-light);
     }
 
+    /* TASTO DEDICATO ESCLUSIVAMENTE AL RINFRESCO */
+    .btn-feed-action {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: white;
+      border: none;
+      padding: 13px 14px;
+      border-radius: 12px;
+      font-family: var(--sans-font);
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);
+      transition: all 0.15s;
+    }
+
+    .btn-feed-action:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-feed-action:active {
+      transform: translateY(1px);
+    }
+
     /* CARD 3: PERCORSO RICETTE & APPROFONDIMENTI CON ACCORDION PULITO */
     .feature-card {
       background: var(--card-bg);
@@ -550,7 +557,7 @@
       transition: width 0.3s;
     }
 
-    /* SEZIONE FISARMONICA (ACCORDION) PER SCIENZA & STORICO */
+    /* ACCORDION PER SCIENZA & STORICO */
     .accordion-item {
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -745,14 +752,23 @@
       </div>
     </header>
 
-    <!-- CARD 1: IL LIEVITO HERO (STARDEW PIXEL ART + TASTI RAPIDI + 4 METRICHE) -->
+    <!-- CARD 1: IL LIEVITO HERO (STARDEW PIXEL ART + SELETTORE AMBIENTE + 4 METRICHE) -->
     <section class="hero-stage-card">
       <div class="hero-meta-bar">
         <div class="meta-badges">
           <span class="status-badge badge-type" id="badgeType">LICOLI 100%</span>
           <span class="status-badge badge-streak" id="badgeStreak">🔥 STREAK: x3</span>
         </div>
-        <span class="status-badge badge-fridge" id="badgeTemp">❄️ IN FRIGO (+4°C)</span>
+
+        <!-- SELETTORE CHIARO DELL'AMBIENTE DI CONSERVAZIONE (SEPARATO DAL RINFRESCO) -->
+        <div class="location-selector" title="Imposta dove si trova fisicamente il barattolo">
+          <button class="loc-btn loc-fridge active" id="btnLocFridge">
+            <span>❄️ Frigo</span>
+          </button>
+          <button class="loc-btn loc-room" id="btnLocRoom">
+            <span>🌡️ Stanza</span>
+          </button>
+        </div>
       </div>
 
       <!-- CANVAS STAGE STARDEW VALLEY -->
@@ -763,19 +779,7 @@
         </div>
       </div>
 
-      <!-- I DUE TASTI PRINCIPALI: SUBITO SOTTO IL VASO -->
-      <div class="primary-controls">
-        <button class="btn-feed-action" id="btnExecuteFeed">
-          <span>🥣</span>
-          <span>Rinfresca Ora</span>
-        </button>
-        <button class="btn-temp-action" id="btnToggleFridge">
-          <span id="fridgeToggleIcon">🌡️</span>
-          <span id="fridgeToggleText">Fuori Frigo</span>
-        </button>
-      </div>
-
-      <!-- 4 METRICHE BIOLOGICHE SINTETICHE -->
+      <!-- 4 METRICHE BIOLOGICHE (CAMBIANO SOLO CON IL PASSARE DEL TEMPO!) -->
       <div class="metrics-bar-grid">
         <div class="metric-cell">
           <span class="m-lbl">Fame</span>
@@ -800,10 +804,10 @@
       </div>
     </section>
 
-    <!-- CARD 2: GUIDA OPERATIVA & BILANCIA DOSI AL GRAMMO -->
+    <!-- CARD 2: GUIDA OPERATIVA & TASTO RINFRESCO CON BILANCIA AL GRAMMO -->
     <section class="guide-card">
       <div class="guide-card-head">
-        <span class="guide-label-title">👨‍🍳 Cosa fare adesso</span>
+        <span class="guide-label-title">👨‍🍳 Rinfresco & Dosaggio</span>
         <span class="guide-status-pill pill-chill" id="statusPill">A RIPOSO IN FRIGO</span>
       </div>
 
@@ -836,6 +840,12 @@
           <span class="d-detail" id="doseIdraHint">100% idratazione</span>
         </div>
       </div>
+
+      <!-- TASTO AZIONE DI RINFRESCO: DEDICATO QUI DOVE CI SONO LE DOSI -->
+      <button class="btn-feed-action" id="btnExecuteFeed">
+        <span>🥣</span>
+        <span>Ho Fatto il Rinfresco! Registra</span>
+      </button>
     </section>
 
     <!-- CARD 3: PERCORSO TARGET & APPROFONDIMENTI SCIENTIFICI COMPATTI -->
@@ -870,7 +880,7 @@
         <div class="accordion-content">
           <div class="bio-scanner-grid">
             <div class="bio-badge-stat">
-              <span class="lbl">Temperatura</span>
+              <span class="lbl">Temperatura Reale</span>
               <span class="val" id="bioTemp">4.0°C</span>
             </div>
             <div class="bio-badge-stat">
@@ -1013,15 +1023,20 @@
     };
 
     // ==========================================
-    // STATO & PERSISTENZA LOCAL STORAGE
+    // STATO & MODELLO BIOLOGICO CONTINUO (TEMPO REALE)
     // ==========================================
-    const STORAGE_KEY = "lievitotchi_pro_v5";
+    const STORAGE_KEY = "lievitotchi_pro_v6";
 
     const DEFAULT_STATE = {
       yeastType: "licoli",
       activeQuest: "pizza",
       inFridge: true,
+      
+      // Valori accumulati all'ultimo switch di ambiente
+      accEquivalentHours: 5.0, // ore equivalenti a temperatura ambiente già maturate
+      lastSwitchTimestamp: Date.now() - (42 * 3600 * 1000), // quando è stato messo in frigo/stanza
       lastFedTimestamp: Date.now() - (42 * 3600 * 1000),
+
       soundEnabled: true,
       notifEnabled: false,
       streakCount: 3,
@@ -1050,25 +1065,37 @@
     }
 
     // ==========================================
-    // NOTIFICHE BROWSER
+    // NOTIFICHE BROWSER CON DEBOUNCE & LOGICA ROBUSTA
     // ==========================================
     function checkNotificationNeed(kin) {
       if (!appState.notifEnabled || !("Notification" in window)) return;
       if (Notification.permission !== "granted") return;
 
-      if (!appState.inFridge && parseFloat(kin.volume) >= 2.0 && !sessionStorage.getItem("notified_peak")) {
-        new Notification("🍞 Lievitotchi al Picco!", {
-          body: "Il tuo lievito è al massimo volume: è il momento perfetto per impastare!"
-        });
-        sessionStorage.setItem("notified_peak", "true");
+      const now = Date.now();
+      const lastPeakNotif = parseInt(localStorage.getItem("last_peak_notif_time") || "0");
+      const lastStarveNotif = parseInt(localStorage.getItem("last_starve_notif_time") || "0");
+
+      // 1. Notifica di Picco (quando il lievito raddoppia/triplica fuori frigo, max 1 ogni 8 ore)
+      if (!appState.inFridge && parseFloat(kin.volume) >= 2.0) {
+        if (now - lastPeakNotif > 8 * 3600 * 1000) {
+          new Notification("🍞 Lievitotchi è al Picco!", {
+            body: `Il tuo lievito ha raggiunto il massimo sviluppo volumetrico: impasta ora per il tuo percorso ${kin.currentQuest.name}!`,
+            tag: "peak-alert"
+          });
+          localStorage.setItem("last_peak_notif_time", now.toString());
+        }
       }
 
-      const daysInFridge = (Date.now() - appState.lastFedTimestamp) / (24 * 3600000);
-      if (appState.inFridge && daysInFridge >= 6 && !sessionStorage.getItem("notified_starve")) {
-        new Notification("❄️ Lievitotchi ha fame!", {
-          body: "Sono passati quasi 7 giorni in frigo. Fai un rinfresco per mantenere viva la colonia!"
-        });
-        sessionStorage.setItem("notified_starve", "true");
+      // 2. Notifica di Fame Settimanale in frigo (max 1 ogni 24 ore)
+      const hoursSinceFed = (now - appState.lastFedTimestamp) / 3600000;
+      if (appState.inFridge && hoursSinceFed >= 144) { // oltre 6 giorni
+        if (now - lastStarveNotif > 24 * 3600 * 1000) {
+          new Notification("❄️ Lievitotchi ha bisogno di cure!", {
+            body: "Sono passati oltre 6 giorni in frigorifero. Fai un rinfresco per proteggere la colonia prima del weekend!",
+            tag: "fridge-starve-alert"
+          });
+          localStorage.setItem("last_starve_notif_time", now.toString());
+        }
       }
     }
 
@@ -1087,7 +1114,7 @@
             appState.notifEnabled = true;
             saveState();
             updateNotifBtn();
-            new Notification("🍞 Lievitotchi Notifiche Attivate!", { body: "Ti avviseremo al picco o quando serve il rinfresco settimanale." });
+            new Notification("🍞 Lievitotchi Notifiche Attivate!", { body: "Ti avviseremo al momento giusto (al picco per impastare o prima che il lievito soffra la fame in frigo)." });
           }
         });
       }
@@ -1154,34 +1181,43 @@
     }
 
     // ==========================================
-    // CINETICA BIOLOGICA
+    // CINETICA BIOLOGICA CONTINUA (I VALORI CAMBIANO SOLO COL TEMPO!)
     // ==========================================
     function calculateKinetics() {
-      const hours = (Date.now() - appState.lastFedTimestamp) / 3600000;
-      const rate = appState.inFridge ? 0.12 : 1.0;
+      const now = Date.now();
+      const currentSegmentHours = (now - appState.lastSwitchTimestamp) / 3600000;
+      
+      // Ore equivalenti a temperatura ambiente accumulate:
+      // Se in frigo, il tempo biologico scorre all'12% rispetto alla stanza (Arrhenius Q10)
+      const currentSegmentEffective = currentSegmentHours * (appState.inFridge ? 0.12 : 1.0);
+      const totalEffectiveHours = Math.max(0, appState.accEquivalentHours + currentSegmentEffective);
 
-      const hunger = Math.min(100, Math.floor((hours * rate / (appState.inFridge ? 192 * 0.12 : 12)) * 100));
+      // Fame: da 0% (appena nutrito) a 100% (dopo ~14 ore a T ambiente o ~110 ore in frigo)
+      const hunger = Math.min(100, Math.floor((totalEffectiveHours / 14) * 100));
 
+      // Volume & Curva di lievitazione (Picco tra 3.5h e 5h a temperatura ambiente)
       let volume = 1.0;
-      const peakHours = appState.inFridge ? 36 : 4.5;
-      if (hours < peakHours) {
-        volume = 1.0 + (1.25 * (hours / peakHours));
-      } else if (hours < peakHours * 2) {
-        volume = 2.25 - (0.35 * ((hours - peakHours) / peakHours));
+      const peakHours = 4.5;
+      if (totalEffectiveHours < peakHours) {
+        volume = 1.0 + (1.25 * (totalEffectiveHours / peakHours));
+      } else if (totalEffectiveHours < peakHours * 2) {
+        volume = 2.25 - (0.35 * ((totalEffectiveHours - peakHours) / peakHours));
       } else {
-        volume = Math.max(1.05, 1.9 - (0.045 * (hours - peakHours * 2) * rate));
+        volume = Math.max(1.05, 1.9 - (0.045 * (totalEffectiveHours - peakHours * 2)));
       }
 
+      // pH e Acidità (scende gradualmente con la produzione di acido lattico ed acetico)
       let pH = 4.2;
       let acidRatio = "3.8 : 1 (Equilibrato)";
       let needCorrection = false;
       let correctionMsg = "";
 
-      if (hunger > 80 || hours > 160) {
+      const rawWallHoursSinceFed = (now - appState.lastFedTimestamp) / 3600000;
+      if (hunger > 80 || rawWallHoursSinceFed > 160) {
         pH = 3.65;
         acidRatio = "1.8 : 1 (Eccesso Acetico!)";
         needCorrection = true;
-        correctionMsg = "Digiuno oltre 6 giorni: fai un rinfresco 1:3 con acqua tiepida a 26°C.";
+        correctionMsg = "Digiuno prolungato (oltre 6 giorni): esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C per correggere l'acidità.";
       } else if (hunger > 50) {
         pH = 3.9;
         acidRatio = "2.9 : 1 (Vivace)";
@@ -1198,7 +1234,8 @@
       readiness = Math.max(15, Math.min(100, readiness));
 
       return {
-        hoursElapsed: hours.toFixed(1),
+        totalEffectiveHours: totalEffectiveHours.toFixed(1),
+        wallHoursSinceFed: rawWallHoursSinceFed.toFixed(1),
         hunger,
         volume: volume.toFixed(1),
         pH: pH.toFixed(2),
@@ -1248,7 +1285,7 @@
       const jarTop = 18;
       const jarBottom = jarTop + jarH;
 
-      // Ombra a terra pixelata
+      // Ombra a terra pixel
       ctx.fillStyle = "rgba(24, 44, 23, 0.12)";
       for (let w = jarW + 8; w >= 20; w -= 16) {
         ctx.fillRect(cx - w/2, jarBottom + 4 + (jarW + 8 - w)/8, w, 3);
@@ -1365,7 +1402,7 @@
       ctx.fillStyle = "#182C17";
 
       if (appState.inFridge) {
-        // Sonno beato
+        // Dorme in frigo
         ctx.fillRect(fX - 16, fY, 8, 2);
         ctx.fillRect(fX + 8, fY, 8, 2);
         ctx.fillStyle = "#FF80AB";
@@ -1445,23 +1482,18 @@
       document.getElementById("badgeType").innerText = appState.yeastType === 'licoli' ? "LICOLI 100%" : "SOLIDO 50%";
       document.getElementById("badgeStreak").innerText = `🔥 STREAK: x${appState.streakCount}`;
 
-      const tempBadge = document.getElementById("badgeTemp");
-      const toggleIcon = document.getElementById("fridgeToggleIcon");
-      const toggleText = document.getElementById("fridgeToggleText");
-
+      // Selettore Posizione
+      const btnFridge = document.getElementById("btnLocFridge");
+      const btnRoom = document.getElementById("btnLocRoom");
       if (appState.inFridge) {
-        tempBadge.className = "status-badge badge-fridge";
-        tempBadge.innerText = "❄️ IN FRIGO (+4°C)";
-        toggleIcon.innerText = "🌡️";
-        toggleText.innerText = "Fuori Frigo";
+        btnFridge.classList.add("active");
+        btnRoom.classList.remove("active");
       } else {
-        tempBadge.className = "status-badge badge-room";
-        tempBadge.innerText = "🌡️ STANZA (24°C)";
-        toggleIcon.innerText = "❄️";
-        toggleText.innerText = "In Frigo";
+        btnRoom.classList.add("active");
+        btnFridge.classList.remove("active");
       }
 
-      // 4 Barre Statistiche
+      // 4 Barre Statistiche (cambiano solo col tempo!)
       document.getElementById("valHunger").innerText = kin.hunger + "%";
       document.getElementById("barHunger").style.width = kin.hunger + "%";
 
@@ -1580,7 +1612,7 @@
     }
 
     // ==========================================
-    // AZIONI UTENTE
+    // AZIONI UTENTE (RINFRESCO E POSIZIONAMENTO SEPARATI)
     // ==========================================
     function spawnToast(txt) {
       const box = document.querySelector(".pet-canvas-viewport");
@@ -1593,12 +1625,37 @@
       setTimeout(() => sp.remove(), 1000);
     }
 
+    // 1. CAMBIO POSIZIONE (NON CAMBIA I VALORI ISTANTANEAMENTE: CONGELA IL TEMPO TRASCORSO E CAMBIA SOLO LA VELOCITÀ DA QUI IN AVANTI)
+    function setEnvironment(inFridge) {
+      if (appState.inFridge === inFridge) return;
+      playRetroBeep('fridge');
+
+      // Calcola e fissa il tempo biologico trascorso finora
+      const now = Date.now();
+      const elapsedSegment = (now - appState.lastSwitchTimestamp) / 3600000;
+      const rate = appState.inFridge ? 0.12 : 1.0;
+      appState.accEquivalentHours += elapsedSegment * rate;
+
+      // Aggiorna ambiente e resetta il segmento di conteggio
+      appState.inFridge = inFridge;
+      appState.lastSwitchTimestamp = now;
+
+      spawnToast(inFridge ? "❄️ Messo in Frigo" : "🌡️ Messo a T Ambiente");
+      saveState();
+      updateUI();
+    }
+
+    document.getElementById("btnLocFridge").addEventListener("click", () => setEnvironment(true));
+    document.getElementById("btnLocRoom").addEventListener("click", () => setEnvironment(false));
+
+    // 2. RINFRESCO (REINIZIALIZZA IL CICLO BIOLOGICO)
     function executeFeed() {
       playRetroBeep('feed');
       spawnToast("✨");
       spawnToast("🥣");
 
-      const hoursPassed = (Date.now() - appState.lastFedTimestamp) / 3600000;
+      const now = Date.now();
+      const hoursPassed = (now - appState.lastFedTimestamp) / 3600000;
       let statusNote = "Regolare";
 
       if (hoursPassed > 168) {
@@ -1615,28 +1672,26 @@
       });
       if (appState.history.length > 10) appState.history.pop();
 
-      appState.lastFedTimestamp = Date.now();
-      sessionStorage.removeItem("notified_peak");
-      sessionStorage.removeItem("notified_starve");
+      appState.lastFedTimestamp = now;
+      appState.lastSwitchTimestamp = now;
+      appState.accEquivalentHours = 0; // reset totale: lievito nuovo e nutrito
+
+      // Resetta i flag di notifica
+      localStorage.removeItem("last_peak_notif_time");
+      localStorage.removeItem("last_starve_notif_time");
 
       saveState();
       updateUI();
     }
 
     document.getElementById("btnExecuteFeed").addEventListener("click", executeFeed);
-
-    document.getElementById("btnToggleFridge").addEventListener("click", () => {
-      playRetroBeep('fridge');
-      appState.inFridge = !appState.inFridge;
-      spawnToast(appState.inFridge ? "❄️" : "🌡️");
-      saveState();
-      updateUI();
-    });
-
     document.getElementById("btnNotifToggle").addEventListener("click", toggleNotifications);
 
+    // Fast Forward per Dev / Test
     function fastForwardHours(h) {
       playRetroBeep('click');
+      // Sposta indietro nel tempo l'inizio del segmento attuale per far scorrere le ore
+      appState.lastSwitchTimestamp -= (h * 3600 * 1000);
       appState.lastFedTimestamp -= (h * 3600 * 1000);
       spawnToast(`⏩ +${h}h`);
       saveState();
