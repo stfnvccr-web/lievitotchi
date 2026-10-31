@@ -66,7 +66,7 @@
       gap: 14px;
     }
 
-    /* TOP HEADER PULITO */
+    /* TOP HEADER */
     .top-header {
       display: flex;
       justify-content: space-between;
@@ -171,7 +171,7 @@
       color: var(--amber-dark);
     }
 
-    /* CARD 1: HERO DEL LIEVITO (FOCALIZZATA SULL'ILLUSTRAZIONE + AMBIENTE DI CONSERVAZIONE) */
+    /* CARD 1: HERO DEL LIEVITO */
     .hero-stage-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -201,12 +201,13 @@
       padding: 3px 8px;
       border-radius: 6px;
       border: 1px solid transparent;
+      cursor: pointer;
     }
 
     .badge-type { background: var(--card-subtle); color: var(--text-muted); border-color: var(--border); }
     .badge-streak { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
 
-    /* SELETTORE AMBIENTE (FRIGO / TEMPERATURA AMBIENTE) BEN SEPARATO */
+    /* SELETTORE AMBIENTE (FRIGO / TEMPERATURA AMBIENTE) */
     .location-selector {
       display: flex;
       background: var(--card-subtle);
@@ -276,7 +277,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* 4 METRICHE BIOLOGICHE SINTETICHE */
+    /* 4 METRICHE BIOLOGICHE */
     .metrics-bar-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -323,7 +324,7 @@
       transition: width 0.3s;
     }
 
-    /* CARD 2: RINFRESCO & DOSI ESATTE AL GRAMMO */
+    /* CARD 2: GUIDA OPERATIVA & DOSI ESATTE AL GRAMMO */
     .guide-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -463,7 +464,7 @@
       transform: translateY(1px);
     }
 
-    /* CARD 3: PERCORSO RICETTE & APPROFONDIMENTI CON ACCORDION PULITO */
+    /* CARD 3: PERCORSO & SCUOLA DI PENSIERO ATTIVA */
     .feature-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -510,20 +511,48 @@
       color: var(--text-muted);
     }
 
-    .btn-select-quest {
+    .btn-action-small {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-main);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .btn-select-quest:hover {
+    .btn-action-small:hover {
       background: var(--card-subtle);
+    }
+
+    /* BANNER SCUOLA DI PENSIERO ATTIVA */
+    .school-active-banner {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .school-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .school-title-text {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .school-desc-text {
+      font-size: 0.7rem;
+      color: var(--text-muted);
     }
 
     /* READINESS BAR */
@@ -557,7 +586,7 @@
       transition: width 0.3s;
     }
 
-    /* ACCORDION PER SCIENZA & STORICO */
+    /* ACCORDION SCIENZA & STORICO */
     .accordion-item {
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -636,11 +665,11 @@
       font-size: 0.78rem;
     }
 
-    /* MODALE PERCORSO RICETTE */
+    /* MODALE COMPLETA QUIZ DI ONBOARDING / CONFIGURAZIONE */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.65);
+      background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -659,57 +688,101 @@
 
     .modal-box {
       background: var(--card-bg);
-      border-radius: 18px;
+      border-radius: 20px;
       width: 100%;
-      max-width: 440px;
-      padding: 20px 16px;
+      max-width: 450px;
+      padding: 22px 18px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.25);
       display: flex;
       flex-direction: column;
       gap: 12px;
-      max-height: 85vh;
+      max-height: 88vh;
       overflow-y: auto;
     }
 
-    .modal-box h3 {
+    .quiz-step-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .quiz-title {
       font-size: 1.15rem;
       font-weight: 800;
       color: var(--text-main);
     }
 
-    .modal-box p {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+    .quiz-step-counter {
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--amber-gold);
     }
 
-    .quest-list {
+    .quiz-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .quiz-options-list {
       display: flex;
       flex-direction: column;
       gap: 8px;
       margin-top: 4px;
     }
 
-    .quest-item-btn {
+    .quiz-opt-card {
       background: var(--card-bg);
       border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 12px 14px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: flex-start;
+      gap: 12px;
       cursor: pointer;
       text-align: left;
       transition: all 0.15s;
     }
 
-    .quest-item-btn:hover {
+    .quiz-opt-card:hover {
       border-color: var(--amber-gold);
       background: var(--card-subtle);
     }
 
-    .quest-item-btn.active-quest {
+    .quiz-opt-card.selected {
       border-color: var(--amber-gold);
       background: var(--amber-light);
+    }
+
+    .opt-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .opt-content h5 {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .opt-content p {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .opt-tag-recommend {
+      font-size: 0.62rem;
+      background: #D1FAE5;
+      color: #047857;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
     }
 
     .toast-pop {
@@ -735,7 +808,7 @@
         <div class="brand-symbol">🍞</div>
         <div class="brand-title-wrap">
           <h1>Lievitotchi</h1>
-          <p>Assistente di Panificazione & Colonia Viva</p>
+          <p>Assistente di Panificazione & Bio-Colonia</p>
         </div>
       </div>
       <div class="header-tools">
@@ -756,11 +829,11 @@
     <section class="hero-stage-card">
       <div class="hero-meta-bar">
         <div class="meta-badges">
-          <span class="status-badge badge-type" id="badgeType">LICOLI 100%</span>
+          <span class="status-badge badge-type" id="badgeType" title="Clicca per aprire il Quiz">LICOLI 100%</span>
           <span class="status-badge badge-streak" id="badgeStreak">🔥 STREAK: x3</span>
         </div>
 
-        <!-- SELETTORE CHIARO DELL'AMBIENTE DI CONSERVAZIONE (SEPARATO DAL RINFRESCO) -->
+        <!-- SELETTORE AMBIENTE (FRIGO / STANZA) -->
         <div class="location-selector" title="Imposta dove si trova fisicamente il barattolo">
           <button class="loc-btn loc-fridge active" id="btnLocFridge">
             <span>❄️ Frigo</span>
@@ -779,7 +852,7 @@
         </div>
       </div>
 
-      <!-- 4 METRICHE BIOLOGICHE (CAMBIANO SOLO CON IL PASSARE DEL TEMPO!) -->
+      <!-- 4 METRICHE BIOLOGICHE -->
       <div class="metrics-bar-grid">
         <div class="metric-cell">
           <span class="m-lbl">Fame</span>
@@ -841,14 +914,13 @@
         </div>
       </div>
 
-      <!-- TASTO AZIONE DI RINFRESCO: DEDICATO QUI DOVE CI SONO LE DOSI -->
       <button class="btn-feed-action" id="btnExecuteFeed">
         <span>🥣</span>
         <span>Ho Fatto il Rinfresco! Registra</span>
       </button>
     </section>
 
-    <!-- CARD 3: PERCORSO TARGET & APPROFONDIMENTI SCIENTIFICI COMPATTI -->
+    <!-- CARD 3: PERCORSO TARGET & SCUOLA DI PENSIERO ATTIVA -->
     <section class="feature-card">
       <div class="target-choice-bar">
         <div class="target-desc-left">
@@ -858,7 +930,18 @@
             <p class="target-stage-p" id="questStageLabel">Livello 2: Spinta aromatica media</p>
           </div>
         </div>
-        <button class="btn-select-quest" id="btnOpenQuestModal">Cambia</button>
+        <button class="btn-action-small" id="btnOpenQuiz">Quiz / Config</button>
+      </div>
+
+      <!-- BANNER SCUOLA DI PENSIERO ATTIVA -->
+      <div class="school-active-banner">
+        <div class="school-icon-title">
+          <span id="schoolIcon" style="font-size:1.4rem;">❄️</span>
+          <div>
+            <div class="school-title-text" id="schoolName">Scuola Frigo & Weekend (Bonci/Casalingo)</div>
+            <div class="school-desc-text" id="schoolDesc">Mantenimento freddo 4°C, risveglio 24h prima. Zero spreco.</div>
+          </div>
+        </div>
       </div>
 
       <div class="readiness-track-box">
@@ -930,57 +1013,157 @@
 
   </div>
 
-  <!-- MODALE SCELTA PERCORSO RICETTE -->
-  <div class="modal-backdrop" id="questModal">
+  <!-- MODALE MULTI-STEP QUIZ: LIEVITO + SCUOLA DI PENSIERO + OBIETTIVO -->
+  <div class="modal-backdrop" id="quizModal">
     <div class="modal-box">
-      <h3>🎯 Scegli il tuo Percorso di Cottura</h3>
-      <p>Lievitotchi adatterà il programma per allenare il tuo lievito al momento giusto:</p>
 
-      <div class="quest-list">
-        <div class="quest-item-btn" data-quest="easy-bread" onclick="selectQuest('easy-bread')">
-          <span style="font-size:1.5rem;">🥖</span>
-          <div>
-            <div style="font-size:0.88rem; font-weight:700;">Pane Semplice Casalingo (Liv. 1)</div>
-            <div style="font-size:0.72rem; color:var(--text-muted);">Richiede solo 1 rinfresco. Molto tollerante.</div>
-          </div>
+      <!-- STEP 1: QUALE LIEVITO HAI? -->
+      <div id="quizStep1">
+        <div class="quiz-step-head">
+          <h3 class="quiz-title">🌾 Che lievito madre hai?</h3>
+          <span class="quiz-step-counter">STEP 1/3</span>
         </div>
+        <p class="quiz-desc">Impostiamo il bilanciamento esatto dell'acqua per ogni rinfresco:</p>
 
-        <div class="quest-item-btn active-quest" data-quest="pizza" onclick="selectQuest('pizza')">
-          <span style="font-size:1.5rem;">🍕</span>
-          <div>
-            <div style="font-size:0.88rem; font-weight:700;">Pizza & Focaccia ad Alta Idratazione (Liv. 2)</div>
-            <div style="font-size:0.72rem; color:var(--text-muted);">Idratazione 75-80%. Nessun sentore acido.</div>
+        <div class="quiz-options-list">
+          <div class="quiz-opt-card" onclick="selectQuizYeast('licoli')">
+            <span class="opt-icon">🫧</span>
+            <div class="opt-content">
+              <h5>Li.Co.Li (Lievito Liquido) <span class="opt-tag-recommend">Consigliato</span></h5>
+              <p>Idratazione 100%: pari peso farina e acqua. Cremoso, velocissimo da mescolare, non serve sporcarsi le mani.</p>
+            </div>
           </div>
-        </div>
 
-        <div class="quest-item-btn" data-quest="artisan" onclick="selectQuest('artisan')">
-          <span style="font-size:1.5rem;">🍞</span>
-          <div>
-            <div style="font-size:0.88rem; font-weight:700;">Pane Rustico ad Alveoli Aperti (Liv. 3)</div>
-            <div style="font-size:0.72rem; color:var(--text-muted);">Stile San Francisco. 2 rinfreschi di forza.</div>
-          </div>
-        </div>
-
-        <div class="quest-item-btn" data-quest="brioche" onclick="selectQuest('brioche')">
-          <span style="font-size:1.5rem;">🥐</span>
-          <div>
-            <div style="font-size:0.88rem; font-weight:700;">Brioche & Dolci Arricchiti (Liv. 4)</div>
-            <div style="font-size:0.72rem; color:var(--text-muted);">Impasti con burro e uova. Lievito dolcissimo.</div>
-          </div>
-        </div>
-
-        <div class="quest-item-btn" data-quest="panettone" onclick="selectQuest('panettone')">
-          <span style="font-size:1.5rem;">👑</span>
-          <div>
-            <div style="font-size:0.88rem; font-weight:700;">Grandi Lievitati (Panettone) (Maestro)</div>
-            <div style="font-size:0.72rem; color:var(--text-muted);">Triplo rinfresco nella stessa giornata a pH 4.1.</div>
+          <div class="quiz-opt-card" onclick="selectQuizYeast('solido')">
+            <span class="opt-icon">🍞</span>
+            <div class="opt-content">
+              <h5>Pasta Madre Solida (Tradizionale)</h5>
+              <p>Idratazione ~50%: l'acqua è la metà del peso della farina. Compatta a pagnotta, ideale per panettone e sfogliati.</p>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- STEP 2: SCUOLA DI PENSIERO SULLA GESTIONE -->
+      <div id="quizStep2" style="display: none;">
+        <div class="quiz-step-head">
+          <h3 class="quiz-title">🏛️ Che Scuola di Pensiero preferisci?</h3>
+          <span class="quiz-step-counter">STEP 2/3</span>
+        </div>
+        <p class="quiz-desc">La gestione cambia radicalmente tempi, conservazione e profilo aromatico:</p>
+
+        <div class="quiz-options-list">
+          <!-- 1. Bonci / Moderna Frigo -->
+          <div class="quiz-opt-card" onclick="selectQuizSchool('fridge-modern')">
+            <span class="opt-icon">❄️</span>
+            <div class="opt-content">
+              <h5>Scuola Frigo & Weekend (Bonci / Pratica) <span class="opt-tag-recommend">Scelta Top</span></h5>
+              <p><strong>Filosofia:</strong> Lievito dorme in frigo a +4°C tutta la settimana. Risveglio venerdì, zero scarti. Ideale per la vita reale e per pizza in teglia.</p>
+            </div>
+          </div>
+
+          <!-- 2. Giorilli / Maestri Lievitisti -->
+          <div class="quiz-opt-card" onclick="selectQuizSchool('giorilli-classic')">
+            <span class="opt-icon">👑</span>
+            <div class="opt-content">
+              <h5>Scuola Maestri Lievitisti (Giorilli / Massari)</h5>
+              <p><strong>Filosofia:</strong> Mantenimento rigoroso a temperatura controllata (16-18°C o cantina), rinfreschi quotidiani e bagnetto zuccherato per Grandi Lievitati.</p>
+            </div>
+          </div>
+
+          <!-- 3. Tartine / San Francisco -->
+          <div class="quiz-opt-card" onclick="selectQuizSchool('tartine-wild')">
+            <span class="opt-icon">🥖</span>
+            <div class="opt-content">
+              <h5>Scuola Tartine / Wild Sourdough (Robertson)</h5>
+              <p><strong>Filosofia:</strong> Rinfresco con farine integrali/segale, prefermenti giovani ("young levain") appena dolci, tenuti a 24-26°C per pane aperto e rustico.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: OBIETTIVO / PERCORSO RICETTE -->
+      <div id="quizStep3" style="display: none;">
+        <div class="quiz-step-head">
+          <h3 class="quiz-title">🎯 A cosa vuoi puntare?</h3>
+          <span class="quiz-step-counter">STEP 3/3</span>
+        </div>
+        <p class="quiz-desc">Lievitotchi adatterà il cronoprogramma per allenare la colonia al picco:</p>
+
+        <div class="quiz-options-list">
+          <div class="quiz-opt-card" onclick="selectQuizQuest('easy-bread')">
+            <span class="opt-icon">🥖</span>
+            <div class="opt-content">
+              <h5>Pane Semplice Casalingo (Liv. 1)</h5>
+              <p>Tollerante, 1 solo rinfresco preparatorio rapido prima dell'impasto.</p>
+            </div>
+          </div>
+
+          <div class="quiz-opt-card" onclick="selectQuizQuest('pizza')">
+            <span class="opt-icon">🍕</span>
+            <div class="opt-content">
+              <h5>Pizza in Teglia & Focaccia (Liv. 2)</h5>
+              <p>Alta idratazione (75-80%). Lievito vivace e privo di note acide per non strappare il glutine.</p>
+            </div>
+          </div>
+
+          <div class="quiz-opt-card" onclick="selectQuizQuest('artisan')">
+            <span class="opt-icon">🍞</span>
+            <div class="opt-content">
+              <h5>Pane Rustico Alveolatura Aperta (Liv. 3)</h5>
+              <p>Stile San Francisco. Richiede 2 rinfreschi consecutivi per massima spinta elastica.</p>
+            </div>
+          </div>
+
+          <div class="quiz-opt-card" onclick="selectQuizQuest('brioche')">
+            <span class="opt-icon">🥐</span>
+            <div class="opt-content">
+              <h5>Brioche & Dolci Arricchiti (Liv. 4)</h5>
+              <p>Impasti con burro e uova. Serve un lievito dolcissimo e al picco.</p>
+            </div>
+          </div>
+
+          <div class="quiz-opt-card" onclick="selectQuizQuest('panettone')">
+            <span class="opt-icon">👑</span>
+            <div class="opt-content">
+              <h5>Grandi Lievitati (Panettone) (Maestro)</h5>
+              <p>Triplo rinfresco nella stessa giornata a pH 4.1 e 28°C.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <script>
+    // ==========================================
+    // DATABASE SCUOLE DI PENSIERO
+    // ==========================================
+    const SCHOOLS_INFO = {
+      "fridge-modern": {
+        name: "Scuola Frigo & Weekend (Bonci/Pratica)",
+        icon: "❄️",
+        desc: "Mantenimento freddo a +4°C, risveglio 24h prima. Zero sprechi, perfetta per la vita reale.",
+        recRatio: "1:2",
+        recTemp: "Frigo +4°C"
+      },
+      "giorilli-classic": {
+        name: "Scuola Maestri Lievitisti (Giorilli/Massari)",
+        icon: "👑",
+        desc: "Mantenimento controllato a 16-18°C, rinfreschi ravvicinati e bagnetto zuccherato periodico.",
+        recRatio: "1:1",
+        recTemp: "Cantina / Cella 18°C"
+      },
+      "tartine-wild": {
+        name: "Scuola Tartine / Wild (Chad Robertson)",
+        icon: "🥖",
+        desc: "Prefermenti giovani (young levain) con mix integrale e rinfreschi ad alta frequenza a 24-26°C.",
+        recRatio: "1:2 o 1:3",
+        recTemp: "Ambiente caldo 24°C"
+      }
+    };
+
     // ==========================================
     // DATABASE PERCORSI
     // ==========================================
@@ -1023,20 +1206,19 @@
     };
 
     // ==========================================
-    // STATO & MODELLO BIOLOGICO CONTINUO (TEMPO REALE)
+    // STATO & PERSISTENZA LOCAL STORAGE
     // ==========================================
-    const STORAGE_KEY = "lievitotchi_pro_v6";
+    const STORAGE_KEY = "lievitotchi_schools_v1";
 
     const DEFAULT_STATE = {
+      hasDoneQuiz: false,
       yeastType: "licoli",
+      school: "fridge-modern",
       activeQuest: "pizza",
       inFridge: true,
-      
-      // Valori accumulati all'ultimo switch di ambiente
-      accEquivalentHours: 5.0, // ore equivalenti a temperatura ambiente già maturate
-      lastSwitchTimestamp: Date.now() - (42 * 3600 * 1000), // quando è stato messo in frigo/stanza
+      accEquivalentHours: 5.0,
+      lastSwitchTimestamp: Date.now() - (42 * 3600 * 1000),
       lastFedTimestamp: Date.now() - (42 * 3600 * 1000),
-
       soundEnabled: true,
       notifEnabled: false,
       streakCount: 3,
@@ -1065,7 +1247,7 @@
     }
 
     // ==========================================
-    // NOTIFICHE BROWSER CON DEBOUNCE & LOGICA ROBUSTA
+    // NOTIFICHE BROWSER
     // ==========================================
     function checkNotificationNeed(kin) {
       if (!appState.notifEnabled || !("Notification" in window)) return;
@@ -1075,23 +1257,21 @@
       const lastPeakNotif = parseInt(localStorage.getItem("last_peak_notif_time") || "0");
       const lastStarveNotif = parseInt(localStorage.getItem("last_starve_notif_time") || "0");
 
-      // 1. Notifica di Picco (quando il lievito raddoppia/triplica fuori frigo, max 1 ogni 8 ore)
       if (!appState.inFridge && parseFloat(kin.volume) >= 2.0) {
         if (now - lastPeakNotif > 8 * 3600 * 1000) {
           new Notification("🍞 Lievitotchi è al Picco!", {
-            body: `Il tuo lievito ha raggiunto il massimo sviluppo volumetrico: impasta ora per il tuo percorso ${kin.currentQuest.name}!`,
+            body: `Il tuo lievito ha raggiunto il massimo sviluppo: impasta ora per ${kin.currentQuest.name}!`,
             tag: "peak-alert"
           });
           localStorage.setItem("last_peak_notif_time", now.toString());
         }
       }
 
-      // 2. Notifica di Fame Settimanale in frigo (max 1 ogni 24 ore)
       const hoursSinceFed = (now - appState.lastFedTimestamp) / 3600000;
-      if (appState.inFridge && hoursSinceFed >= 144) { // oltre 6 giorni
+      if (appState.inFridge && hoursSinceFed >= 144) {
         if (now - lastStarveNotif > 24 * 3600 * 1000) {
-          new Notification("❄️ Lievitotchi ha bisogno di cure!", {
-            body: "Sono passati oltre 6 giorni in frigorifero. Fai un rinfresco per proteggere la colonia prima del weekend!",
+          new Notification("❄️ Lievitotchi ha fame!", {
+            body: "Sono passati oltre 6 giorni in frigo. Fai un rinfresco per mantenere viva la colonia!",
             tag: "fridge-starve-alert"
           });
           localStorage.setItem("last_starve_notif_time", now.toString());
@@ -1181,21 +1361,17 @@
     }
 
     // ==========================================
-    // CINETICA BIOLOGICA CONTINUA (I VALORI CAMBIANO SOLO COL TEMPO!)
+    // CINETICA BIOLOGICA CONTINUA
     // ==========================================
     function calculateKinetics() {
       const now = Date.now();
       const currentSegmentHours = (now - appState.lastSwitchTimestamp) / 3600000;
-      
-      // Ore equivalenti a temperatura ambiente accumulate:
-      // Se in frigo, il tempo biologico scorre all'12% rispetto alla stanza (Arrhenius Q10)
-      const currentSegmentEffective = currentSegmentHours * (appState.inFridge ? 0.12 : 1.0);
+      const rate = appState.inFridge ? 0.12 : 1.0;
+      const currentSegmentEffective = currentSegmentHours * rate;
       const totalEffectiveHours = Math.max(0, appState.accEquivalentHours + currentSegmentEffective);
 
-      // Fame: da 0% (appena nutrito) a 100% (dopo ~14 ore a T ambiente o ~110 ore in frigo)
       const hunger = Math.min(100, Math.floor((totalEffectiveHours / 14) * 100));
 
-      // Volume & Curva di lievitazione (Picco tra 3.5h e 5h a temperatura ambiente)
       let volume = 1.0;
       const peakHours = 4.5;
       if (totalEffectiveHours < peakHours) {
@@ -1206,7 +1382,6 @@
         volume = Math.max(1.05, 1.9 - (0.045 * (totalEffectiveHours - peakHours * 2)));
       }
 
-      // pH e Acidità (scende gradualmente con la produzione di acido lattico ed acetico)
       let pH = 4.2;
       let acidRatio = "3.8 : 1 (Equilibrato)";
       let needCorrection = false;
@@ -1217,7 +1392,7 @@
         pH = 3.65;
         acidRatio = "1.8 : 1 (Eccesso Acetico!)";
         needCorrection = true;
-        correctionMsg = "Digiuno prolungato (oltre 6 giorni): esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C per correggere l'acidità.";
+        correctionMsg = "Digiuno prolungato (oltre 6 giorni): esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C.";
       } else if (hunger > 50) {
         pH = 3.9;
         acidRatio = "2.9 : 1 (Vivace)";
@@ -1375,7 +1550,7 @@
         }
       });
 
-      // Microrganismi (Saccaromiceti & LAB)
+      // Microrganismi
       microCritters.forEach(c => {
         const floatY = Math.sin(tickCount * 0.05 + c.phase) * 3;
         const cX = cx + c.x;
@@ -1402,7 +1577,6 @@
       ctx.fillStyle = "#182C17";
 
       if (appState.inFridge) {
-        // Dorme in frigo
         ctx.fillRect(fX - 16, fY, 8, 2);
         ctx.fillRect(fX + 8, fY, 8, 2);
         ctx.fillStyle = "#FF80AB";
@@ -1417,7 +1591,6 @@
         ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
       } else if (kin.hunger > 75) {
-        // Fame
         ctx.fillRect(fX - 14, fY - 2, 7, 6);
         ctx.fillRect(fX + 7, fY - 2, 7, 6);
         ctx.fillRect(fX - 4, fY + 10, 8, 2);
@@ -1429,7 +1602,6 @@
         ctx.fillRect(fX + 25, fY - 7, 2, 3);
 
       } else if (currentVol >= 2.0) {
-        // Picco massimo
         ctx.fillRect(fX - 16, fY - 4, 8, 9);
         ctx.fillRect(fX + 8, fY - 4, 8, 9);
         ctx.fillStyle = "#FFFFFF";
@@ -1449,7 +1621,6 @@
         ctx.fillRect(fX - 2, fY + 8, 4, 3);
 
       } else {
-        // Normale vispo
         const blink = (tickCount % 120 < 7);
         if (blink) {
           ctx.fillRect(fX - 14, fY, 8, 2);
@@ -1482,7 +1653,6 @@
       document.getElementById("badgeType").innerText = appState.yeastType === 'licoli' ? "LICOLI 100%" : "SOLIDO 50%";
       document.getElementById("badgeStreak").innerText = `🔥 STREAK: x${appState.streakCount}`;
 
-      // Selettore Posizione
       const btnFridge = document.getElementById("btnLocFridge");
       const btnRoom = document.getElementById("btnLocRoom");
       if (appState.inFridge) {
@@ -1493,7 +1663,7 @@
         btnFridge.classList.remove("active");
       }
 
-      // 4 Barre Statistiche (cambiano solo col tempo!)
+      // 4 Barre Statistiche
       document.getElementById("valHunger").innerText = kin.hunger + "%";
       document.getElementById("barHunger").style.width = kin.hunger + "%";
 
@@ -1577,10 +1747,15 @@
         }
       }
 
-      // Card Percorso Target
+      // Percorso & Scuola
       document.getElementById("questIcon").innerText = kin.currentQuest.icon;
       document.getElementById("questTargetName").innerText = kin.currentQuest.name;
       document.getElementById("questStageLabel").innerText = kin.currentQuest.stage;
+
+      const curSchool = SCHOOLS_INFO[appState.school] || SCHOOLS_INFO["fridge-modern"];
+      document.getElementById("schoolIcon").innerText = curSchool.icon;
+      document.getElementById("schoolName").innerText = curSchool.name;
+      document.getElementById("schoolDesc").innerText = curSchool.desc;
 
       document.getElementById("readinessFill").style.width = kin.readiness + "%";
       document.getElementById("readinessScore").innerText = `${kin.readiness}% • ${kin.readiness >= kin.currentQuest.minReadiness ? "Pronto" : "In Crescita"}`;
@@ -1612,7 +1787,7 @@
     }
 
     // ==========================================
-    // AZIONI UTENTE (RINFRESCO E POSIZIONAMENTO SEPARATI)
+    // AZIONI UTENTE
     // ==========================================
     function spawnToast(txt) {
       const box = document.querySelector(".pet-canvas-viewport");
@@ -1625,22 +1800,19 @@
       setTimeout(() => sp.remove(), 1000);
     }
 
-    // 1. CAMBIO POSIZIONE (NON CAMBIA I VALORI ISTANTANEAMENTE: CONGELA IL TEMPO TRASCORSO E CAMBIA SOLO LA VELOCITÀ DA QUI IN AVANTI)
     function setEnvironment(inFridge) {
       if (appState.inFridge === inFridge) return;
       playRetroBeep('fridge');
 
-      // Calcola e fissa il tempo biologico trascorso finora
       const now = Date.now();
       const elapsedSegment = (now - appState.lastSwitchTimestamp) / 3600000;
       const rate = appState.inFridge ? 0.12 : 1.0;
       appState.accEquivalentHours += elapsedSegment * rate;
 
-      // Aggiorna ambiente e resetta il segmento di conteggio
       appState.inFridge = inFridge;
       appState.lastSwitchTimestamp = now;
 
-      spawnToast(inFridge ? "❄️ Messo in Frigo" : "🌡️ Messo a T Ambiente");
+      spawnToast(inFridge ? "❄️ In Frigo" : "🌡️ In Stanza");
       saveState();
       updateUI();
     }
@@ -1648,7 +1820,6 @@
     document.getElementById("btnLocFridge").addEventListener("click", () => setEnvironment(true));
     document.getElementById("btnLocRoom").addEventListener("click", () => setEnvironment(false));
 
-    // 2. RINFRESCO (REINIZIALIZZA IL CICLO BIOLOGICO)
     function executeFeed() {
       playRetroBeep('feed');
       spawnToast("✨");
@@ -1674,9 +1845,8 @@
 
       appState.lastFedTimestamp = now;
       appState.lastSwitchTimestamp = now;
-      appState.accEquivalentHours = 0; // reset totale: lievito nuovo e nutrito
+      appState.accEquivalentHours = 0;
 
-      // Resetta i flag di notifica
       localStorage.removeItem("last_peak_notif_time");
       localStorage.removeItem("last_starve_notif_time");
 
@@ -1687,10 +1857,8 @@
     document.getElementById("btnExecuteFeed").addEventListener("click", executeFeed);
     document.getElementById("btnNotifToggle").addEventListener("click", toggleNotifications);
 
-    // Fast Forward per Dev / Test
     function fastForwardHours(h) {
       playRetroBeep('click');
-      // Sposta indietro nel tempo l'inizio del segmento attuale per far scorrere le ore
       appState.lastSwitchTimestamp -= (h * 3600 * 1000);
       appState.lastFedTimestamp -= (h * 3600 * 1000);
       spawnToast(`⏩ +${h}h`);
@@ -1706,24 +1874,58 @@
       document.getElementById(id).classList.toggle("active");
     }
 
-    const questModal = document.getElementById("questModal");
-    document.getElementById("btnOpenQuestModal").addEventListener("click", () => {
-      document.querySelectorAll(".quest-item-btn").forEach(card => {
-        card.classList.toggle("active-quest", card.getAttribute("data-quest") === appState.activeQuest);
-      });
-      questModal.classList.add("open");
-    });
+    // ==========================================
+    // LOGICA QUIZ MULTI-STEP CON SCUOLE DI PENSIERO
+    // ==========================================
+    const quizModal = document.getElementById("quizModal");
+    const step1 = document.getElementById("quizStep1");
+    const step2 = document.getElementById("quizStep2");
+    const step3 = document.getElementById("quizStep3");
 
-    function selectQuest(questKey) {
+    function openQuizFlow() {
+      step1.style.display = "block";
+      step2.style.display = "none";
+      step3.style.display = "none";
+      quizModal.classList.add("open");
+    }
+
+    document.getElementById("btnOpenQuiz").addEventListener("click", openQuizFlow);
+    document.getElementById("badgeType").addEventListener("click", openQuizFlow);
+
+    function selectQuizYeast(type) {
+      playRetroBeep('click');
+      appState.yeastType = type;
+      step1.style.display = "none";
+      step2.style.display = "block";
+    }
+
+    function selectQuizSchool(schoolKey) {
+      playRetroBeep('click');
+      appState.school = schoolKey;
+
+      // Se sceglie scuola frigo mette in frigo, se scuola Tartine/Giorilli suggerisce ambiente
+      if (schoolKey === "fridge-modern") {
+        appState.inFridge = true;
+      } else {
+        appState.inFridge = false;
+      }
+      appState.lastSwitchTimestamp = Date.now();
+
+      step2.style.display = "none";
+      step3.style.display = "block";
+    }
+
+    function selectQuizQuest(questKey) {
       playRetroBeep('feed');
       appState.activeQuest = questKey;
-      questModal.classList.remove("open");
+      appState.hasDoneQuiz = true;
+      quizModal.classList.remove("open");
       saveState();
       updateUI();
     }
 
-    questModal.addEventListener("click", (e) => {
-      if (e.target === questModal) questModal.classList.remove("open");
+    quizModal.addEventListener("click", (e) => {
+      if (e.target === quizModal) quizModal.classList.remove("open");
     });
 
     // ==========================================
@@ -1732,6 +1934,12 @@
     updateNotifBtn();
     updateUI();
     renderStardewPixelYeast();
+
+    // Se primo avvio assoluto, apri il quiz iniziale!
+    if (!appState.hasDoneQuiz) {
+      openQuizFlow();
+    }
+
     setInterval(updateUI, 60000);
   </script>
 </body>
