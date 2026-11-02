@@ -1880,6 +1880,14 @@
       ctx.fillStyle = highlightDough;
       ctx.fillRect(cx - jarW/2 + 7, topY + 4, jarW - 14, 3);
 
+      // Strato scuro di hooch (liquido acetico / esausto) in digiuno estremo (hunger >= 88)
+      if (kin.hunger >= 88) {
+        ctx.fillStyle = "rgba(78, 59, 42, 0.72)";
+        ctx.fillRect(cx - jarW/2 + 3, topY + 2, jarW - 6, 6);
+        ctx.fillStyle = "rgba(120, 80, 50, 0.45)";
+        ctx.fillRect(cx - jarW/2 + 6, topY + 1, jarW - 12, 2);
+      }
+
       // Bordo a cupola pixel
       ctx.fillStyle = "#182C17";
       ctx.fillRect(cx - jarW/2 + 3, topY + 4, 7, 2);
@@ -1955,19 +1963,79 @@
         // Cuoricini pixel fluttuanti
         const hFloat = (tickCount % 50) * 0.6;
         ctx.fillStyle = "#F43F5E";
-        // Cuore 1
         ctx.fillRect(fX - 18, fY - 14 - hFloat, 2, 2);
         ctx.fillRect(fX - 14, fY - 14 - hFloat, 2, 2);
         ctx.fillRect(fX - 19, fY - 12 - hFloat, 7, 2);
         ctx.fillRect(fX - 17, fY - 10 - hFloat, 3, 2);
         ctx.fillRect(fX - 16, fY - 8 - hFloat, 1, 2);
-        // Cuore 2
+
         ctx.fillRect(fX + 16, fY - 20 - hFloat, 2, 2);
         ctx.fillRect(fX + 20, fY - 20 - hFloat, 2, 2);
         ctx.fillRect(fX + 15, fY - 18 - hFloat, 7, 2);
         ctx.fillRect(fX + 17, fY - 16 - hFloat, 3, 2);
 
-      // 2. TRANSIZIONE IN FRIGO (Freddoloso & Brividi)
+      // 2. SOFFERENZA ESTREMA: DIGIUNO CRITICO / K.O. TOTALE (hunger >= 90)
+      } else if (kin.hunger >= 90) {
+        // Occhi a X scuri da K.O.
+        ctx.fillStyle = "#7F1D1D";
+        ctx.fillRect(fX - 16, fY - 3, 2, 2);
+        ctx.fillRect(fX - 12, fY - 3, 2, 2);
+        ctx.fillRect(fX - 14, fY - 1, 2, 2);
+        ctx.fillRect(fX - 16, fY + 1, 2, 2);
+        ctx.fillRect(fX - 12, fY + 1, 2, 2);
+
+        ctx.fillRect(fX + 8, fY - 3, 2, 2);
+        ctx.fillRect(fX + 12, fY - 3, 2, 2);
+        ctx.fillRect(fX + 10, fY - 1, 2, 2);
+        ctx.fillRect(fX + 8, fY + 1, 2, 2);
+        ctx.fillRect(fX + 12, fY + 1, 2, 2);
+
+        // Occhiaie profonde da deperimento zuccherino
+        ctx.fillStyle = "rgba(78, 59, 42, 0.45)";
+        ctx.fillRect(fX - 18, fY + 4, 8, 2);
+        ctx.fillRect(fX + 6, fY + 4, 8, 2);
+
+        // Bocca esausta aperta e lingua a penzoloni
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 5, fY + 6, 10, 2);
+        ctx.fillStyle = "#B91C1C";
+        ctx.fillRect(fX - 2, fY + 8, 4, 4);
+
+        // Piccolo fantasmino pixel che fluttua via
+        const sFloat = (tickCount % 60) * 0.5;
+        ctx.fillStyle = "rgba(240, 240, 240, 0.75)";
+        ctx.fillRect(fX + 22, fY - 14 - sFloat, 7, 7);
+        ctx.fillRect(fX + 21, fY - 12 - sFloat, 9, 4);
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX + 23, fY - 13 - sFloat, 1, 2);
+        ctx.fillRect(fX + 26, fY - 13 - sFloat, 1, 2);
+
+      // 3. SOFFERENZA FRIGO: CONGELAMENTO DA ABBANDONO IN FRIGO (inFridge && hunger >= 80)
+      } else if (appState.inFridge && kin.hunger >= 80) {
+        // Occhi congelati strizzati
+        ctx.fillRect(fX - 15, fY - 2, 7, 2);
+        ctx.fillRect(fX - 13, fY, 5, 2);
+        ctx.fillRect(fX + 8, fY - 2, 7, 2);
+        ctx.fillRect(fX + 8, fY, 5, 2);
+
+        // Denti congelati e labbra violacee da freddo
+        ctx.fillStyle = "#A78BFA";
+        ctx.fillRect(fX - 20, fY + 3, 4, 3);
+        ctx.fillRect(fX + 16, fY + 3, 4, 3);
+
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 6, fY + 6, 12, 4);
+        ctx.fillStyle = "#E0F2FE";
+        ctx.fillRect(fX - 5, fY + 7, 10, 2);
+
+        // Ghiaccioli pixel appesi alle guance
+        ctx.fillStyle = "#BAE6FD";
+        ctx.fillRect(fX - 12, fY + 5, 2, 7);
+        ctx.fillRect(fX - 11, fY + 11, 1, 3);
+        ctx.fillRect(fX + 10, fY + 5, 2, 7);
+        ctx.fillRect(fX + 11, fY + 11, 1, 3);
+
+      // 4. TRANSIZIONE IN FRIGO (Freddoloso & Brividi ordinari)
       } else if (appState.inFridge && kin.isTransitioning) {
         // Occhi strizzati dal freddo (> <)
         ctx.fillRect(fX - 16, fY - 2, 8, 2);
@@ -1992,7 +2060,7 @@
         ctx.fillRect(fX + 20, fY - 6, 4, 3);
         ctx.fillRect(fX + 24, fY - 9, 3, 2);
 
-      // 3. SONNO PROFONDO IN FRIGO (+4°C)
+      // 5. SONNO PROFONDO IN FRIGO (+4°C)
       } else if (appState.inFridge) {
         // Occhi chiusi sereni (- -)
         ctx.fillRect(fX - 16, fY, 8, 2);
@@ -2008,7 +2076,7 @@
         ctx.fillText("z", fX + 24, fY - 12 - zFloat);
         ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
-      // 4. TRANSIZIONE STANZA (Sbadiglio & Risveglio)
+      // 6. TRANSIZIONE STANZA (Sbadiglio & Risveglio)
       } else if (!appState.inFridge && kin.isTransitioning) {
         // Occhi assonnati semichiusi
         ctx.fillRect(fX - 14, fY, 7, 2);
@@ -2034,7 +2102,7 @@
         ctx.fillRect(fX + 20, fY - 8 - wY, 2, 3);
         ctx.fillRect(fX + 24, fY - 12 - wY, 2, 3);
 
-      // 5. ASPRO / ACIDITÀ ELEVATA (Smorfia da limone)
+      // 7. SOFFERENZA ACIDA: BRUCIORE ACETICO & ACIDITÀ ELEVATA (needCorrection || pH < 3.8)
       } else if (kin.needCorrection || parseFloat(kin.pH) < 3.8) {
         // Occhi strizzati aciduli (> <)
         ctx.fillRect(fX - 15, fY - 3, 7, 2);
@@ -2044,30 +2112,68 @@
         ctx.fillRect(fX + 8, fY - 1, 5, 2);
         ctx.fillRect(fX + 8, fY + 1, 7, 2);
 
+        // Guance infiammate di rosso dal bruciore
+        ctx.fillStyle = "#EF4444";
+        ctx.fillRect(fX - 22, fY + 3, 5, 4);
+        ctx.fillRect(fX + 17, fY + 3, 5, 4);
+
         // Boccuccia arricciata asprissima
+        ctx.fillStyle = "#182C17";
         ctx.fillRect(fX - 2, fY + 5, 4, 4);
         ctx.fillStyle = "#EAB308";
         ctx.fillRect(fX - 1, fY + 6, 2, 2);
 
-        // Scintilla acida
-        ctx.fillStyle = "#FBBF24";
-        ctx.fillRect(fX + 22, fY - 4, 3, 3);
-        ctx.fillRect(fX + 23, fY - 7, 1, 3);
+        // Fumi e vapori acidi animati che salgono dal vaso
+        ctx.fillStyle = "rgba(234, 179, 8, 0.75)";
+        const acidPuff1 = (tickCount * 0.7) % 28;
+        const acidPuff2 = (tickCount * 0.7 + 14) % 28;
+        ctx.fillRect(fX - 22, topY - acidPuff1, 4, 4);
+        ctx.fillRect(fX - 24, topY - acidPuff1 - 3, 2, 2);
+        ctx.fillRect(fX + 20, topY - acidPuff2, 5, 4);
+        ctx.fillRect(fX + 22, topY - acidPuff2 - 3, 2, 2);
 
-      // 6. AFFAMATO / FAME ELEVATA (>75)
-      } else if (kin.hunger > 75) {
-        // Occhi stanchi e cadenti
-        ctx.fillRect(fX - 14, fY - 2, 7, 6);
-        ctx.fillRect(fX + 7, fY - 2, 7, 6);
-        // Bocca tremante da fame
-        ctx.fillRect(fX - 4, fY + 10, 8, 2);
-        ctx.fillRect(fX - 6, fY + 12, 2, 2);
-        ctx.fillRect(fX + 4, fY + 12, 2, 2);
+      // 8. SOFFERENZA FAME DISPERATA: PIANTO A CASCATA (hunger >= 78)
+      } else if (kin.hunger >= 78) {
+        // Occhi disperati chiusi a gronda ( ╥ ﹏ ╥ )
+        ctx.fillRect(fX - 16, fY - 2, 8, 2);
+        ctx.fillRect(fX - 16, fY, 2, 4);
+        ctx.fillRect(fX + 8, fY - 2, 8, 2);
+        ctx.fillRect(fX + 14, fY, 2, 4);
 
-        // Gocciolone di sudore blu anime
+        // Lacrime azzurre animate a cascata continua
         ctx.fillStyle = "#38BDF8";
-        ctx.fillRect(fX + 24, fY - 4, 4, 6);
-        ctx.fillRect(fX + 25, fY - 7, 2, 3);
+        const tearY = (tickCount * 1.6) % 18;
+        ctx.fillRect(fX - 14, fY + 4 + tearY, 2, 4);
+        ctx.fillRect(fX + 10, fY + 4 + tearY, 2, 4);
+        ctx.fillStyle = "#BAE6FD";
+        ctx.fillRect(fX - 16, fY + 22, 6, 1);
+        ctx.fillRect(fX + 8, fY + 22, 6, 1);
+
+        // Bocca tremante da pianto (ondina)
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 5, fY + 8, 2, 2);
+        ctx.fillRect(fX - 3, fY + 10, 2, 2);
+        ctx.fillRect(fX - 1, fY + 8, 2, 2);
+        ctx.fillRect(fX + 1, fY + 10, 2, 2);
+        ctx.fillRect(fX + 3, fY + 8, 2, 2);
+
+      // 9. SOFFERENZA FAME INIZIALE: SGONFIO & MALINCONICO (hunger >= 60)
+      } else if (kin.hunger >= 60) {
+        // Occhi languidi cadenti ( ◞ ‸ ◟ )
+        ctx.fillRect(fX - 15, fY, 7, 2);
+        ctx.fillRect(fX - 16, fY - 2, 3, 2);
+        ctx.fillRect(fX + 8, fY, 7, 2);
+        ctx.fillRect(fX + 13, fY - 2, 3, 2);
+
+        // Sorriso triste all'ingiù
+        ctx.fillRect(fX - 3, fY + 8, 6, 2);
+        ctx.fillRect(fX - 4, fY + 9, 2, 2);
+        ctx.fillRect(fX + 2, fY + 9, 2, 2);
+
+        // Goccia singola di spossatezza
+        ctx.fillStyle = "#38BDF8";
+        ctx.fillRect(fX + 20, fY - 2, 3, 4);
+        ctx.fillRect(fX + 21, fY - 4, 1, 2);
 
       // 7. APPENA RINFRESCATO (Pancia piena e soddisfatto)
       } else if ((Date.now() - appState.lastFedTimestamp < 1800000) || (parseFloat(kin.totalEffectiveHours) < 0.6)) {
@@ -2283,23 +2389,27 @@
       const speech = document.getElementById("speechBubble");
       if (Date.now() - lastPokeTime < 2600) {
         // Mantiene la reazione all'interazione se l'utente ha appena toccato il lievito
+      } else if (kin.hunger >= 90) {
+        speech.innerText = "💀 Aiuto, sono al collasso! Zuccheri a zero e strato di hooch scuro in superficie... salvami con un rinfresco d'urgenza 1:3!";
+      } else if (appState.inFridge && kin.hunger >= 80) {
+        speech.innerText = "🥶 Brrr... mi hai dimenticato in frigo da oltre 6 giorni! Ghiaccio e torpore, svegliami prima che muoia di fame!";
       } else if (appState.inFridge) {
         if (kin.isTransitioning) {
           speech.innerText = `❄️ Brrr... che brividi! Mi sto raffreddando (${kin.coreTemp}°C) verso i +4°C!`;
-        } else if (kin.hunger > 75) {
-          speech.innerText = "❄️ *Sbadiglio*... Sono in frigo da oltre 5 giorni, rinfrescami per non acidificare!";
         } else {
           speech.innerText = "❄️ Zzz... dormo beato a +4°C con fiocchi di neve. Amidi protetti per il fine settimana!";
         }
       } else {
-        if (parseFloat(kin.volume) >= 2.0) {
+        if (kin.needCorrection || parseFloat(kin.pH) < 3.8) {
+          speech.innerText = "🍋 Uff... che bruciore! Odoro di aceto pungente (pH " + kin.pH + "), serve subito un rinfresco lungo con acqua tiepida!";
+        } else if (kin.hunger >= 78) {
+          speech.innerText = "😭 Non ce la faccio più, ho troppa fame! Guarda che lacrime... ti prego, dammi farina fresca!";
+        } else if (kin.hunger >= 60) {
+          speech.innerText = "😮‍💨 Il picco è passato e mi sto sgonfiando... inizio ad avere fame, non farmi aspettare troppo!";
+        } else if (parseFloat(kin.volume) >= 2.0) {
           speech.innerText = `🚀 SONO AL PICCO! Spinta esplosiva, pronto per infornare!`;
         } else if (kin.isTransitioning) {
           speech.innerText = `🌡️ *Yaaawn*... mi sto risvegliando a temperatura ambiente (${kin.coreTemp}°C)!`;
-        } else if (kin.needCorrection || parseFloat(kin.pH) < 3.8) {
-          speech.innerText = "🍋 Uff... che asprezza! Sono un po' troppo acido, serve un rinfresco rigenerante!";
-        } else if (kin.hunger > 75) {
-          speech.innerText = "🚨 Aiuto, zuccheri finiti! Ho troppa fame!";
         } else if ((Date.now() - appState.lastFedTimestamp < 1800000) || (parseFloat(kin.totalEffectiveHours) < 0.6)) {
           speech.innerText = "😋 Slurp! Che banchetto, zuccheri freschi! Inizio a gonfiarmi di vita!";
         } else if (kin.vigor > 75 && parseFloat(kin.volume) >= 1.35) {
