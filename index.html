@@ -54,8 +54,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px 12px 60px;
-      line-height: 1.5;
+      padding: 10px 8px 24px;
+      line-height: 1.45;
     }
 
     .app-container {
@@ -63,7 +63,7 @@
       max-width: 470px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 8px;
     }
 
     /* TOP HEADER */
@@ -71,7 +71,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 2px 2px 4px;
+      padding: 0 2px 2px;
     }
 
     .brand-group {
@@ -175,12 +175,12 @@
     .hero-stage-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 18px 16px;
+      border-radius: 16px;
+      padding: 10px 12px;
       box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 7px;
     }
 
     .hero-meta-bar {
@@ -191,14 +191,14 @@
 
     .meta-badges {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       align-items: center;
     }
 
     .status-badge {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 6px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -220,9 +220,9 @@
     .loc-btn {
       background: transparent;
       border: none;
-      padding: 4px 8px;
+      padding: 3px 7px;
       border-radius: 6px;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
       color: var(--text-muted);
       cursor: pointer;
@@ -248,8 +248,8 @@
     .pet-canvas-viewport {
       background: #EFF6E9;
       border: 1.5px solid #D1E5C7;
-      border-radius: 14px;
-      padding: 12px 8px 10px;
+      border-radius: 12px;
+      padding: 4px 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -273,17 +273,18 @@
       image-rendering: pixelated;
       image-rendering: crisp-edges;
       max-width: 100%;
+      display: block;
     }
 
     .pixel-speech-box {
-      margin-top: 8px;
+      margin-top: 4px;
       background: #FFFFFF;
       border: 1px solid #D1E5C7;
-      border-radius: 8px;
-      padding: 7px 10px;
+      border-radius: 6px;
+      padding: 4px 8px;
       font-family: var(--pixel-font);
-      font-size: 0.52rem;
-      line-height: 1.45;
+      font-size: 0.48rem;
+      line-height: 1.35;
       color: #1A3319;
       text-align: center;
       width: 100%;
@@ -294,36 +295,36 @@
     .metrics-bar-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 4px;
       text-align: center;
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
     .metric-cell {
       background: var(--card-subtle);
       border-radius: 8px;
-      padding: 7px 4px;
+      padding: 4px 3px;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 1px;
     }
 
     .m-lbl {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
     }
 
     .m-val {
-      font-size: 0.92rem;
+      font-size: 0.85rem;
       font-weight: 800;
       color: var(--text-main);
     }
 
     .m-track {
-      height: 4px;
+      height: 3px;
       background: #E2E8F0;
       border-radius: 2px;
       overflow: hidden;
@@ -341,12 +342,12 @@
     .guide-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 10px 12px;
       box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 7px;
     }
 
     .guide-card-head {
@@ -356,18 +357,18 @@
     }
 
     .guide-label-title {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .guide-status-pill {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 6px;
     }
 
@@ -380,146 +381,22 @@
       100% { transform: scale(1.03); }
     }
 
-    .correction-warning {
-      background: #FEF2F2;
-      border: 1px solid #FECACA;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 0.74rem;
-      color: #991B1B;
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .action-instruction-box {
-      background: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 9px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .instruction-when {
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--amber-dark);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .instruction-text {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    /* SELETTORE RAPPORTO (1:1:1 / 1:2:2 / 1:3:3) */
-    .ratio-selector-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .ratio-lbl {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .ratio-pills {
-      display: flex;
-      background: var(--card-subtle);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2px;
-      gap: 2px;
-    }
-
-    .ratio-btn {
-      background: transparent;
-      border: none;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .ratio-btn.active {
-      background: #FFFFFF;
-      color: var(--amber-dark);
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* DOSI AL GRAMMO */
-    .doses-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      text-align: center;
-    }
-
-    .dose-card {
-      background: #FFFFFF;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 9px 4px;
-      transition: all 0.15s ease;
-    }
-
-    .dose-card:hover {
-      border-color: var(--amber-border);
-      background: #FFFDF9;
-    }
-
-    .dose-card .d-name {
-      font-size: 0.62rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .dose-card .d-qty {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin: 1px 0;
-    }
-
-    .dose-card .d-detail {
-      font-size: 0.62rem;
-      color: var(--text-light);
-      font-weight: 600;
-    }
-
-    /* TASTO DEDICATO ESCLUSIVAMENTE AL RINFRESCO */
+    /* TASTO DEDICATO ESCLUSIVAMENTE AL RINFRESCO (IN ALTO) */
     .btn-feed-action {
       background: linear-gradient(135deg, #F59E0B, #D97706);
       color: white;
       border: none;
-      padding: 13px 14px;
-      border-radius: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
       font-family: var(--sans-font);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);
+      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.25);
       transition: all 0.15s;
     }
 
@@ -532,18 +409,168 @@
       transform: translateY(1px);
     }
 
+    .correction-warning {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 0.72rem;
+      color: #991B1B;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    /* SELETTORE RAPPORTO E DOSI IN FORMATO COMPATTO ORIZZONTALE */
+    .doses-compact-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ratio-selector-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .ratio-lbl {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .ratio-pills {
+      display: flex;
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .ratio-btn {
+      background: transparent;
+      border: none;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ratio-btn.active {
+      background: #FFFFFF;
+      color: var(--amber-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .doses-chips-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .dose-chip {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
+    .dose-chip:hover {
+      border-color: var(--amber-border);
+      background: #FFFDF9;
+    }
+
+    .d-chip-lbl {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      line-height: 1;
+    }
+
+    .d-chip-qty {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      margin: 1px 0;
+    }
+
+    .d-chip-sub {
+      font-size: 0.56rem;
+      color: var(--text-light);
+      font-weight: 600;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .d-chip-op {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-light);
+      user-select: none;
+    }
+
+    .action-instruction-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .instruction-when {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--amber-dark);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .instruction-text {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
     /* BARRA SINTETICA OBIETTIVO & SCUOLA ATTIVA (NELLA HERO) */
     .hero-target-strip {
       background: var(--card-subtle);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 7px 10px;
+      border-radius: 8px;
+      padding: 5px 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
       transition: all 0.15s ease;
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
     .hero-target-strip:hover {
@@ -554,8 +581,8 @@
     .hero-target-content {
       display: flex;
       align-items: center;
-      gap: 7px;
-      font-size: 0.74rem;
+      gap: 6px;
+      font-size: 0.71rem;
       color: var(--text-main);
       overflow: hidden;
       white-space: nowrap;
@@ -565,22 +592,22 @@
     .strip-pill {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .target-divider {
       color: var(--border-strong);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
     }
 
     .edit-pill {
-      font-size: 0.66rem;
+      font-size: 0.64rem;
       font-weight: 700;
       color: var(--text-muted);
       background: var(--card-bg);
       border: 1px solid var(--border);
-      padding: 3px 7px;
-      border-radius: 6px;
+      padding: 2px 6px;
+      border-radius: 5px;
       flex-shrink: 0;
     }
 
@@ -588,21 +615,21 @@
     .insights-toolbar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-top: 2px;
-      margin-bottom: 8px;
+      gap: 6px;
+      margin-top: 1px;
+      margin-bottom: 2px;
     }
 
     .insight-pill-btn {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 6px;
+      border-radius: 10px;
+      padding: 7px 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      font-size: 0.74rem;
+      gap: 4px;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--text-main);
       cursor: pointer;
@@ -1097,7 +1124,7 @@
 
       <!-- CANVAS STAGE STARDEW VALLEY -->
       <div class="pet-canvas-viewport">
-        <canvas id="petCanvas" width="280" height="180"></canvas>
+        <canvas id="petCanvas" width="280" height="148"></canvas>
         <div class="pixel-speech-box" id="speechBubble">
           "Brrr! Sto riposando a +4°C. Gli amidi dureranno tutta la settimana!"
         </div>
@@ -1145,50 +1172,56 @@
         <span class="guide-status-pill pill-chill" id="statusPill">A RIPOSO IN FRIGO</span>
       </div>
 
+      <!-- TASTO DEDICATO ESCLUSIVAMENTE AL RINFRESCO IN PRIMO PIANO IN ALTO -->
+      <button class="btn-feed-action" id="btnExecuteFeed">
+        <span>🥣</span>
+        <span>Ho Fatto il Rinfresco! Registra</span>
+      </button>
+
       <div class="correction-warning" id="correctionBox" style="display: none;">
         <span>⚠️</span>
         <span id="correctionText">Digiuno prolungato: rinfresca 1:3 con acqua tiepida a 26°C.</span>
       </div>
 
+      <!-- SELETTORE RAPPORTO E DOSI IN FORMATO COMPATTO -->
+      <div class="doses-compact-box">
+        <div class="ratio-selector-row">
+          <span class="ratio-lbl">Rapporto:</span>
+          <div class="ratio-pills">
+            <button class="ratio-btn active" id="btnRatio111" onclick="setFeedRatio('1:1:1')">1:1:1 (Standard)</button>
+            <button class="ratio-btn" id="btnRatio122" onclick="setFeedRatio('1:2:2')">1:2:2</button>
+            <button class="ratio-btn" id="btnRatio133" onclick="setFeedRatio('1:3:3')">1:3:3 (Lungo)</button>
+          </div>
+        </div>
+
+        <div class="doses-chips-row">
+          <div class="dose-chip">
+            <span class="d-chip-lbl">Madre</span>
+            <div class="d-chip-qty" id="doseMadre">50g</div>
+            <span class="d-chip-sub">Dal vaso</span>
+          </div>
+          <span class="d-chip-op">+</span>
+          <div class="dose-chip">
+            <span class="d-chip-lbl">Farina</span>
+            <div class="d-chip-qty" id="doseFarina">50g</div>
+            <span class="d-chip-sub" id="doseFarinaHint">W 280-320</span>
+          </div>
+          <span class="d-chip-op">+</span>
+          <div class="dose-chip">
+            <span class="d-chip-lbl">Acqua</span>
+            <div class="d-chip-qty" id="doseAcqua">50g</div>
+            <span class="d-chip-sub" id="doseIdraHint">100% idr.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROSSIMO PASSAGGIO E INFO OPERATIVE COMPATTE -->
       <div class="action-instruction-box">
         <span class="instruction-when" id="focusTiming">PROSSIMO PASSAGGIO: VENERDÌ SERA</span>
         <p class="instruction-text" id="focusDesc">
           Il tuo lievito è protetto a +4°C. Per il tuo obiettivo (Pizza ad Alta Idratazione), lo sveglieremo venerdì sera per un doppio rinfresco di potenza!
         </p>
       </div>
-
-      <!-- SELETTORE RAPPORTO (1:1:1 / 1:2:2 / 1:3:3) -->
-      <div class="ratio-selector-row">
-        <span class="ratio-lbl">Rapporto:</span>
-        <div class="ratio-pills">
-          <button class="ratio-btn active" id="btnRatio111" onclick="setFeedRatio('1:1:1')">1:1:1 (Standard)</button>
-          <button class="ratio-btn" id="btnRatio122" onclick="setFeedRatio('1:2:2')">1:2:2</button>
-          <button class="ratio-btn" id="btnRatio133" onclick="setFeedRatio('1:3:3')">1:3:3 (Lungo)</button>
-        </div>
-      </div>
-
-      <div class="doses-grid">
-        <div class="dose-card">
-          <span class="d-name">Madre</span>
-          <div class="d-qty" id="doseMadre">50g</div>
-          <span class="d-detail">Dal vasetto</span>
-        </div>
-        <div class="dose-card">
-          <span class="d-name">Farina</span>
-          <div class="d-qty" id="doseFarina">100g</div>
-          <span class="d-detail" id="doseFarinaHint">W 280-320</span>
-        </div>
-        <div class="dose-card">
-          <span class="d-name">Acqua</span>
-          <div class="d-qty" id="doseAcqua">100g</div>
-          <span class="d-detail" id="doseIdraHint">100% idratazione</span>
-        </div>
-      </div>
-
-      <button class="btn-feed-action" id="btnExecuteFeed">
-        <span>🥣</span>
-        <span>Ho Fatto il Rinfresco! Registra</span>
-      </button>
     </section>
 
     <!-- TOOLBAR PULITA APPROFONDIMENTI IN BASSO (3 PILLOLE LEGGERE) -->
@@ -1748,7 +1781,7 @@
     for (let i = 0; i < 22; i++) {
       snowFlakes.push({
         x: Math.random() * 280,
-        y: Math.random() * 180,
+        y: Math.random() * 148,
         size: (i % 3 === 0 ? 3 : (i % 3 === 1 ? 2 : 1)),
         speedY: 0.35 + Math.random() * 0.45,
         speedX: 0.2 + Math.random() * 0.3,
@@ -1762,30 +1795,30 @@
       const kin = calculateKinetics();
 
       const cx = canvas.width / 2;
-      const jarW = 124;
-      const jarH = 138;
-      const jarTop = 18;
+      const jarW = 120;
+      const jarH = 118;
+      const jarTop = 8;
       const jarBottom = jarTop + jarH;
 
       // Ombra a terra pixel
       ctx.fillStyle = "rgba(24, 44, 23, 0.12)";
       for (let w = jarW + 8; w >= 20; w -= 16) {
-        ctx.fillRect(cx - w/2, jarBottom + 4 + (jarW + 8 - w)/8, w, 3);
+        ctx.fillRect(cx - w/2, jarBottom + 3 + (jarW + 8 - w)/8, w, 3);
       }
 
       // Corpo vaso vetro
       ctx.fillStyle = "rgba(205, 235, 200, 0.45)";
-      ctx.fillRect(cx - jarW/2, jarTop + 14, jarW, jarH - 14);
+      ctx.fillRect(cx - jarW/2, jarTop + 12, jarW, jarH - 12);
 
       // Riflessi Stardew
       ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
-      ctx.fillRect(cx - jarW/2 + 6, jarTop + 20, 3, jarH - 34);
-      ctx.fillRect(cx - jarW/2 + 11, jarTop + 24, 2, jarH - 42);
+      ctx.fillRect(cx - jarW/2 + 6, jarTop + 18, 3, jarH - 28);
+      ctx.fillRect(cx - jarW/2 + 11, jarTop + 22, 2, jarH - 36);
 
       // Bordo vaso
       ctx.fillStyle = "#182C17";
-      ctx.fillRect(cx - jarW/2, jarTop + 14, 3, jarH - 14);
-      ctx.fillRect(cx + jarW/2 - 3, jarTop + 14, 3, jarH - 14);
+      ctx.fillRect(cx - jarW/2, jarTop + 12, 3, jarH - 12);
+      ctx.fillRect(cx + jarW/2 - 3, jarTop + 12, 3, jarH - 12);
       ctx.fillRect(cx - jarW/2, jarBottom - 3, jarW, 3);
 
       ctx.fillRect(cx - jarW/2 + 3, jarBottom - 1, 3, 1);
@@ -1793,21 +1826,21 @@
 
       // Guarnizione arancio
       ctx.fillStyle = "#E06D53";
-      ctx.fillRect(cx - (jarW - 16)/2, jarTop + 10, jarW - 16, 4);
+      ctx.fillRect(cx - (jarW - 16)/2, jarTop + 9, jarW - 16, 3);
 
       // Coperchio legno rustico
       ctx.fillStyle = "#8D5B4C";
-      ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 10);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 9);
       ctx.fillStyle = "#B27C66";
       ctx.fillRect(cx - (jarW - 10)/2 + 2, jarTop + 2, jarW - 14, 2);
       ctx.fillStyle = "#182C17";
       ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 2);
-      ctx.fillRect(cx - (jarW - 10)/2, jarTop + 9, jarW - 10, 2);
-      ctx.fillRect(cx - (jarW - 10)/2, jarTop, 2, 10);
-      ctx.fillRect(cx + (jarW - 10)/2 - 2, jarTop, 2, 10);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop + 8, jarW - 10, 2);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, 2, 9);
+      ctx.fillRect(cx + (jarW - 10)/2 - 2, jarTop, 2, 9);
 
       // Elastico rosso
-      const bandY = jarBottom - 38;
+      const bandY = jarBottom - 32;
       ctx.fillStyle = "#E11D48";
       for (let x = cx - jarW/2 + 4; x < cx + jarW/2 - 4; x += 6) {
         ctx.fillRect(x, bandY, 3, 2);
@@ -1815,8 +1848,8 @@
 
       // Massa lievito volumetrica
       const currentVol = parseFloat(kin.volume);
-      const yeastHeight = Math.min(96, Math.floor(38 * currentVol));
-      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2.5));
+      const yeastHeight = Math.min(84, Math.floor(32 * currentVol));
+      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2));
       const topY = jarBottom - yeastHeight - pulse;
 
       const baseDough = appState.yeastType === 'licoli' ? "#FFF3D1" : "#F7E6BD";
@@ -1898,8 +1931,8 @@
         ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
         // FIOCCO DI NEVE HERO IN FRIGO (in alto a destra)
-        const sfX = cx + jarW/2 + 20;
-        const sfY = jarTop + 30 + Math.sin(tickCount * 0.05) * 4;
+        const sfX = cx + jarW/2 + 18;
+        const sfY = jarTop + 24 + Math.sin(tickCount * 0.05) * 3;
         ctx.fillStyle = "#93C5FD"; // Ice Blue
         ctx.fillRect(sfX - 4, sfY, 9, 1);
         ctx.fillRect(sfX, sfY - 4, 1, 9);
@@ -1918,17 +1951,17 @@
 
         // Cristalli di brina gelata sugli angoli del vasetto di vetro
         ctx.fillStyle = "rgba(224, 242, 254, 0.85)";
-        ctx.fillRect(cx - jarW/2 + 3, jarTop + 14, 8, 3);
-        ctx.fillRect(cx - jarW/2 + 3, jarTop + 17, 4, 4);
-        ctx.fillRect(cx - jarW/2 + 3, jarTop + 21, 2, 3);
-        ctx.fillRect(cx + jarW/2 - 11, jarTop + 14, 8, 3);
-        ctx.fillRect(cx + jarW/2 - 7, jarTop + 17, 4, 4);
-        ctx.fillRect(cx + jarW/2 - 5, jarTop + 21, 2, 3);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 12, 7, 3);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 15, 4, 3);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 18, 2, 3);
+        ctx.fillRect(cx + jarW/2 - 10, jarTop + 12, 7, 3);
+        ctx.fillRect(cx + jarW/2 - 7, jarTop + 15, 4, 3);
+        ctx.fillRect(cx + jarW/2 - 5, jarTop + 18, 2, 3);
 
-        ctx.fillRect(cx - jarW/2 + 3, jarBottom - 14, 3, 11);
-        ctx.fillRect(cx - jarW/2 + 6, jarBottom - 9, 4, 6);
-        ctx.fillRect(cx + jarW/2 - 6, jarBottom - 14, 3, 11);
-        ctx.fillRect(cx + jarW/2 - 10, jarBottom - 9, 4, 6);
+        ctx.fillRect(cx - jarW/2 + 3, jarBottom - 12, 3, 10);
+        ctx.fillRect(cx - jarW/2 + 6, jarBottom - 8, 4, 5);
+        ctx.fillRect(cx + jarW/2 - 6, jarBottom - 12, 3, 10);
+        ctx.fillRect(cx + jarW/2 - 10, jarBottom - 8, 4, 5);
 
         // Bufera pixel art: fiocchi e particelle di neve che cadono dolcemente
         snowFlakes.forEach(sf => {
