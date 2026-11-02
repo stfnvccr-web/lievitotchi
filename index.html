@@ -254,6 +254,19 @@
       flex-direction: column;
       align-items: center;
       position: relative;
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .pet-canvas-viewport.fridge-mode {
+      background: #E8F4FC;
+      border-color: #BAE0F8;
+      box-shadow: inset 0 0 25px rgba(186, 224, 248, 0.45);
+    }
+
+    .pet-canvas-viewport.fridge-mode .pixel-speech-box {
+      border-color: #BAE0F8;
+      color: #0C4A6E;
+      background: #FFFFFF;
     }
 
     canvas#petCanvas {
@@ -1731,6 +1744,18 @@
       { x: 30, y: 15, type: 'lab', speed: 0.22, phase: 4.1 }
     ];
 
+    const snowFlakes = [];
+    for (let i = 0; i < 22; i++) {
+      snowFlakes.push({
+        x: Math.random() * 280,
+        y: Math.random() * 180,
+        size: (i % 3 === 0 ? 3 : (i % 3 === 1 ? 2 : 1)),
+        speedY: 0.35 + Math.random() * 0.45,
+        speedX: 0.2 + Math.random() * 0.3,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
     function renderStardewPixelYeast() {
       tickCount++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1872,7 +1897,7 @@
         ctx.fillText("z", fX + 24, fY - 12 - zFloat);
         ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
-        // FIOCCO DI NEVE PIXEL ART IN FRIGO (in alto a destra)
+        // FIOCCO DI NEVE HERO IN FRIGO (in alto a destra)
         const sfX = cx + jarW/2 + 20;
         const sfY = jarTop + 30 + Math.sin(tickCount * 0.05) * 4;
         ctx.fillStyle = "#93C5FD"; // Ice Blue
@@ -1891,14 +1916,51 @@
         ctx.fillStyle = "#60A5FA";
         ctx.fillRect(sfX, sfY, 1, 1);
 
-        // Secondo piccolo fiocchetto fluttuante a sinistra
-        const sf2X = cx - jarW/2 - 16;
-        const sf2Y = jarTop + 55 + Math.cos(tickCount * 0.04) * 3;
-        ctx.fillStyle = "#BFDBFE";
-        ctx.fillRect(sf2X - 2, sf2Y, 5, 1);
-        ctx.fillRect(sf2X, sf2Y - 2, 1, 5);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(sf2X, sf2Y, 1, 1);
+        // Cristalli di brina gelata sugli angoli del vasetto di vetro
+        ctx.fillStyle = "rgba(224, 242, 254, 0.85)";
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 14, 8, 3);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 17, 4, 4);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 21, 2, 3);
+        ctx.fillRect(cx + jarW/2 - 11, jarTop + 14, 8, 3);
+        ctx.fillRect(cx + jarW/2 - 7, jarTop + 17, 4, 4);
+        ctx.fillRect(cx + jarW/2 - 5, jarTop + 21, 2, 3);
+
+        ctx.fillRect(cx - jarW/2 + 3, jarBottom - 14, 3, 11);
+        ctx.fillRect(cx - jarW/2 + 6, jarBottom - 9, 4, 6);
+        ctx.fillRect(cx + jarW/2 - 6, jarBottom - 14, 3, 11);
+        ctx.fillRect(cx + jarW/2 - 10, jarBottom - 9, 4, 6);
+
+        // Bufera pixel art: fiocchi e particelle di neve che cadono dolcemente
+        snowFlakes.forEach(sf => {
+          sf.y += sf.speedY;
+          sf.x += Math.sin(tickCount * 0.04 + sf.phase) * sf.speedX;
+          if (sf.y > canvas.height + 4) {
+            sf.y = -6;
+            sf.x = Math.random() * canvas.width;
+          }
+          if (sf.x < -6) sf.x = canvas.width + 4;
+          if (sf.x > canvas.width + 6) sf.x = -4;
+
+          const sX = Math.round(sf.x);
+          const sY = Math.round(sf.y);
+
+          if (sf.size === 3) {
+            ctx.fillStyle = "#BAE6FD";
+            ctx.fillRect(sX - 2, sY, 5, 1);
+            ctx.fillRect(sX, sY - 2, 1, 5);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(sX, sY, 1, 1);
+          } else if (sf.size === 2) {
+            ctx.fillStyle = "#93C5FD";
+            ctx.fillRect(sX - 1, sY, 3, 1);
+            ctx.fillRect(sX, sY - 1, 1, 3);
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(sX, sY, 1, 1);
+          } else {
+            ctx.fillStyle = (tickCount % 24 < 12) ? "#FFFFFF" : "#E0F2FE";
+            ctx.fillRect(sX, sY, 1, 1);
+          }
+        });
 
       } else if (kin.hunger > 75) {
         ctx.fillRect(fX - 14, fY - 2, 7, 6);
@@ -1960,6 +2022,10 @@
     function updateUI() {
       const kin = calculateKinetics();
 
+      // Sfondo azzurro ghiaccio per il frigo o verde caldo per la stanza
+      const viewport = document.querySelector(".pet-canvas-viewport");
+      if (viewport) viewport.classList.toggle("fridge-mode", appState.inFridge);
+
       document.getElementById("badgeType").innerText = appState.yeastType === 'licoli' ? "LICOLI 100%" : "SOLIDO 50%";
       document.getElementById("badgeStreak").innerText = `🔥 STREAK: x${appState.streakCount}`;
 
@@ -1989,18 +2055,22 @@
       // Baloon
       const speech = document.getElementById("speechBubble");
       if (appState.inFridge) {
-        if (kin.hunger > 75) {
+        if (kin.isTransitioning) {
+          speech.innerText = `❄️ Brrr... mi sto raffreddando in frigo! Temperatura attuale nel vaso: ${kin.coreTemp}°C`;
+        } else if (kin.hunger > 75) {
           speech.innerText = "❄️ *Sbadiglio*... Sono in frigo da oltre 5 giorni, rinfrescami per non acidificare!";
         } else {
-          speech.innerText = "❄️ Zzz... dormo tranquillo a +4°C. Mantengo le energie per il prossimo impasto!";
+          speech.innerText = "❄️ Zzz... dormo tranquillo a +4°C con fiocchi di neve. Mantengo le energie per il prossimo impasto!";
         }
       } else {
         if (parseFloat(kin.volume) >= 2.0) {
-          speech.innerText = `🚀 SONO AL PICCO! Pronto per: ${kin.currentQuest.name}!`;
+          speech.innerText = `🚀 SONO AL PICCO! Pronto per impastare!`;
+        } else if (kin.isTransitioning) {
+          speech.innerText = `🌡️ Mi sto riscaldando a stanza (${kin.coreTemp}°C). I lieviti iniziano a svegliarsi!`;
         } else if (kin.hunger > 75) {
           speech.innerText = "🚨 Aiuto, zuccheri finiti! Ho troppa fame!";
         } else {
-          speech.innerText = "🥖 Fermento a temperatura ambiente. La maglia glutinica si gonfia!";
+          speech.innerText = "🥖 Fermento vivace a temperatura ambiente. La maglia glutinica si gonfia!";
         }
       }
 
@@ -2044,7 +2114,12 @@
       if (r133) r133.classList.toggle("active", currentRatio === '1:3:3');
 
       if (appState.inFridge) {
-        if (kin.hunger > 75) {
+        if (kin.isTransitioning) {
+          pill.className = "guide-status-pill pill-chill";
+          pill.innerText = "❄️ RAFFREDDAMENTO";
+          timing.innerText = `TRANSIZIONE TERMICA: ${kin.coreTemp}°C (IN DISCESA A +4°C)`;
+          desc.innerText = `Il cuore del barattolo sta cedendo calore gradualmente. Durante queste 2 ore la fermentazione rallenta dolcemente.`;
+        } else if (kin.hunger > 75) {
           pill.className = "guide-status-pill pill-alert";
           pill.innerText = "RINFRESCO CONSIGLIATO";
           timing.innerText = "ENTRO OGGI O DOMANI";
@@ -2056,16 +2131,35 @@
           desc.innerText = `Il lievito è protetto a +4°C con rapporto ${currentRatio}. Estrarre 3-4 ore prima della panificazione!`;
         }
       } else {
-        if (parseFloat(kin.volume) >= 2.0) {
+        const ratio = appState.feedRatio || '1:1:1';
+        let peakTargetHours = 4.0;
+        if (ratio === '1:2:2') peakTargetHours = 6.0;
+        else if (ratio === '1:3:3') peakTargetHours = 8.5;
+
+        const effectivePassed = parseFloat(kin.totalEffectiveHours);
+        const hoursLeft = Math.max(0, peakTargetHours - effectivePassed);
+
+        if (parseFloat(kin.volume) >= 2.0 || (effectivePassed >= peakTargetHours * 0.95 && effectivePassed <= peakTargetHours * 1.6)) {
           pill.className = "guide-status-pill pill-bake";
           pill.innerText = "🔥 PICCO PERFETTO!";
           timing.innerText = "IMPASTA ORA!";
           desc.innerText = `Il lievito è al massimo sviluppo (${currentRatio}). Preleva la quota per il tuo impasto e rinfresca la madre rimanente!`;
+        } else if (effectivePassed > peakTargetHours * 1.6) {
+          pill.className = "guide-status-pill pill-alert";
+          pill.innerText = "OLTRE IL PICCO";
+          timing.innerText = "IN LIEVE CALO";
+          desc.innerText = `Ha superato il picco massimo e gli zuccheri calano. Rinfrescalo prima di impastare per la massima spinta.`;
         } else {
           pill.className = "guide-status-pill pill-alert";
           pill.innerText = "IN LIEVITAZIONE";
-          timing.innerText = "TRA CIRCA 1-3 ORE";
-          desc.innerText = `Sta lievitando verso il picco con rapporto ${currentRatio}. Tienilo a 24-26°C.`;
+
+          const peakDate = new Date(Date.now() + (hoursLeft * 3600 * 1000));
+          const timeStr = peakDate.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+          const hl = Math.floor(hoursLeft);
+          const ml = Math.round((hoursLeft - hl) * 60);
+
+          timing.innerText = `PICCO PREVISTO: ORE ${timeStr} (TRA ~${hl > 0 ? hl + 'h ' : ''}${ml}m)`;
+          desc.innerText = `Sta lievitando a temperatura ambiente con rapporto ${currentRatio}. Salirà fino a raddoppiare/triplicare.`;
         }
       }
 
