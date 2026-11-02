@@ -380,13 +380,13 @@
     }
 
     .action-instruction-box {
-      background: var(--card-subtle);
-      border-left: 3px solid var(--amber-gold);
-      border-radius: 4px 10px 10px 4px;
-      padding: 10px 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
     }
 
     .instruction-when {
@@ -394,11 +394,14 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--amber-gold);
+      color: var(--amber-dark);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .instruction-text {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       line-height: 1.4;
     }
@@ -407,14 +410,21 @@
     .doses-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+      gap: 8px;
       text-align: center;
     }
 
     .dose-card {
-      background: var(--card-subtle);
-      border-radius: 10px;
-      padding: 8px 4px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 4px;
+      transition: all 0.15s ease;
+    }
+
+    .dose-card:hover {
+      border-color: var(--amber-border);
+      background: #FFFDF9;
     }
 
     .dose-card .d-name {
@@ -422,6 +432,7 @@
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
     .dose-card .d-qty {
@@ -434,6 +445,7 @@
     .dose-card .d-detail {
       font-size: 0.62rem;
       color: var(--text-light);
+      font-weight: 600;
     }
 
     /* TASTO DEDICATO ESCLUSIVAMENTE AL RINFRESCO */
@@ -464,105 +476,228 @@
       transform: translateY(1px);
     }
 
-    /* CARD 3: PERCORSO & SCUOLA DI PENSIERO ATTIVA */
-    .feature-card {
+    /* BARRA SINTETICA OBIETTIVO & SCUOLA ATTIVA (NELLA HERO) */
+    .hero-target-strip {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-top: 2px;
+    }
+
+    .hero-target-strip:hover {
+      background: #F1F5F9;
+      border-color: var(--amber-gold);
+    }
+
+    .hero-target-content {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.74rem;
+      color: var(--text-main);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .strip-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .target-divider {
+      color: var(--border-strong);
+      font-size: 0.75rem;
+    }
+
+    .edit-pill {
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: var(--text-muted);
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
+      padding: 3px 7px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    /* TOOLBAR PULITA APPROFONDIMENTI IN BASSO */
+    .insights-toolbar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 2px;
+      margin-bottom: 8px;
+    }
+
+    .insight-pill-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
       box-shadow: var(--shadow-sm);
+      transition: all 0.15s ease;
+    }
+
+    .insight-pill-btn:hover {
+      background: var(--card-subtle);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .pill-badge {
+      background: #FEF3C7;
+      color: #B45309;
+      font-size: 0.6rem;
+      padding: 1px 4px;
+      border-radius: 5px;
+      font-weight: 800;
+    }
+
+    /* CASSETTO MODALE INFERIORE (DRAWER) PER GLI APPROFONDIMENTI */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1050;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-box {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 470px;
+      border-radius: 20px 20px 0 0;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.12);
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .drawer-backdrop.open .drawer-box {
+      transform: translateY(0);
+    }
+
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      background: #F8FAFC;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .drawer-tabs {
+      display: flex;
+      gap: 5px;
+      overflow-x: auto;
+    }
+
+    .d-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .d-tab:hover {
+      color: var(--text-main);
+    }
+
+    .d-tab.active {
+      background: #FFFFFF;
+      border-color: var(--border);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .drawer-close-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .drawer-close-btn:hover {
+      background: #F1F5F9;
+      color: var(--text-main);
+    }
+
+    .drawer-body {
+      padding: 16px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .target-choice-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .target-desc-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .target-icon-box {
-      font-size: 1.5rem;
-      width: 40px;
-      height: 40px;
-      background: var(--card-subtle);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .target-name-h4 {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .target-stage-p {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    .btn-action-small {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 5px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .btn-action-small:hover {
-      background: var(--card-subtle);
-    }
-
-    /* BANNER SCUOLA DI PENSIERO ATTIVA */
-    .school-active-banner {
-      background: var(--card-subtle);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .school-icon-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .school-title-text {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .school-desc-text {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    /* READINESS BAR */
-    .readiness-track-box {
-      background: var(--card-subtle);
-      border-radius: 10px;
-      padding: 8px 12px;
+    .drawer-panel {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 12px;
+    }
+
+    .drawer-summary-pill {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .science-readiness-row {
+      background: var(--card-subtle);
+      border-radius: 10px;
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .readiness-meta-row {
@@ -586,59 +721,19 @@
       transition: width 0.3s;
     }
 
-    /* ACCORDION SCIENZA & STORICO */
-    .accordion-item {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .accordion-header {
-      padding: 10px 12px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-main);
-      user-select: none;
-      background: var(--card-bg);
-      transition: background 0.15s;
-    }
-
-    .accordion-header:hover {
-      background: var(--card-subtle);
-    }
-
-    .accordion-content {
-      padding: 12px;
-      display: none;
-      border-top: 1px solid var(--border);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-      background: var(--card-subtle);
-    }
-
-    .accordion-item.active .accordion-content {
-      display: block;
-    }
-
     .bio-scanner-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
       font-family: var(--mono-font);
       font-size: 0.76rem;
-      margin-bottom: 8px;
     }
 
     .bio-badge-stat {
       background: #FFFFFF;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 6px 8px;
+      border-radius: 8px;
+      padding: 8px 10px;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -660,9 +755,31 @@
     .history-row {
       display: flex;
       justify-content: space-between;
-      padding: 6px 0;
+      padding: 7px 0;
       border-bottom: 1px dashed var(--border);
       font-size: 0.78rem;
+    }
+
+    .sos-card {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sos-card h4 {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .sos-card p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.45;
     }
 
     /* MODALE COMPLETA QUIZ DI ONBOARDING / CONFIGURAZIONE */
@@ -875,6 +992,16 @@
           <div class="m-track"><div class="m-fill" id="barVolume" style="width: 35%;"></div></div>
         </div>
       </div>
+
+      <!-- BARRA SINTETICA OBIETTIVO & SCUOLA ATTIVA -->
+      <div class="hero-target-strip" id="btnOpenQuiz" title="Clicca per cambiare lievito, scuola o obiettivo">
+        <div class="hero-target-content">
+          <span class="strip-pill quest-pill"><span id="questIcon">🍕</span> <strong id="questTargetName">Pizza & Focaccia</strong></span>
+          <span class="target-divider">•</span>
+          <span class="strip-pill school-pill"><span id="schoolIcon">❄️</span> <span id="schoolName">Scuola Frigo & Weekend</span></span>
+        </div>
+        <span class="edit-pill">⚙️ Config</span>
+      </div>
     </section>
 
     <!-- CARD 2: GUIDA OPERATIVA & TASTO RINFRESCO CON BILANCIA AL GRAMMO -->
@@ -920,47 +1047,45 @@
       </button>
     </section>
 
-    <!-- CARD 3: PERCORSO TARGET & SCUOLA DI PENSIERO ATTIVA -->
-    <section class="feature-card">
-      <div class="target-choice-bar">
-        <div class="target-desc-left">
-          <div class="target-icon-box" id="questIcon">🍕</div>
-          <div>
-            <h4 class="target-name-h4" id="questTargetName">Pizza & Focaccia (75-80%)</h4>
-            <p class="target-stage-p" id="questStageLabel">Livello 2: Spinta aromatica media</p>
+    <!-- TOOLBAR PULITA APPROFONDIMENTI IN BASSO (3 PILLOLE LEGGERE) -->
+    <nav class="insights-toolbar">
+      <button class="insight-pill-btn" onclick="openDrawer('science')">
+        <span>🔬</span>
+        <span>Bio-Scanner</span>
+      </button>
+      <button class="insight-pill-btn" onclick="openDrawer('history')">
+        <span>📜</span>
+        <span>Storico</span>
+        <span class="pill-badge" id="pillStreakCount">x3</span>
+      </button>
+      <button class="insight-pill-btn" onclick="openDrawer('help')">
+        <span>🩺</span>
+        <span>Guida SOS</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- CASSETTO APPROFONDIMENTI SCIENTIFICI & SOS (DRAWER MODALE) -->
+  <div class="drawer-backdrop" id="insightsDrawer" onclick="handleDrawerBackdrop(event)">
+    <div class="drawer-box">
+      <div class="drawer-head">
+        <div class="drawer-tabs">
+          <button class="d-tab active" id="tabBtnScience" onclick="switchDrawerTab('science')">🔬 Bio-Scanner</button>
+          <button class="d-tab" id="tabBtnHistory" onclick="switchDrawerTab('history')">📜 Storico</button>
+          <button class="d-tab" id="tabBtnHelp" onclick="switchDrawerTab('help')">🩺 Guida SOS</button>
+        </div>
+        <button class="drawer-close-btn" onclick="closeDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <!-- PANNELLO 1: BIO-SCANNER & READINESS -->
+        <div class="drawer-panel" id="panelScience">
+          <div class="drawer-summary-pill">
+            <span id="questStageLabel" style="font-weight:700; color:var(--text-main);">Livello 2: Spinta aromatica media</span>
+            <div id="schoolDesc" style="color:var(--text-muted); font-size:0.72rem; margin-top:2px;">Mantenimento freddo 4°C, risveglio 24h prima. Zero spreco.</div>
           </div>
-        </div>
-        <button class="btn-action-small" id="btnOpenQuiz">Quiz / Config</button>
-      </div>
 
-      <!-- BANNER SCUOLA DI PENSIERO ATTIVA -->
-      <div class="school-active-banner">
-        <div class="school-icon-title">
-          <span id="schoolIcon" style="font-size:1.4rem;">❄️</span>
-          <div>
-            <div class="school-title-text" id="schoolName">Scuola Frigo & Weekend (Bonci/Casalingo)</div>
-            <div class="school-desc-text" id="schoolDesc">Mantenimento freddo 4°C, risveglio 24h prima. Zero spreco.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="readiness-track-box">
-        <div class="readiness-meta-row">
-          <span>Stabilità Storica Lievito:</span>
-          <span id="readinessScore" style="color:var(--emerald);">78% • Pronto</span>
-        </div>
-        <div class="readiness-bar-track">
-          <div class="readiness-bar-fill" id="readinessFill" style="width: 78%;"></div>
-        </div>
-      </div>
-
-      <!-- ACCORDION 1: BIO-SCANNER SCIENTIFICO -->
-      <div class="accordion-item" id="accScience">
-        <div class="accordion-header" onclick="toggleAcc('accScience')">
-          <span>🔬 Bio-Scanner Microbiologico</span>
-          <span>▼</span>
-        </div>
-        <div class="accordion-content">
           <div class="bio-scanner-grid">
             <div class="bio-badge-stat">
               <span class="lbl">Temperatura Reale</span>
@@ -979,38 +1104,48 @@
               <span class="val" id="bioLabPop">~1.5 × 10⁸</span>
             </div>
           </div>
-          <p style="font-size:0.74rem;"><strong>Rapporto Acidi:</strong> <span id="bioAcidRatio">3.8 : 1 (Equilibrato)</span></p>
-        </div>
-      </div>
 
-      <!-- ACCORDION 2: STORICO & STREAK -->
-      <div class="accordion-item" id="accHistory">
-        <div class="accordion-header" onclick="toggleAcc('accHistory')">
-          <span>📜 Storico Rinfreschi & Regolarità</span>
-          <span style="color:var(--amber-gold); font-size:0.75rem;">Streak: x3</span>
+          <div style="font-size:0.76rem; color:var(--text-muted); background:var(--card-subtle); padding:8px 10px; border-radius:8px; border:1px solid var(--border);">
+            ⚖️ <strong>Rapporto Acidi:</strong> <span id="bioAcidRatio" style="font-weight:700; color:var(--text-main);">3.8 : 1 (Equilibrato)</span>
+          </div>
+
+          <div class="science-readiness-row">
+            <div class="readiness-meta-row">
+              <span>Stabilità Storica Lievito:</span>
+              <span id="readinessScore" style="color:var(--emerald);">78% • Pronto</span>
+            </div>
+            <div class="readiness-bar-track">
+              <div class="readiness-bar-fill" id="readinessFill" style="width: 78%;"></div>
+            </div>
+          </div>
         </div>
-        <div class="accordion-content">
+
+        <!-- PANNELLO 2: STORICO RINFRESCHI -->
+        <div class="drawer-panel" id="panelHistory" style="display: none;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.78rem; font-weight:700; color:var(--text-muted);">Registro Rinfreschi</span>
+            <span style="color:var(--amber-gold); font-size:0.75rem; font-weight:800;" id="drawerStreakLabel">Streak: x3</span>
+          </div>
           <div id="historyList"></div>
         </div>
-      </div>
 
-      <!-- ACCORDION 3: GUIDA SOS CLINICA -->
-      <div class="accordion-item" id="accHelp">
-        <div class="accordion-header" onclick="toggleAcc('accHelp')">
-          <span>🩺 Guida SOS: Odori & Correzioni</span>
-          <span>▼</span>
+        <!-- PANNELLO 3: GUIDA SOS CLINICA -->
+        <div class="drawer-panel" id="panelHelp" style="display: none;">
+          <div class="sos-card">
+            <h4>🎯 Test del Galleggiamento</h4>
+            <p>Prendi un cucchiaino di lievito al picco e poggialo in un bicchiere d'acqua tiepida. Se galleggia, è ricco di anidride carbonica ed è pronto per impastare!</p>
+          </div>
+          <div class="sos-card">
+            <h4>🍋 Odore pungente di aceto</h4>
+            <p>I batteri eterofermentanti hanno prevalso. Rinfresca con rapporto 1:3 o 1:4 con acqua a 26-28°C per favorire la flora lattica dolce.</p>
+          </div>
+          <div class="sos-card">
+            <h4>💧 Liquido scuro in superficie</h4>
+            <p>Fame prolungata. Elimina il liquido, scarta la crosta superficiale ossidata e rinfresca solo 30g prelevati dal cuore.</p>
+          </div>
         </div>
-        <div class="accordion-content">
-          <p><strong>🎯 Test del Galleggiamento:</strong> Prendi un cucchiaino di lievito al picco e poggialo in un bicchiere d'acqua tiepida. Se galleggia, è pronto per impastare!</p>
-          <br>
-          <p><strong>🍋 Odore pungente di aceto:</strong> I batteri eterofermentanti hanno prevalso. Rinfresca con rapporto 1:3 con acqua a 26°C.</p>
-          <br>
-          <p><strong>💧 Liquido scuro in superficie:</strong> Fame prolungata. Elimina il liquido, togli la crosta e rinfresca solo 30g dal cuore.</p>
-        </div>
       </div>
-
-    </section>
-
+    </div>
   </div>
 
   <!-- MODALE MULTI-STEP QUIZ: LIEVITO + SCUOLA DI PENSIERO + OBIETTIVO -->
@@ -1769,6 +1904,11 @@
 
       renderHistory();
       checkNotificationNeed(kin);
+
+      const pillStreak = document.getElementById("pillStreakCount");
+      if (pillStreak) pillStreak.innerText = "x" + appState.streak;
+      const drawerStreak = document.getElementById("drawerStreakLabel");
+      if (drawerStreak) drawerStreak.innerText = "Streak: x" + appState.streak;
     }
 
     function renderHistory() {
@@ -1870,8 +2010,38 @@
     document.getElementById("btnFast24h").addEventListener("click", () => fastForwardHours(24));
     document.getElementById("btnFast72h").addEventListener("click", () => fastForwardHours(72));
 
+    function openDrawer(tabName) {
+      playRetroBeep('click');
+      const drawer = document.getElementById("insightsDrawer");
+      drawer.classList.add("open");
+      switchDrawerTab(tabName);
+    }
+
+    function closeDrawer() {
+      playRetroBeep('click');
+      document.getElementById("insightsDrawer").classList.remove("open");
+    }
+
+    function handleDrawerBackdrop(e) {
+      if (e.target.id === "insightsDrawer") {
+        closeDrawer();
+      }
+    }
+
+    function switchDrawerTab(tabName) {
+      playRetroBeep('click');
+      const tabs = ['science', 'history', 'help'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const pnl = document.getElementById(`panel${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (btn) btn.classList.toggle('active', t === tabName);
+        if (pnl) pnl.style.display = (t === tabName) ? 'flex' : 'none';
+      });
+    }
+
     function toggleAcc(id) {
-      document.getElementById(id).classList.toggle("active");
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle("active");
     }
 
     // ==========================================
