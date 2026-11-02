@@ -929,6 +929,9 @@
         </div>
       </div>
       <div class="header-tools">
+        <button class="btn-utility" id="btnAudioToggle" title="Audio">
+          <span id="audioIcon">🔇</span>
+        </button>
         <button class="btn-utility" id="btnNotifToggle" title="Notifiche browser quando serve rinfrescare">
           <span id="notifIcon">🔔</span>
           <span id="notifText">Notifiche</span>
@@ -1354,7 +1357,7 @@
       accEquivalentHours: 5.0,
       lastSwitchTimestamp: Date.now() - (42 * 3600 * 1000),
       lastFedTimestamp: Date.now() - (42 * 3600 * 1000),
-      soundEnabled: true,
+      soundEnabled: false,
       notifEnabled: false,
       streakCount: 3,
       history: [
@@ -1450,12 +1453,37 @@
       }
     }
 
+    function toggleAudio() {
+      appState.soundEnabled = !appState.soundEnabled;
+      saveState();
+      updateAudioBtn();
+      if (appState.soundEnabled) {
+        playRetroBeep('feed');
+      }
+    }
+
+    function updateAudioBtn() {
+      const btn = document.getElementById("btnAudioToggle");
+      const icon = document.getElementById("audioIcon");
+      if (!btn || !icon) return;
+      if (appState.soundEnabled) {
+        btn.classList.add("active");
+        icon.innerText = "🔊";
+        btn.title = "Audio attivo (clicca per silenziare)";
+      } else {
+        btn.classList.remove("active");
+        icon.innerText = "🔇";
+        btn.title = "Audio disattivato (clicca per attivare)";
+      }
+    }
+
     // ==========================================
-    // AUDIO RETRO
+    // EFFETTI SONORI (DISATTIVATI DI DEFAULT, MORBIDI E NON INVASIVI)
     // ==========================================
     let audioCtx = null;
     function playRetroBeep(type) {
       if (!appState.soundEnabled) return;
+      if (type === 'click') return; // Nessun suono su click ordinari o navigazione
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -1467,30 +1495,24 @@
         const t = audioCtx.currentTime;
 
         if (type === 'feed') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(440, t);
-          osc.frequency.setValueAtTime(554.37, t + 0.08);
-          osc.frequency.setValueAtTime(659.25, t + 0.16);
-          osc.frequency.setValueAtTime(880, t + 0.24);
-          gain.gain.setValueAtTime(0.2, t);
-          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
+          // Morbido chime melodico
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, t); // C5
+          osc.frequency.setValueAtTime(659.25, t + 0.08); // E5
+          osc.frequency.setValueAtTime(783.99, t + 0.16); // G5
+          gain.gain.setValueAtTime(0.05, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
           osc.start(t);
           osc.stop(t + 0.35);
-        } else if (type === 'click') {
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(460, t);
-          gain.gain.setValueAtTime(0.08, t);
-          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.08);
-          osc.start(t);
-          osc.stop(t + 0.08);
         } else if (type === 'fridge') {
+          // Delicata sfumatura termica a campana
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(620, t);
-          osc.frequency.linearRampToValueAtTime(260, t + 0.24);
-          gain.gain.setValueAtTime(0.15, t);
-          gain.gain.exponentialRampToValueAtTime(0.01, t + 0.26);
+          osc.frequency.setValueAtTime(440, t);
+          osc.frequency.exponentialRampToValueAtTime(220, t + 0.2);
+          gain.gain.setValueAtTime(0.04, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
           osc.start(t);
-          osc.stop(t + 0.26);
+          osc.stop(t + 0.22);
         }
       } catch(e) {}
     }
@@ -1906,9 +1928,9 @@
       checkNotificationNeed(kin);
 
       const pillStreak = document.getElementById("pillStreakCount");
-      if (pillStreak) pillStreak.innerText = "x" + appState.streak;
+      if (pillStreak) pillStreak.innerText = "x" + (appState.streakCount || 1);
       const drawerStreak = document.getElementById("drawerStreakLabel");
-      if (drawerStreak) drawerStreak.innerText = "Streak: x" + appState.streak;
+      if (drawerStreak) drawerStreak.innerText = "Streak: x" + (appState.streakCount || 1);
     }
 
     function renderHistory() {
@@ -1996,6 +2018,7 @@
 
     document.getElementById("btnExecuteFeed").addEventListener("click", executeFeed);
     document.getElementById("btnNotifToggle").addEventListener("click", toggleNotifications);
+    document.getElementById("btnAudioToggle").addEventListener("click", toggleAudio);
 
     function fastForwardHours(h) {
       playRetroBeep('click');
@@ -2102,6 +2125,7 @@
     // AVVIO
     // ==========================================
     updateNotifBtn();
+    updateAudioBtn();
     updateUI();
     renderStardewPixelYeast();
 
