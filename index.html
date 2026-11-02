@@ -406,6 +406,49 @@
       line-height: 1.4;
     }
 
+    /* SELETTORE RAPPORTO (1:1:1 / 1:2:2 / 1:3:3) */
+    .ratio-selector-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .ratio-lbl {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .ratio-pills {
+      display: flex;
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .ratio-btn {
+      background: transparent;
+      border: none;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ratio-btn.active {
+      background: #FFFFFF;
+      color: var(--amber-dark);
+      box-shadow: var(--shadow-sm);
+    }
+
     /* DOSI AL GRAMMO */
     .doses-grid {
       display: grid;
@@ -877,6 +920,81 @@
       flex-shrink: 0;
     }
 
+    /* CONFIGURATORE PROFILO PERSONALIZZATO */
+    .cfg-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cfg-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .cfg-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .cfg-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .cfg-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .cfg-btn {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 6px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      text-align: center;
+      font-family: var(--sans-font);
+      transition: all 0.15s ease;
+    }
+
+    .cfg-btn:hover {
+      border-color: var(--amber-gold);
+      background: var(--card-subtle);
+    }
+
+    .cfg-btn.active {
+      border-color: var(--amber-gold);
+      background: var(--amber-light);
+      color: var(--amber-dark);
+    }
+
+    .cfg-btn strong {
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .cfg-btn span {
+      font-size: 0.64rem;
+      color: var(--text-muted);
+      line-height: 1.2;
+    }
+
+    .cfg-btn.active span {
+      color: var(--amber-dark);
+    }
+
     .opt-content h5 {
       font-size: 0.88rem;
       font-weight: 800;
@@ -1026,6 +1144,16 @@
         </p>
       </div>
 
+      <!-- SELETTORE RAPPORTO (1:1:1 / 1:2:2 / 1:3:3) -->
+      <div class="ratio-selector-row">
+        <span class="ratio-lbl">Rapporto:</span>
+        <div class="ratio-pills">
+          <button class="ratio-btn active" id="btnRatio111" onclick="setFeedRatio('1:1:1')">1:1:1 (Standard)</button>
+          <button class="ratio-btn" id="btnRatio122" onclick="setFeedRatio('1:2:2')">1:2:2</button>
+          <button class="ratio-btn" id="btnRatio133" onclick="setFeedRatio('1:3:3')">1:3:3 (Lungo)</button>
+        </div>
+      </div>
+
       <div class="doses-grid">
         <div class="dose-card">
           <span class="d-name">Madre</span>
@@ -1151,125 +1279,91 @@
     </div>
   </div>
 
-  <!-- MODALE MULTI-STEP QUIZ: LIEVITO + SCUOLA DI PENSIERO + OBIETTIVO -->
+  <!-- MODALE PROFILO LIEVITO PERSONALIZZATO -->
   <div class="modal-backdrop" id="quizModal">
     <div class="modal-box">
+      <div class="quiz-step-head">
+        <h3 class="quiz-title">⚙️ Profilo del tuo Lievito</h3>
+        <button class="drawer-close-btn" onclick="closeQuizModal()">✕</button>
+      </div>
+      <p class="quiz-desc">Configura il tuo starter, il rapporto di rinfresco abituale e la routine:</p>
 
-      <!-- STEP 1: QUALE LIEVITO HAI? -->
-      <div id="quizStep1">
-        <div class="quiz-step-head">
-          <h3 class="quiz-title">🌾 Che lievito madre hai?</h3>
-          <span class="quiz-step-counter">STEP 1/3</span>
-        </div>
-        <p class="quiz-desc">Impostiamo il bilanciamento esatto dell'acqua per ogni rinfresco:</p>
-
-        <div class="quiz-options-list">
-          <div class="quiz-opt-card" onclick="selectQuizYeast('licoli')">
-            <span class="opt-icon">🫧</span>
-            <div class="opt-content">
-              <h5>Li.Co.Li (Lievito Liquido) <span class="opt-tag-recommend">Consigliato</span></h5>
-              <p>Idratazione 100%: pari peso farina e acqua. Cremoso, velocissimo da mescolare, non serve sporcarsi le mani.</p>
-            </div>
-          </div>
-
-          <div class="quiz-opt-card" onclick="selectQuizYeast('solido')">
-            <span class="opt-icon">🍞</span>
-            <div class="opt-content">
-              <h5>Pasta Madre Solida (Tradizionale)</h5>
-              <p>Idratazione ~50%: l'acqua è la metà del peso della farina. Compatta a pagnotta, ideale per panettone e sfogliati.</p>
-            </div>
-          </div>
+      <!-- 1. TIPO DI STARTER -->
+      <div class="cfg-section">
+        <label class="cfg-label">TIPO DI STARTER</label>
+        <div class="cfg-grid-2">
+          <button class="cfg-btn active" id="btnCfgLicoli" onclick="setProfileYeast('licoli')">
+            <strong style="font-size:1.05rem;">🫧 Li.Co.Li</strong>
+            <span>100% idratazione (liquido)</span>
+          </button>
+          <button class="cfg-btn" id="btnCfgSolido" onclick="setProfileYeast('solido')">
+            <strong style="font-size:1.05rem;">🍞 Pasta Madre</strong>
+            <span>50% idratazione (solido)</span>
+          </button>
         </div>
       </div>
 
-      <!-- STEP 2: SCUOLA DI PENSIERO SULLA GESTIONE -->
-      <div id="quizStep2" style="display: none;">
-        <div class="quiz-step-head">
-          <h3 class="quiz-title">🏛️ Che Scuola di Pensiero preferisci?</h3>
-          <span class="quiz-step-counter">STEP 2/3</span>
+      <!-- 2. RAPPORTO DI RINFRESCO -->
+      <div class="cfg-section">
+        <label class="cfg-label">RAPPORTO ABITUALE DI RINFRESCO</label>
+        <div class="cfg-grid-3">
+          <button class="cfg-btn active" id="btnCfgRatio111" onclick="setProfileRatio('1:1:1')">
+            <strong>1:1:1</strong>
+            <span>Standard (~4h)</span>
+          </button>
+          <button class="cfg-btn" id="btnCfgRatio122" onclick="setProfileRatio('1:2:2')">
+            <strong>1:2:2</strong>
+            <span>Weekend (~6h)</span>
+          </button>
+          <button class="cfg-btn" id="btnCfgRatio133" onclick="setProfileRatio('1:3:3')">
+            <strong>1:3:3</strong>
+            <span>Lungo (~8.5h)</span>
+          </button>
         </div>
-        <p class="quiz-desc">La gestione cambia radicalmente tempi, conservazione e profilo aromatico:</p>
+      </div>
 
+      <!-- 3. QUANTITÀ MADRE DA USARE -->
+      <div class="cfg-section">
+        <label class="cfg-label">PESO MADRE BASE DAL VASETTO</label>
+        <div class="cfg-grid-4">
+          <button class="cfg-btn" id="btnDose30" onclick="setProfileStarterGrams(30)"><strong>30g</strong><span>Min</span></button>
+          <button class="cfg-btn active" id="btnDose50" onclick="setProfileStarterGrams(50)"><strong>50g</strong><span>Med</span></button>
+          <button class="cfg-btn" id="btnDose70" onclick="setProfileStarterGrams(70)"><strong>70g</strong><span>Gen</span></button>
+          <button class="cfg-btn" id="btnDose100" onclick="setProfileStarterGrams(100)"><strong>100g</strong><span>Max</span></button>
+        </div>
+      </div>
+
+      <!-- 4. ROUTINE DI CONSERVAZIONE -->
+      <div class="cfg-section">
+        <label class="cfg-label">ROUTINE DI GESTIONE</label>
         <div class="quiz-options-list">
-          <!-- 1. Bonci / Moderna Frigo -->
-          <div class="quiz-opt-card" onclick="selectQuizSchool('fridge-modern')">
+          <div class="quiz-opt-card active" id="optSchoolFridge" onclick="setProfileSchool('fridge-modern')">
             <span class="opt-icon">❄️</span>
             <div class="opt-content">
-              <h5>Scuola Frigo & Weekend (Bonci / Pratica) <span class="opt-tag-recommend">Scelta Top</span></h5>
-              <p><strong>Filosofia:</strong> Lievito dorme in frigo a +4°C tutta la settimana. Risveglio venerdì, zero scarti. Ideale per la vita reale e per pizza in teglia.</p>
+              <h5>Frigo & Weekend (Zero spreco)</h5>
+              <p>Dorme a +4°C tutta la settimana. Risveglio il venerdì per panificare sabato o domenica.</p>
             </div>
           </div>
-
-          <!-- 2. Giorilli / Maestri Lievitisti -->
-          <div class="quiz-opt-card" onclick="selectQuizSchool('giorilli-classic')">
+          <div class="quiz-opt-card" id="optSchoolRoom" onclick="setProfileSchool('tartine-wild')">
+            <span class="opt-icon">🌡️</span>
+            <div class="opt-content">
+              <h5>A Temperatura Ambiente (Frequente)</h5>
+              <p>Mantenimento a 22-26°C con rinfreschi frequenti per pane rustico continuo.</p>
+            </div>
+          </div>
+          <div class="quiz-opt-card" id="optSchoolMaster" onclick="setProfileSchool('giorilli-classic')">
             <span class="opt-icon">👑</span>
             <div class="opt-content">
-              <h5>Scuola Maestri Lievitisti (Giorilli / Massari)</h5>
-              <p><strong>Filosofia:</strong> Mantenimento rigoroso a temperatura controllata (16-18°C o cantina), rinfreschi quotidiani e bagnetto zuccherato per Grandi Lievitati.</p>
-            </div>
-          </div>
-
-          <!-- 3. Tartine / San Francisco -->
-          <div class="quiz-opt-card" onclick="selectQuizSchool('tartine-wild')">
-            <span class="opt-icon">🥖</span>
-            <div class="opt-content">
-              <h5>Scuola Tartine / Wild Sourdough (Robertson)</h5>
-              <p><strong>Filosofia:</strong> Rinfresco con farine integrali/segale, prefermenti giovani ("young levain") appena dolci, tenuti a 24-26°C per pane aperto e rustico.</p>
+              <h5>Maestri Lievitisti (Panettoni & Sfogliati)</h5>
+              <p>Cantinetta 16-18°C, gestione di precisione per la massima forza del glutine.</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- STEP 3: OBIETTIVO / PERCORSO RICETTE -->
-      <div id="quizStep3" style="display: none;">
-        <div class="quiz-step-head">
-          <h3 class="quiz-title">🎯 A cosa vuoi puntare?</h3>
-          <span class="quiz-step-counter">STEP 3/3</span>
-        </div>
-        <p class="quiz-desc">Lievitotchi adatterà il cronoprogramma per allenare la colonia al picco:</p>
-
-        <div class="quiz-options-list">
-          <div class="quiz-opt-card" onclick="selectQuizQuest('easy-bread')">
-            <span class="opt-icon">🥖</span>
-            <div class="opt-content">
-              <h5>Pane Semplice Casalingo (Liv. 1)</h5>
-              <p>Tollerante, 1 solo rinfresco preparatorio rapido prima dell'impasto.</p>
-            </div>
-          </div>
-
-          <div class="quiz-opt-card" onclick="selectQuizQuest('pizza')">
-            <span class="opt-icon">🍕</span>
-            <div class="opt-content">
-              <h5>Pizza in Teglia & Focaccia (Liv. 2)</h5>
-              <p>Alta idratazione (75-80%). Lievito vivace e privo di note acide per non strappare il glutine.</p>
-            </div>
-          </div>
-
-          <div class="quiz-opt-card" onclick="selectQuizQuest('artisan')">
-            <span class="opt-icon">🍞</span>
-            <div class="opt-content">
-              <h5>Pane Rustico Alveolatura Aperta (Liv. 3)</h5>
-              <p>Stile San Francisco. Richiede 2 rinfreschi consecutivi per massima spinta elastica.</p>
-            </div>
-          </div>
-
-          <div class="quiz-opt-card" onclick="selectQuizQuest('brioche')">
-            <span class="opt-icon">🥐</span>
-            <div class="opt-content">
-              <h5>Brioche & Dolci Arricchiti (Liv. 4)</h5>
-              <p>Impasti con burro e uova. Serve un lievito dolcissimo e al picco.</p>
-            </div>
-          </div>
-
-          <div class="quiz-opt-card" onclick="selectQuizQuest('panettone')">
-            <span class="opt-icon">👑</span>
-            <div class="opt-content">
-              <h5>Grandi Lievitati (Panettone) (Maestro)</h5>
-              <p>Triplo rinfresco nella stessa giornata a pH 4.1 e 28°C.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button class="btn-feed-action" onclick="saveAndCloseProfile()" style="margin-top:6px;">
+        <span>💾 Salva e Applica Profilo</span>
+      </button>
 
     </div>
   </div>
@@ -1349,10 +1443,13 @@
     const STORAGE_KEY = "lievitotchi_schools_v1";
 
     const DEFAULT_STATE = {
-      hasDoneQuiz: false,
+      hasDoneQuiz: true,
       yeastType: "licoli",
       school: "fridge-modern",
       activeQuest: "pizza",
+      feedRatio: "1:1:1",
+      starterGrams: 50,
+      switchFromRate: 0.12,
       inFridge: true,
       accEquivalentHours: 5.0,
       lastSwitchTimestamp: Date.now() - (42 * 3600 * 1000),
@@ -1518,19 +1615,45 @@
     }
 
     // ==========================================
-    // CINETICA BIOLOGICA CONTINUA
+    // INERZIA TERMICA & CINETICA BIOLOGICA CONTINUA
     // ==========================================
+    // Inerzia termica vaso vetro (~70 min costante di tempo tau)
+    function calculateThermalSegment(hours, inFridge, switchFromRate) {
+      const tau = 1.2;
+      const targetRate = inFridge ? 0.12 : 1.0;
+      const originRate = (switchFromRate !== undefined) ? switchFromRate : (inFridge ? 1.0 : 0.12);
+
+      const deltaRate = originRate - targetRate;
+      const thermalTransition = deltaRate * tau * (1 - Math.exp(-hours / tau));
+      const effectiveHours = Math.max(0, targetRate * hours + thermalTransition);
+
+      const targetTemp = inFridge ? 4.0 : 24.0;
+      const originTemp = inFridge ? 24.0 : 4.0;
+      const coreTemp = targetTemp + (originTemp - targetTemp) * Math.exp(-hours / tau);
+
+      return {
+        effectiveHours,
+        coreTemp: coreTemp.toFixed(1),
+        isTransitioning: hours < 2.5
+      };
+    }
+
     function calculateKinetics() {
       const now = Date.now();
       const currentSegmentHours = (now - appState.lastSwitchTimestamp) / 3600000;
-      const rate = appState.inFridge ? 0.12 : 1.0;
-      const currentSegmentEffective = currentSegmentHours * rate;
-      const totalEffectiveHours = Math.max(0, appState.accEquivalentHours + currentSegmentEffective);
+      const seg = calculateThermalSegment(currentSegmentHours, appState.inFridge, appState.switchFromRate);
+      const totalEffectiveHours = Math.max(0, appState.accEquivalentHours + seg.effectiveHours);
 
-      const hunger = Math.min(100, Math.floor((totalEffectiveHours / 14) * 100));
+      // Picco calibrato in base al rapporto di rinfresco
+      const ratio = appState.feedRatio || '1:1:1';
+      let peakHours = 4.0; // 1:1:1 raggiunge il picco in 3.5 - 4.5 ore
+      if (ratio === '1:2:2') peakHours = 6.0;
+      else if (ratio === '1:3:3') peakHours = 8.5;
+
+      const starvationHours = peakHours * 3.4;
+      const hunger = Math.min(100, Math.floor((totalEffectiveHours / starvationHours) * 100));
 
       let volume = 1.0;
-      const peakHours = 4.5;
       if (totalEffectiveHours < peakHours) {
         volume = 1.0 + (1.25 * (totalEffectiveHours / peakHours));
       } else if (totalEffectiveHours < peakHours * 2) {
@@ -1549,7 +1672,7 @@
         pH = 3.65;
         acidRatio = "1.8 : 1 (Eccesso Acetico!)";
         needCorrection = true;
-        correctionMsg = "Digiuno prolungato (oltre 6 giorni): esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C.";
+        correctionMsg = "Digiuno prolungato: esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C.";
       } else if (hunger > 50) {
         pH = 3.9;
         acidRatio = "2.9 : 1 (Vivace)";
@@ -1559,8 +1682,8 @@
       const labPopulation = appState.inFridge ? "1.1 × 10⁸" : (hunger < 40 ? "3.2 × 10⁸" : "1.6 × 10⁸");
 
       const currentQuest = RECIPE_QUESTS[appState.activeQuest] || RECIPE_QUESTS["pizza"];
-      let readiness = 60;
-      readiness += Math.min(25, appState.streakCount * 5);
+      let readiness = 65;
+      readiness += Math.min(25, (appState.streakCount || 1) * 5);
       if (hunger > 75) readiness -= 30;
       if (hunger < 40 && parseFloat(volume) >= 1.8) readiness += 15;
       readiness = Math.max(15, Math.min(100, readiness));
@@ -1578,7 +1701,9 @@
         readiness,
         needCorrection,
         correctionMsg,
-        currentQuest
+        currentQuest,
+        coreTemp: seg.coreTemp,
+        isTransitioning: seg.isTransitioning
       };
     }
 
@@ -1747,6 +1872,34 @@
         ctx.fillText("z", fX + 24, fY - 12 - zFloat);
         ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
+        // FIOCCO DI NEVE PIXEL ART IN FRIGO (in alto a destra)
+        const sfX = cx + jarW/2 + 20;
+        const sfY = jarTop + 30 + Math.sin(tickCount * 0.05) * 4;
+        ctx.fillStyle = "#93C5FD"; // Ice Blue
+        ctx.fillRect(sfX - 4, sfY, 9, 1);
+        ctx.fillRect(sfX, sfY - 4, 1, 9);
+        ctx.fillRect(sfX - 2, sfY - 2, 1, 1);
+        ctx.fillRect(sfX + 2, sfY - 2, 1, 1);
+        ctx.fillRect(sfX - 2, sfY + 2, 1, 1);
+        ctx.fillRect(sfX + 2, sfY + 2, 1, 1);
+        ctx.fillRect(sfX - 4, sfY - 1, 1, 3);
+        ctx.fillRect(sfX + 4, sfY - 1, 1, 3);
+        ctx.fillRect(sfX - 1, sfY - 4, 3, 1);
+        ctx.fillRect(sfX - 1, sfY + 4, 3, 1);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(sfX - 1, sfY - 1, 3, 3);
+        ctx.fillStyle = "#60A5FA";
+        ctx.fillRect(sfX, sfY, 1, 1);
+
+        // Secondo piccolo fiocchetto fluttuante a sinistra
+        const sf2X = cx - jarW/2 - 16;
+        const sf2Y = jarTop + 55 + Math.cos(tickCount * 0.04) * 3;
+        ctx.fillStyle = "#BFDBFE";
+        ctx.fillRect(sf2X - 2, sf2Y, 5, 1);
+        ctx.fillRect(sf2X, sf2Y - 2, 1, 5);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(sf2X, sf2Y, 1, 1);
+
       } else if (kin.hunger > 75) {
         ctx.fillRect(fX - 14, fY - 2, 7, 6);
         ctx.fillRect(fX + 7, fY - 2, 7, 6);
@@ -1865,60 +2018,72 @@
         correctionBox.style.display = "none";
       }
 
-      // Dosi al grammo
+      // Dosi al grammo calibrate su rapporto e grammatura personalizzata
       const isLicoli = appState.yeastType === 'licoli';
-      const yeastG = 50;
-      const ratioMultiplier = kin.needCorrection ? 3 : 2;
-      const flourG = yeastG * ratioMultiplier;
+      const yeastG = appState.starterGrams || 50;
+      const currentRatio = appState.feedRatio || '1:1:1';
+      let multiplier = 1;
+      if (currentRatio === '1:2:2') multiplier = 2;
+      else if (currentRatio === '1:3:3' || kin.needCorrection) multiplier = 3;
+
+      const flourG = yeastG * multiplier;
       const waterG = isLicoli ? flourG : Math.round(flourG * 0.5);
 
       document.getElementById("doseMadre").innerText = yeastG + "g";
       document.getElementById("doseFarina").innerText = flourG + "g";
       document.getElementById("doseAcqua").innerText = waterG + "g";
       document.getElementById("doseIdraHint").innerText = isLicoli ? "100% idratazione" : "50% idratazione";
-      document.getElementById("doseFarinaHint").innerText = kin.currentQuest.flourStrength;
+      document.getElementById("doseFarinaHint").innerText = (currentRatio === '1:3:3' || appState.school === 'giorilli-classic') ? "W 320-360" : "W 260-300";
+
+      // Pillole rapporto sul modulo Rinfresco
+      const r111 = document.getElementById("btnRatio111");
+      const r122 = document.getElementById("btnRatio122");
+      const r133 = document.getElementById("btnRatio133");
+      if (r111) r111.classList.toggle("active", currentRatio === '1:1:1');
+      if (r122) r122.classList.toggle("active", currentRatio === '1:2:2');
+      if (r133) r133.classList.toggle("active", currentRatio === '1:3:3');
 
       if (appState.inFridge) {
         if (kin.hunger > 75) {
           pill.className = "guide-status-pill pill-alert";
           pill.innerText = "RINFRESCO CONSIGLIATO";
           timing.innerText = "ENTRO OGGI O DOMANI";
-          desc.innerText = `È in frigo da oltre 5 giorni. Esegui il rinfresco indicato, lascia partire 45 minuti a temperatura ambiente e riponi in frigo.`;
+          desc.innerText = `È in frigo da oltre 5 giorni. Esegui il rinfresco ${currentRatio}, lascia partire 45 minuti a temperatura ambiente e riponi in frigo.`;
         } else {
           pill.className = "guide-status-pill pill-chill";
           pill.innerText = "A RIPOSO IN FRIGO";
           timing.innerText = "IN ATTESA DEL GIORNO DI IMPASTO";
-          desc.innerText = `Il lievito è protetto a +4°C. Per il tuo obiettivo (${kin.currentQuest.name}), estrailo e preparalo secondo i passaggi previsti!`;
+          desc.innerText = `Il lievito è protetto a +4°C con rapporto ${currentRatio}. Estrarre 3-4 ore prima della panificazione!`;
         }
       } else {
         if (parseFloat(kin.volume) >= 2.0) {
           pill.className = "guide-status-pill pill-bake";
           pill.innerText = "🔥 PICCO PERFETTO!";
           timing.innerText = "IMPASTA ORA!";
-          desc.innerText = `Il lievito è al massimo sviluppo. Preleva la quota per il tuo impasto e rinfresca la madre rimanente!`;
+          desc.innerText = `Il lievito è al massimo sviluppo (${currentRatio}). Preleva la quota per il tuo impasto e rinfresca la madre rimanente!`;
         } else {
           pill.className = "guide-status-pill pill-alert";
           pill.innerText = "IN LIEVITAZIONE";
-          timing.innerText = "TRA CIRCA 2-3 ORE";
-          desc.innerText = `Sta lievitando verso il picco. Tienilo al riparo da correnti d'aria a 24-26°C.`;
+          timing.innerText = "TRA CIRCA 1-3 ORE";
+          desc.innerText = `Sta lievitando verso il picco con rapporto ${currentRatio}. Tienilo a 24-26°C.`;
         }
       }
 
-      // Percorso & Scuola
-      document.getElementById("questIcon").innerText = kin.currentQuest.icon;
-      document.getElementById("questTargetName").innerText = kin.currentQuest.name;
-      document.getElementById("questStageLabel").innerText = kin.currentQuest.stage;
-
-      const curSchool = SCHOOLS_INFO[appState.school] || SCHOOLS_INFO["fridge-modern"];
-      document.getElementById("schoolIcon").innerText = curSchool.icon;
-      document.getElementById("schoolName").innerText = curSchool.name;
-      document.getElementById("schoolDesc").innerText = curSchool.desc;
+      // Strip sotto la Hero (Sintesi profilo)
+      document.getElementById("badgeType").innerText = isLicoli ? "LICOLI 100%" : "SOLIDO 50%";
+      document.getElementById("questIcon").innerText = isLicoli ? "🫧" : "🍞";
+      document.getElementById("questTargetName").innerText = `${isLicoli ? "Li.Co.Li" : "Pasta Madre"} • ${currentRatio} (${yeastG}g)`;
+      document.getElementById("schoolIcon").innerText = appState.inFridge ? "❄️" : "🌡️";
+      document.getElementById("schoolName").innerText = appState.inFridge ? "In Frigo (+4°C)" : "A Stanza (24°C)";
 
       document.getElementById("readinessFill").style.width = kin.readiness + "%";
-      document.getElementById("readinessScore").innerText = `${kin.readiness}% • ${kin.readiness >= kin.currentQuest.minReadiness ? "Pronto" : "In Crescita"}`;
+      document.getElementById("readinessScore").innerText = `${kin.readiness}% • ${kin.readiness >= 65 ? "Pronto" : "In Crescita"}`;
 
-      // Accordion Bio-Scanner
-      document.getElementById("bioTemp").innerText = appState.inFridge ? "4.0°C" : "24.5°C";
+      // Accordion Bio-Scanner con temperatura al cuore e transizione
+      const tempStatus = kin.isTransitioning 
+        ? (appState.inFridge ? "In raffreddamento" : "In riscaldamento") 
+        : (appState.inFridge ? "Stabile 4°C" : "Stabile stanza");
+      document.getElementById("bioTemp").innerText = `${kin.coreTemp}°C (${tempStatus})`;
       document.getElementById("bioPh").innerText = kin.pH;
       document.getElementById("bioYeastPop").innerText = `~${kin.yeastPopulation}`;
       document.getElementById("bioLabPop").innerText = `~${kin.labPopulation}`;
@@ -1968,10 +2133,16 @@
 
       const now = Date.now();
       const elapsedSegment = (now - appState.lastSwitchTimestamp) / 3600000;
-      const rate = appState.inFridge ? 0.12 : 1.0;
-      appState.accEquivalentHours += elapsedSegment * rate;
+      const prevSeg = calculateThermalSegment(elapsedSegment, appState.inFridge, appState.switchFromRate);
+      appState.accEquivalentHours += prevSeg.effectiveHours;
+
+      const tau = 1.2;
+      const prevTargetRate = appState.inFridge ? 0.12 : 1.0;
+      const prevOriginRate = (appState.switchFromRate !== undefined) ? appState.switchFromRate : (appState.inFridge ? 1.0 : 0.12);
+      const instantRate = prevTargetRate + (prevOriginRate - prevTargetRate) * Math.exp(-elapsedSegment / tau);
 
       appState.inFridge = inFridge;
+      appState.switchFromRate = instantRate;
       appState.lastSwitchTimestamp = now;
 
       spawnToast(inFridge ? "❄️ In Frigo" : "🌡️ In Stanza");
@@ -1981,6 +2152,13 @@
 
     document.getElementById("btnLocFridge").addEventListener("click", () => setEnvironment(true));
     document.getElementById("btnLocRoom").addEventListener("click", () => setEnvironment(false));
+
+    function setFeedRatio(r) {
+      appState.feedRatio = r;
+      saveState();
+      updateUI();
+      spawnToast(`⚖️ Rapporto ${r}`);
+    }
 
     function executeFeed() {
       playRetroBeep('feed');
@@ -2008,6 +2186,7 @@
       appState.lastFedTimestamp = now;
       appState.lastSwitchTimestamp = now;
       appState.accEquivalentHours = 0;
+      appState.switchFromRate = appState.inFridge ? 0.12 : 1.0;
 
       localStorage.removeItem("last_peak_notif_time");
       localStorage.removeItem("last_starve_notif_time");
@@ -2068,57 +2247,91 @@
     }
 
     // ==========================================
-    // LOGICA QUIZ MULTI-STEP CON SCUOLE DI PENSIERO
+    // GESTIONE PROFILO LIEVITO PERSONALIZZATO
     // ==========================================
     const quizModal = document.getElementById("quizModal");
-    const step1 = document.getElementById("quizStep1");
-    const step2 = document.getElementById("quizStep2");
-    const step3 = document.getElementById("quizStep3");
 
-    function openQuizFlow() {
-      step1.style.display = "block";
-      step2.style.display = "none";
-      step3.style.display = "none";
+    function openProfileModal() {
+      syncProfileModalUI();
       quizModal.classList.add("open");
     }
 
-    document.getElementById("btnOpenQuiz").addEventListener("click", openQuizFlow);
-    document.getElementById("badgeType").addEventListener("click", openQuizFlow);
-
-    function selectQuizYeast(type) {
-      playRetroBeep('click');
-      appState.yeastType = type;
-      step1.style.display = "none";
-      step2.style.display = "block";
+    function closeQuizModal() {
+      quizModal.classList.remove("open");
     }
 
-    function selectQuizSchool(schoolKey) {
-      playRetroBeep('click');
-      appState.school = schoolKey;
+    function syncProfileModalUI() {
+      // Tipo
+      const isLicoli = appState.yeastType === 'licoli';
+      const btnLicoli = document.getElementById("btnCfgLicoli");
+      const btnSolido = document.getElementById("btnCfgSolido");
+      if (btnLicoli) btnLicoli.classList.toggle("active", isLicoli);
+      if (btnSolido) btnSolido.classList.toggle("active", !isLicoli);
 
-      // Se sceglie scuola frigo mette in frigo, se scuola Tartine/Giorilli suggerisce ambiente
+      // Rapporto
+      const r = appState.feedRatio || '1:1:1';
+      const b111 = document.getElementById("btnCfgRatio111");
+      const b122 = document.getElementById("btnCfgRatio122");
+      const b133 = document.getElementById("btnCfgRatio133");
+      if (b111) b111.classList.toggle("active", r === '1:1:1');
+      if (b122) b122.classList.toggle("active", r === '1:2:2');
+      if (b133) b133.classList.toggle("active", r === '1:3:3');
+
+      // Grammi starter
+      const g = appState.starterGrams || 50;
+      [30, 50, 70, 100].forEach(val => {
+        const b = document.getElementById("btnDose" + val);
+        if (b) b.classList.toggle("active", g === val);
+      });
+
+      // Routine / Scuola
+      const s = appState.school || 'fridge-modern';
+      const oF = document.getElementById("optSchoolFridge");
+      const oR = document.getElementById("optSchoolRoom");
+      const oM = document.getElementById("optSchoolMaster");
+      if (oF) oF.classList.toggle("active", s === 'fridge-modern');
+      if (oR) oR.classList.toggle("active", s === 'tartine-wild');
+      if (oM) oM.classList.toggle("active", s === 'giorilli-classic');
+    }
+
+    function setProfileYeast(type) {
+      appState.yeastType = type;
+      syncProfileModalUI();
+    }
+
+    function setProfileRatio(ratio) {
+      appState.feedRatio = ratio;
+      syncProfileModalUI();
+    }
+
+    function setProfileStarterGrams(grams) {
+      appState.starterGrams = grams;
+      syncProfileModalUI();
+    }
+
+    function setProfileSchool(schoolKey) {
+      appState.school = schoolKey;
       if (schoolKey === "fridge-modern") {
         appState.inFridge = true;
       } else {
         appState.inFridge = false;
       }
       appState.lastSwitchTimestamp = Date.now();
-
-      step2.style.display = "none";
-      step3.style.display = "block";
+      syncProfileModalUI();
     }
 
-    function selectQuizQuest(questKey) {
-      playRetroBeep('feed');
-      appState.activeQuest = questKey;
-      appState.hasDoneQuiz = true;
-      quizModal.classList.remove("open");
+    function saveAndCloseProfile() {
       saveState();
       updateUI();
+      closeQuizModal();
+      spawnToast("✅ Profilo Salvato!");
     }
 
+    document.getElementById("btnOpenQuiz").addEventListener("click", openProfileModal);
+    document.getElementById("badgeType").addEventListener("click", openProfileModal);
+
     quizModal.addEventListener("click", (e) => {
-      if (e.target === quizModal) quizModal.classList.remove("open");
+      if (e.target === quizModal) closeQuizModal();
     });
 
     // ==========================================
@@ -2128,11 +2341,6 @@
     updateAudioBtn();
     updateUI();
     renderStardewPixelYeast();
-
-    // Se primo avvio assoluto, apri il quiz iniziale!
-    if (!appState.hasDoneQuiz) {
-      openQuizFlow();
-    }
 
     setInterval(updateUI, 60000);
   </script>
