@@ -181,12 +181,12 @@
     .hero-stage-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 8px 10px;
+      border-radius: 18px;
+      padding: 10px 12px;
       box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
     /* BARRA SIMULAZIONE TEMPO TEST DISCRETA IN FONDO */
@@ -222,19 +222,33 @@
     .pet-canvas-viewport {
       background: #EFF6E9;
       border: 1.5px solid #D1E5C7;
-      border-radius: 12px;
-      padding: 4px 6px 4px;
+      border-radius: 14px;
+      padding: 7px 8px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.12s ease;
+    }
+
+    .pet-canvas-viewport:hover {
+      border-color: #A3D293;
+    }
+
+    .pet-canvas-viewport:active {
+      transform: scale(0.99);
     }
 
     .pet-canvas-viewport.fridge-mode {
       background: #E8F4FC;
       border-color: #BAE0F8;
       box-shadow: inset 0 0 25px rgba(186, 224, 248, 0.45);
+    }
+
+    .pet-canvas-viewport.fridge-mode:hover {
+      border-color: #93C5FD;
     }
 
     .pet-canvas-viewport.fridge-mode .pixel-speech-box {
@@ -251,14 +265,14 @@
     }
 
     .pixel-speech-box {
-      margin-top: 4px;
+      margin-top: 6px;
       background: #FFFFFF;
       border: 1px solid #D1E5C7;
-      border-radius: 6px;
-      padding: 4px 8px;
+      border-radius: 7px;
+      padding: 5px 9px;
       font-family: var(--pixel-font);
-      font-size: 0.48rem;
-      line-height: 1.35;
+      font-size: 0.5rem;
+      line-height: 1.4;
       color: #1A3319;
       text-align: center;
       width: 100%;
@@ -1084,8 +1098,8 @@
     <!-- CARD 1: IL LIEVITO HERO (STARDEW PIXEL ART + 4 METRICHE) -->
     <section class="hero-stage-card">
       <!-- CANVAS STAGE STARDEW VALLEY -->
-      <div class="pet-canvas-viewport">
-        <canvas id="petCanvas" width="280" height="148"></canvas>
+      <div class="pet-canvas-viewport" title="Tocca o clicca per interagire e coccolare il lievito!">
+        <canvas id="petCanvas" width="300" height="185"></canvas>
         <div class="pixel-speech-box" id="speechBubble">
           "Brrr! Sto riposando a +4°C. Gli amidi dureranno tutta la settimana!"
         </div>
@@ -1625,6 +1639,15 @@
           gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
           osc.start(t);
           osc.stop(t + 0.22);
+        } else if (type === 'poke') {
+          // Morbido squish/chirp di affetto
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, t); // D5
+          osc.frequency.exponentialRampToValueAtTime(880, t + 0.12); // A5
+          gain.gain.setValueAtTime(0.035, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+          osc.start(t);
+          osc.stop(t + 0.14);
         }
       } catch(e) {}
     }
@@ -1723,34 +1746,36 @@
     }
 
     // ==========================================
-    // STARDEW VALLEY HI-RES PIXEL ART RENDERING
+    // STARDEW VALLEY HI-RES PIXEL ART RENDERING (INGRANDITO)
     // ==========================================
     const canvas = document.getElementById("petCanvas");
     const ctx = canvas.getContext("2d");
     let tickCount = 0;
+    let lastPokeTime = 0;
 
     const pixelBubbles = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 14; i++) {
       pixelBubbles.push({
-        x: Math.floor(Math.random() * 80) - 40,
-        y: Math.floor(Math.random() * 60),
+        x: Math.floor(Math.random() * 92) - 46,
+        y: Math.floor(Math.random() * 70),
         size: (i % 2 === 0 ? 3 : 2),
         speed: 0.35 + Math.random() * 0.4
       });
     }
 
     const microCritters = [
-      { x: -25, y: 20, type: 'yeast', speed: 0.2, phase: 0 },
-      { x: 18, y: 35, type: 'yeast', speed: 0.25, phase: 1.5 },
-      { x: -10, y: 48, type: 'lab', speed: 0.3, phase: 2.8 },
-      { x: 30, y: 15, type: 'lab', speed: 0.22, phase: 4.1 }
+      { x: -32, y: 24, type: 'yeast', speed: 0.2, phase: 0 },
+      { x: 22, y: 40, type: 'yeast', speed: 0.25, phase: 1.5 },
+      { x: -14, y: 55, type: 'lab', speed: 0.3, phase: 2.8 },
+      { x: 38, y: 18, type: 'lab', speed: 0.22, phase: 4.1 },
+      { x: 5, y: 30, type: 'yeast', speed: 0.18, phase: 5.2 }
     ];
 
     const snowFlakes = [];
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < 28; i++) {
       snowFlakes.push({
-        x: Math.random() * 280,
-        y: Math.random() * 148,
+        x: Math.random() * 300,
+        y: Math.random() * 185,
         size: (i % 3 === 0 ? 3 : (i % 3 === 1 ? 2 : 1)),
         speedY: 0.35 + Math.random() * 0.45,
         speedX: 0.2 + Math.random() * 0.3,
@@ -1758,36 +1783,54 @@
       });
     }
 
+    // Interazione tocco / coccola con il lievito
+    function triggerPoke() {
+      lastPokeTime = Date.now();
+      const phrases = [
+        "❤️ Gnam! Mi piace quando mi coccoli!",
+        "✨ Splat! Che bella maglia elastica e setosa!",
+        "🍞 Pronto all'impasto quando vuoi tu!",
+        "🫧 Bolle di anidride carbonica a tutto spiano!",
+        "🌾 Gli enzimi stanno convertendo gli amidi a meraviglia!"
+      ];
+      const p = phrases[Math.floor(Math.random() * phrases.length)];
+      const speech = document.getElementById("speechBubble");
+      if (speech) speech.innerText = p;
+      playRetroBeep('poke');
+    }
+    canvas.addEventListener("click", triggerPoke);
+    canvas.addEventListener("touchstart", (e) => { triggerPoke(); }, { passive: true });
+
     function renderStardewPixelYeast() {
       tickCount++;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const kin = calculateKinetics();
 
-      const cx = canvas.width / 2;
-      const jarW = 120;
-      const jarH = 118;
+      const cx = canvas.width / 2; // 150
+      const jarW = 138;
+      const jarH = 142;
       const jarTop = 8;
-      const jarBottom = jarTop + jarH;
+      const jarBottom = jarTop + jarH; // 150
 
       // Ombra a terra pixel
       ctx.fillStyle = "rgba(24, 44, 23, 0.12)";
-      for (let w = jarW + 8; w >= 20; w -= 16) {
-        ctx.fillRect(cx - w/2, jarBottom + 3 + (jarW + 8 - w)/8, w, 3);
+      for (let w = jarW + 10; w >= 24; w -= 16) {
+        ctx.fillRect(cx - w/2, jarBottom + 3 + (jarW + 10 - w)/8, w, 3);
       }
 
       // Corpo vaso vetro
       ctx.fillStyle = "rgba(205, 235, 200, 0.45)";
-      ctx.fillRect(cx - jarW/2, jarTop + 12, jarW, jarH - 12);
+      ctx.fillRect(cx - jarW/2, jarTop + 14, jarW, jarH - 14);
 
       // Riflessi Stardew
       ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
-      ctx.fillRect(cx - jarW/2 + 6, jarTop + 18, 3, jarH - 28);
-      ctx.fillRect(cx - jarW/2 + 11, jarTop + 22, 2, jarH - 36);
+      ctx.fillRect(cx - jarW/2 + 7, jarTop + 20, 3, jarH - 34);
+      ctx.fillRect(cx - jarW/2 + 13, jarTop + 24, 2, jarH - 44);
 
       // Bordo vaso
       ctx.fillStyle = "#182C17";
-      ctx.fillRect(cx - jarW/2, jarTop + 12, 3, jarH - 12);
-      ctx.fillRect(cx + jarW/2 - 3, jarTop + 12, 3, jarH - 12);
+      ctx.fillRect(cx - jarW/2, jarTop + 14, 3, jarH - 14);
+      ctx.fillRect(cx + jarW/2 - 3, jarTop + 14, 3, jarH - 14);
       ctx.fillRect(cx - jarW/2, jarBottom - 3, jarW, 3);
 
       ctx.fillRect(cx - jarW/2 + 3, jarBottom - 1, 3, 1);
@@ -1795,21 +1838,21 @@
 
       // Guarnizione arancio
       ctx.fillStyle = "#E06D53";
-      ctx.fillRect(cx - (jarW - 16)/2, jarTop + 9, jarW - 16, 3);
+      ctx.fillRect(cx - (jarW - 18)/2, jarTop + 10, jarW - 18, 4);
 
       // Coperchio legno rustico
       ctx.fillStyle = "#8D5B4C";
-      ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 9);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 10);
       ctx.fillStyle = "#B27C66";
       ctx.fillRect(cx - (jarW - 10)/2 + 2, jarTop + 2, jarW - 14, 2);
       ctx.fillStyle = "#182C17";
       ctx.fillRect(cx - (jarW - 10)/2, jarTop, jarW - 10, 2);
-      ctx.fillRect(cx - (jarW - 10)/2, jarTop + 8, jarW - 10, 2);
-      ctx.fillRect(cx - (jarW - 10)/2, jarTop, 2, 9);
-      ctx.fillRect(cx + (jarW - 10)/2 - 2, jarTop, 2, 9);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop + 9, jarW - 10, 2);
+      ctx.fillRect(cx - (jarW - 10)/2, jarTop, 2, 10);
+      ctx.fillRect(cx + (jarW - 10)/2 - 2, jarTop, 2, 10);
 
       // Elastico rosso
-      const bandY = jarBottom - 32;
+      const bandY = jarBottom - 40;
       ctx.fillStyle = "#E11D48";
       for (let x = cx - jarW/2 + 4; x < cx + jarW/2 - 4; x += 6) {
         ctx.fillRect(x, bandY, 3, 2);
@@ -1817,8 +1860,11 @@
 
       // Massa lievito volumetrica
       const currentVol = parseFloat(kin.volume);
-      const yeastHeight = Math.min(84, Math.floor(32 * currentVol));
-      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2));
+      const yeastHeight = Math.min(108, Math.floor(40 * currentVol));
+      const isPoked = (Date.now() - lastPokeTime < 2600);
+      const pokeSquish = isPoked ? Math.floor(Math.sin(tickCount * 0.3) * 3) : 0;
+      const isShivering = (appState.inFridge && kin.isTransitioning);
+      const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2.5)) + pokeSquish;
       const topY = jarBottom - yeastHeight - pulse;
 
       const baseDough = appState.yeastType === 'licoli' ? "#FFF3D1" : "#F7E6BD";
@@ -1829,24 +1875,24 @@
       ctx.fillRect(cx - jarW/2 + 3, topY + 4, jarW - 6, jarBottom - topY - 7);
 
       ctx.fillStyle = shadowDough;
-      ctx.fillRect(cx - jarW/2 + 3, jarBottom - 10, jarW - 6, 7);
+      ctx.fillRect(cx - jarW/2 + 3, jarBottom - 11, jarW - 6, 8);
 
       ctx.fillStyle = highlightDough;
-      ctx.fillRect(cx - jarW/2 + 6, topY + 4, jarW - 12, 3);
+      ctx.fillRect(cx - jarW/2 + 7, topY + 4, jarW - 14, 3);
 
       // Bordo a cupola pixel
       ctx.fillStyle = "#182C17";
-      ctx.fillRect(cx - jarW/2 + 3, topY + 4, 6, 2);
-      ctx.fillRect(cx - jarW/2 + 9, topY + 2, 8, 2);
-      ctx.fillRect(cx - jarW/2 + 17, topY, jarW - 34, 2);
-      ctx.fillRect(cx + jarW/2 - 17, topY + 2, 8, 2);
-      ctx.fillRect(cx + jarW/2 - 9, topY + 4, 6, 2);
+      ctx.fillRect(cx - jarW/2 + 3, topY + 4, 7, 2);
+      ctx.fillRect(cx - jarW/2 + 10, topY + 2, 9, 2);
+      ctx.fillRect(cx - jarW/2 + 19, topY, jarW - 38, 2);
+      ctx.fillRect(cx + jarW/2 - 19, topY + 2, 9, 2);
+      ctx.fillRect(cx + jarW/2 - 10, topY + 4, 7, 2);
 
       // Bollicine di CO2
       pixelBubbles.forEach(b => {
         b.y += b.speed;
         const curX = cx + b.x;
-        const curY = jarBottom - 12 - Math.floor(b.y);
+        const curY = jarBottom - 14 - Math.floor(b.y);
 
         if (curY > topY + 6) {
           ctx.fillStyle = "#D4C294";
@@ -1855,17 +1901,17 @@
           ctx.fillRect(curX, curY, 1, 1);
         } else {
           b.y = 0;
-          b.x = Math.floor(Math.random() * (jarW - 36)) - (jarW - 36) / 2;
+          b.x = Math.floor(Math.random() * (jarW - 44)) - (jarW - 44) / 2;
         }
       });
 
-      // Microrganismi
+      // Microrganismi (lieviti e lattobacilli)
       microCritters.forEach(c => {
         const floatY = Math.sin(tickCount * 0.05 + c.phase) * 3;
         const cX = cx + c.x;
         const cY = jarBottom - c.y + floatY;
 
-        if (cY > topY + 12 && cY < jarBottom - 10) {
+        if (cY > topY + 12 && cY < jarBottom - 12) {
           if (c.type === 'yeast') {
             ctx.fillStyle = "#F59E0B";
             ctx.fillRect(cX, cY, 4, 4);
@@ -1880,29 +1926,258 @@
         }
       });
 
-      // Volto del lievito
-      const fX = cx;
+      // ==========================================
+      // VOLTO DEL LIEVITO (10 RICCHE ESPRESSIONI)
+      // ==========================================
+      const shiverOffX = isShivering ? Math.floor(Math.sin(tickCount * 0.7) * 2) : 0;
+      const fX = cx + shiverOffX;
       const fY = topY + Math.floor(yeastHeight / 2) - 4;
       ctx.fillStyle = "#182C17";
 
-      if (appState.inFridge) {
+      // 1. INTERAZIONE TOCCA/COCCOLA (Cuori e occhi ridenti)
+      if (isPoked) {
+        // Occhi strizzati d'affetto ( ^ ω ^ )
+        ctx.fillRect(fX - 16, fY, 8, 2);
+        ctx.fillRect(fX - 18, fY + 2, 3, 2);
+        ctx.fillRect(fX + 8, fY, 8, 2);
+        ctx.fillRect(fX + 15, fY + 2, 3, 2);
+
+        // Guanciotte rosse felici
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 22, fY + 4, 5, 4);
+        ctx.fillRect(fX + 17, fY + 4, 5, 4);
+
+        // Boccuccia a gattino w
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 5, fY + 6, 10, 2);
+        ctx.fillRect(fX - 1, fY + 7, 2, 2);
+
+        // Cuoricini pixel fluttuanti
+        const hFloat = (tickCount % 50) * 0.6;
+        ctx.fillStyle = "#F43F5E";
+        // Cuore 1
+        ctx.fillRect(fX - 18, fY - 14 - hFloat, 2, 2);
+        ctx.fillRect(fX - 14, fY - 14 - hFloat, 2, 2);
+        ctx.fillRect(fX - 19, fY - 12 - hFloat, 7, 2);
+        ctx.fillRect(fX - 17, fY - 10 - hFloat, 3, 2);
+        ctx.fillRect(fX - 16, fY - 8 - hFloat, 1, 2);
+        // Cuore 2
+        ctx.fillRect(fX + 16, fY - 20 - hFloat, 2, 2);
+        ctx.fillRect(fX + 20, fY - 20 - hFloat, 2, 2);
+        ctx.fillRect(fX + 15, fY - 18 - hFloat, 7, 2);
+        ctx.fillRect(fX + 17, fY - 16 - hFloat, 3, 2);
+
+      // 2. TRANSIZIONE IN FRIGO (Freddoloso & Brividi)
+      } else if (appState.inFridge && kin.isTransitioning) {
+        // Occhi strizzati dal freddo (> <)
+        ctx.fillRect(fX - 16, fY - 2, 8, 2);
+        ctx.fillRect(fX - 14, fY, 6, 2);
+        ctx.fillRect(fX - 12, fY + 2, 4, 2);
+        ctx.fillRect(fX + 8, fY - 2, 8, 2);
+        ctx.fillRect(fX + 8, fY, 6, 2);
+        ctx.fillRect(fX + 8, fY + 2, 4, 2);
+
+        // Denti che battono
+        ctx.fillRect(fX - 6, fY + 6, 12, 3);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(fX - 5, fY + 7, 10, 1);
+
+        // Guance fredde azzurre
+        ctx.fillStyle = "#93C5FD";
+        ctx.fillRect(fX - 22, fY + 4, 5, 3);
+        ctx.fillRect(fX + 17, fY + 4, 5, 3);
+
+        // Alito gelido pixel
+        ctx.fillStyle = "#BAE6FD";
+        ctx.fillRect(fX + 20, fY - 6, 4, 3);
+        ctx.fillRect(fX + 24, fY - 9, 3, 2);
+
+      // 3. SONNO PROFONDO IN FRIGO (+4°C)
+      } else if (appState.inFridge) {
+        // Occhi chiusi sereni (- -)
         ctx.fillRect(fX - 16, fY, 8, 2);
         ctx.fillRect(fX + 8, fY, 8, 2);
         ctx.fillStyle = "#FF80AB";
         ctx.fillRect(fX - 22, fY + 4, 4, 3);
         ctx.fillRect(fX + 18, fY + 4, 4, 3);
         ctx.fillStyle = "#182C17";
-        ctx.fillRect(fX - 2, fY + 6, 4, 2);
+        ctx.fillRect(fX - 3, fY + 6, 6, 2);
 
         ctx.font = "8px 'Press Start 2P'";
         const zFloat = (tickCount % 40) / 3;
         ctx.fillText("z", fX + 24, fY - 12 - zFloat);
         ctx.fillText("Z", fX + 36, fY - 24 - zFloat);
 
+      // 4. TRANSIZIONE STANZA (Sbadiglio & Risveglio)
+      } else if (!appState.inFridge && kin.isTransitioning) {
+        // Occhi assonnati semichiusi
+        ctx.fillRect(fX - 14, fY, 7, 2);
+        ctx.fillRect(fX - 12, fY - 2, 4, 2);
+        ctx.fillRect(fX + 7, fY, 7, 2);
+        ctx.fillRect(fX + 8, fY - 2, 4, 2);
+
+        // Bocca spalancata a sbadiglio
+        ctx.fillRect(fX - 4, fY + 4, 8, 7);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(fX - 3, fY + 4, 6, 1);
+        ctx.fillStyle = "#FDA4AF";
+        ctx.fillRect(fX - 2, fY + 7, 4, 3);
+
+        // Guance calde
+        ctx.fillStyle = "#FBBF24";
+        ctx.fillRect(fX - 20, fY + 4, 4, 3);
+        ctx.fillRect(fX + 16, fY + 4, 4, 3);
+
+        // Raggi di calore rising
+        ctx.fillStyle = "#F59E0B";
+        const wY = (tickCount % 40) * 0.4;
+        ctx.fillRect(fX + 20, fY - 8 - wY, 2, 3);
+        ctx.fillRect(fX + 24, fY - 12 - wY, 2, 3);
+
+      // 5. ASPRO / ACIDITÀ ELEVATA (Smorfia da limone)
+      } else if (kin.needCorrection || parseFloat(kin.pH) < 3.8) {
+        // Occhi strizzati aciduli (> <)
+        ctx.fillRect(fX - 15, fY - 3, 7, 2);
+        ctx.fillRect(fX - 13, fY - 1, 5, 2);
+        ctx.fillRect(fX - 15, fY + 1, 7, 2);
+        ctx.fillRect(fX + 8, fY - 3, 7, 2);
+        ctx.fillRect(fX + 8, fY - 1, 5, 2);
+        ctx.fillRect(fX + 8, fY + 1, 7, 2);
+
+        // Boccuccia arricciata asprissima
+        ctx.fillRect(fX - 2, fY + 5, 4, 4);
+        ctx.fillStyle = "#EAB308";
+        ctx.fillRect(fX - 1, fY + 6, 2, 2);
+
+        // Scintilla acida
+        ctx.fillStyle = "#FBBF24";
+        ctx.fillRect(fX + 22, fY - 4, 3, 3);
+        ctx.fillRect(fX + 23, fY - 7, 1, 3);
+
+      // 6. AFFAMATO / FAME ELEVATA (>75)
+      } else if (kin.hunger > 75) {
+        // Occhi stanchi e cadenti
+        ctx.fillRect(fX - 14, fY - 2, 7, 6);
+        ctx.fillRect(fX + 7, fY - 2, 7, 6);
+        // Bocca tremante da fame
+        ctx.fillRect(fX - 4, fY + 10, 8, 2);
+        ctx.fillRect(fX - 6, fY + 12, 2, 2);
+        ctx.fillRect(fX + 4, fY + 12, 2, 2);
+
+        // Gocciolone di sudore blu anime
+        ctx.fillStyle = "#38BDF8";
+        ctx.fillRect(fX + 24, fY - 4, 4, 6);
+        ctx.fillRect(fX + 25, fY - 7, 2, 3);
+
+      // 7. APPENA RINFRESCATO (Pancia piena e soddisfatto)
+      } else if ((Date.now() - appState.lastFedTimestamp < 1800000) || (parseFloat(kin.totalEffectiveHours) < 0.6)) {
+        // Occhi socchiusi di goduria ( ^ ڡ ^ )
+        ctx.fillRect(fX - 15, fY, 8, 2);
+        ctx.fillRect(fX - 13, fY - 2, 4, 2);
+        ctx.fillRect(fX + 7, fY, 8, 2);
+        ctx.fillRect(fX + 9, fY - 2, 4, 2);
+
+        // Guancette felici
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 21, fY + 3, 5, 3);
+        ctx.fillRect(fX + 16, fY + 3, 5, 3);
+
+        // Linguetta golosa / masticazione
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 4, fY + 5, 8, 2);
+        ctx.fillStyle = "#FDA4AF";
+        const chew = (tickCount % 30 < 15);
+        ctx.fillRect(fX - (chew ? 1 : 2), fY + 6, 3, 3);
+
+        // Briciola dorata
+        ctx.fillStyle = "#F59E0B";
+        ctx.fillRect(fX + 20, fY - 6, 2, 2);
+
+      // 8. AL PICCO ESTREMO (Trionfo ed Estasi)
+      } else if (currentVol >= 2.0) {
+        // Occhi giganti scintillanti manga
+        ctx.fillRect(fX - 16, fY - 4, 8, 9);
+        ctx.fillRect(fX + 8, fY - 4, 8, 9);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(fX - 15, fY - 4, 3, 3);
+        ctx.fillRect(fX - 11, fY + 2, 2, 2);
+        ctx.fillRect(fX + 9, fY - 4, 3, 3);
+        ctx.fillRect(fX + 13, fY + 2, 2, 2);
+
+        // Guance accese di potenza
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 24, fY + 4, 5, 4);
+        ctx.fillRect(fX + 19, fY + 4, 5, 4);
+
+        // Risata a bocca aperta
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 6, fY + 6, 12, 4);
+        ctx.fillRect(fX - 4, fY + 10, 8, 2);
+        ctx.fillStyle = "#FDA4AF";
+        ctx.fillRect(fX - 3, fY + 8, 6, 3);
+
+        // Stelline di festa fluttuanti
+        const sparkY = Math.sin(tickCount * 0.1) * 3;
+        ctx.fillStyle = "#F59E0B";
+        ctx.fillRect(fX - 26, fY - 10 + sparkY, 3, 3);
+        ctx.fillRect(fX + 24, fY - 14 - sparkY, 3, 3);
+
+      // 9. VIGORE ECCELLENTE IN CRESCITA (Occhiolino confidente)
+      } else if (kin.vigor > 75 && currentVol >= 1.35) {
+        // Occhio sinistro sorridente
+        ctx.fillRect(fX - 15, fY, 8, 2);
+        ctx.fillRect(fX - 13, fY - 2, 4, 2);
+
+        // Occhio destro strizzato a occhiolino (ciclico)
+        const isWink = (tickCount % 120 < 45);
+        if (isWink) {
+          ctx.fillRect(fX + 7, fY, 8, 2);
+          ctx.fillRect(fX + 13, fY + 2, 2, 2);
+        } else {
+          ctx.fillRect(fX + 7, fY - 3, 7, 7);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(fX + 8, fY - 3, 3, 3);
+        }
+
+        // Sorrisetto sicuro
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 3, fY + 6, 7, 2);
+        ctx.fillRect(fX + 3, fY + 5, 2, 2);
+
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 20, fY + 4, 4, 3);
+        ctx.fillRect(fX + 16, fY + 4, 4, 3);
+
+      // 10. STATO NORMALE / SALUTE (Blink naturale)
+      } else {
+        const blink = (tickCount % 130 < 7);
+        if (blink) {
+          ctx.fillRect(fX - 14, fY, 8, 2);
+          ctx.fillRect(fX + 6, fY, 8, 2);
+        } else {
+          ctx.fillRect(fX - 14, fY - 3, 7, 7);
+          ctx.fillRect(fX + 7, fY - 3, 7, 7);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(fX - 13, fY - 3, 3, 3);
+          ctx.fillRect(fX + 8, fY - 3, 3, 3);
+        }
+
+        ctx.fillStyle = "#FB7185";
+        ctx.fillRect(fX - 20, fY + 4, 4, 3);
+        ctx.fillRect(fX + 16, fY + 4, 4, 3);
+
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(fX - 4, fY + 6, 8, 2);
+        ctx.fillRect(fX - 5, fY + 5, 2, 2);
+        ctx.fillRect(fX + 3, fY + 5, 2, 2);
+      }
+
+      // Effetti ambientali invernali per il frigo (fiocco hero, brina e bufera di neve)
+      if (appState.inFridge) {
         // FIOCCO DI NEVE HERO IN FRIGO (in alto a destra)
-        const sfX = cx + jarW/2 + 18;
-        const sfY = jarTop + 24 + Math.sin(tickCount * 0.05) * 3;
-        ctx.fillStyle = "#93C5FD"; // Ice Blue
+        const sfX = cx + jarW/2 + 20;
+        const sfY = jarTop + 28 + Math.sin(tickCount * 0.05) * 3;
+        ctx.fillStyle = "#93C5FD";
         ctx.fillRect(sfX - 4, sfY, 9, 1);
         ctx.fillRect(sfX, sfY - 4, 1, 9);
         ctx.fillRect(sfX - 2, sfY - 2, 1, 1);
@@ -1920,17 +2195,17 @@
 
         // Cristalli di brina gelata sugli angoli del vasetto di vetro
         ctx.fillStyle = "rgba(224, 242, 254, 0.85)";
-        ctx.fillRect(cx - jarW/2 + 3, jarTop + 12, 7, 3);
-        ctx.fillRect(cx - jarW/2 + 3, jarTop + 15, 4, 3);
-        ctx.fillRect(cx - jarW/2 + 3, jarTop + 18, 2, 3);
-        ctx.fillRect(cx + jarW/2 - 10, jarTop + 12, 7, 3);
-        ctx.fillRect(cx + jarW/2 - 7, jarTop + 15, 4, 3);
-        ctx.fillRect(cx + jarW/2 - 5, jarTop + 18, 2, 3);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 14, 8, 3);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 17, 5, 4);
+        ctx.fillRect(cx - jarW/2 + 3, jarTop + 21, 2, 4);
+        ctx.fillRect(cx + jarW/2 - 11, jarTop + 14, 8, 3);
+        ctx.fillRect(cx + jarW/2 - 8, jarTop + 17, 5, 4);
+        ctx.fillRect(cx + jarW/2 - 5, jarTop + 21, 2, 4);
 
-        ctx.fillRect(cx - jarW/2 + 3, jarBottom - 12, 3, 10);
-        ctx.fillRect(cx - jarW/2 + 6, jarBottom - 8, 4, 5);
-        ctx.fillRect(cx + jarW/2 - 6, jarBottom - 12, 3, 10);
-        ctx.fillRect(cx + jarW/2 - 10, jarBottom - 8, 4, 5);
+        ctx.fillRect(cx - jarW/2 + 3, jarBottom - 14, 3, 11);
+        ctx.fillRect(cx - jarW/2 + 6, jarBottom - 9, 4, 6);
+        ctx.fillRect(cx + jarW/2 - 6, jarBottom - 14, 3, 11);
+        ctx.fillRect(cx + jarW/2 - 10, jarBottom - 9, 4, 6);
 
         // Bufera pixel art: fiocchi e particelle di neve che cadono dolcemente
         snowFlakes.forEach(sf => {
@@ -1963,56 +2238,6 @@
             ctx.fillRect(sX, sY, 1, 1);
           }
         });
-
-      } else if (kin.hunger > 75) {
-        ctx.fillRect(fX - 14, fY - 2, 7, 6);
-        ctx.fillRect(fX + 7, fY - 2, 7, 6);
-        ctx.fillRect(fX - 4, fY + 10, 8, 2);
-        ctx.fillRect(fX - 6, fY + 12, 2, 2);
-        ctx.fillRect(fX + 4, fY + 12, 2, 2);
-
-        ctx.fillStyle = "#38BDF8";
-        ctx.fillRect(fX + 24, fY - 4, 4, 6);
-        ctx.fillRect(fX + 25, fY - 7, 2, 3);
-
-      } else if (currentVol >= 2.0) {
-        ctx.fillRect(fX - 16, fY - 4, 8, 9);
-        ctx.fillRect(fX + 8, fY - 4, 8, 9);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(fX - 15, fY - 4, 3, 3);
-        ctx.fillRect(fX - 11, fY + 2, 2, 2);
-        ctx.fillRect(fX + 9, fY - 4, 3, 3);
-        ctx.fillRect(fX + 13, fY + 2, 2, 2);
-
-        ctx.fillStyle = "#FB7185";
-        ctx.fillRect(fX - 24, fY + 4, 5, 4);
-        ctx.fillRect(fX + 19, fY + 4, 5, 4);
-
-        ctx.fillStyle = "#182C17";
-        ctx.fillRect(fX - 5, fY + 6, 10, 3);
-        ctx.fillRect(fX - 3, fY + 9, 6, 3);
-        ctx.fillStyle = "#FDA4AF";
-        ctx.fillRect(fX - 2, fY + 8, 4, 3);
-
-      } else {
-        const blink = (tickCount % 120 < 7);
-        if (blink) {
-          ctx.fillRect(fX - 14, fY, 8, 2);
-          ctx.fillRect(fX + 6, fY, 8, 2);
-        } else {
-          ctx.fillRect(fX - 14, fY - 3, 7, 7);
-          ctx.fillRect(fX + 7, fY - 3, 7, 7);
-          ctx.fillStyle = "#FFFFFF";
-          ctx.fillRect(fX - 13, fY - 3, 3, 3);
-          ctx.fillRect(fX + 8, fY - 3, 3, 3);
-        }
-
-        ctx.fillStyle = "#FB7185";
-        ctx.fillRect(fX - 20, fY + 4, 4, 3);
-        ctx.fillRect(fX + 16, fY + 4, 4, 3);
-
-        ctx.fillStyle = "#182C17";
-        ctx.fillRect(fX - 4, fY + 6, 8, 2);
       }
 
       requestAnimationFrame(renderStardewPixelYeast);
@@ -2029,7 +2254,7 @@
       if (viewport) viewport.classList.toggle("fridge-mode", appState.inFridge);
 
       document.getElementById("badgeType").innerText = appState.yeastType === 'licoli' ? "LICOLI 100%" : "SOLIDO 50%";
-      document.getElementById("badgeStreak").innerText = `🔥 STREAK: x${appState.streakCount}`;
+      document.getElementById("badgeStreak").innerText = `🔥 x${appState.streakCount}`;
 
       const btnFridge = document.getElementById("btnLocFridge");
       const btnRoom = document.getElementById("btnLocRoom");
@@ -2056,23 +2281,31 @@
 
       // Baloon
       const speech = document.getElementById("speechBubble");
-      if (appState.inFridge) {
+      if (Date.now() - lastPokeTime < 2600) {
+        // Mantiene la reazione all'interazione se l'utente ha appena toccato il lievito
+      } else if (appState.inFridge) {
         if (kin.isTransitioning) {
-          speech.innerText = `❄️ Brrr... mi sto raffreddando in frigo! Temperatura attuale nel vaso: ${kin.coreTemp}°C`;
+          speech.innerText = `❄️ Brrr... che brividi! Mi sto raffreddando (${kin.coreTemp}°C) verso i +4°C!`;
         } else if (kin.hunger > 75) {
           speech.innerText = "❄️ *Sbadiglio*... Sono in frigo da oltre 5 giorni, rinfrescami per non acidificare!";
         } else {
-          speech.innerText = "❄️ Zzz... dormo tranquillo a +4°C con fiocchi di neve. Mantengo le energie per il prossimo impasto!";
+          speech.innerText = "❄️ Zzz... dormo beato a +4°C con fiocchi di neve. Amidi protetti per il fine settimana!";
         }
       } else {
         if (parseFloat(kin.volume) >= 2.0) {
-          speech.innerText = `🚀 SONO AL PICCO! Pronto per impastare!`;
+          speech.innerText = `🚀 SONO AL PICCO! Spinta esplosiva, pronto per infornare!`;
         } else if (kin.isTransitioning) {
-          speech.innerText = `🌡️ Mi sto riscaldando a stanza (${kin.coreTemp}°C). I lieviti iniziano a svegliarsi!`;
+          speech.innerText = `🌡️ *Yaaawn*... mi sto risvegliando a temperatura ambiente (${kin.coreTemp}°C)!`;
+        } else if (kin.needCorrection || parseFloat(kin.pH) < 3.8) {
+          speech.innerText = "🍋 Uff... che asprezza! Sono un po' troppo acido, serve un rinfresco rigenerante!";
         } else if (kin.hunger > 75) {
           speech.innerText = "🚨 Aiuto, zuccheri finiti! Ho troppa fame!";
+        } else if ((Date.now() - appState.lastFedTimestamp < 1800000) || (parseFloat(kin.totalEffectiveHours) < 0.6)) {
+          speech.innerText = "😋 Slurp! Che banchetto, zuccheri freschi! Inizio a gonfiarmi di vita!";
+        } else if (kin.vigor > 75 && parseFloat(kin.volume) >= 1.35) {
+          speech.innerText = "😉 Sto crescendo una bellezza! Bolle attive e maglia glutinica perfetta!";
         } else {
-          speech.innerText = "🥖 Fermento vivace a temperatura ambiente. La maglia glutinica si gonfia!";
+          speech.innerText = "🥖 Fermento vivace a temperatura ambiente. La colonia è in piena salute!";
         }
       }
 
