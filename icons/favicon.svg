@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="25%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#1E1B18" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background squircle -->
+  <rect x="14" y="14" width="484" height="484" rx="110" fill="url(#bgGrad)"/>
+  <rect x="14" y="14" width="484" height="484" rx="110" fill="url(#glow)"/>
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3"/>
+
+  <!-- Sparkles -->
+  <path d="M136 60 Q136 72 124 72 Q136 72 136 84 Q136 72 148 72 Q136 72 136 60 Z" fill="#FFFFFF"/>
+  <path d="M375 56 Q375 66 365 66 Q375 66 375 76 Q375 66 385 66 Q375 66 375 56 Z" fill="#FFFFFF"/>
+  <path d="M120 180 Q120 188 112 188 Q120 188 120 196 Q120 188 128 188 Q120 188 120 180 Z" fill="#FEF08A"/>
+  <path d="M396 182 Q396 190 388 190 Q396 190 396 198 Q396 190 404 190 Q396 190 396 182 Z" fill="#FEF08A"/>
+
+  <!-- Floating bubbles -->
+  <g stroke="#182C17" stroke-width="2.5">
+    <circle cx="380" cy="88" r="11" fill="#FEF3C7"/>
+    <circle cx="400" cy="128" r="8" fill="#FEF3C7"/>
+    <circle cx="132" cy="98" r="9" fill="#FEF3C7"/>
+  </g>
+  <circle cx="377" cy="85" r="3" fill="#FFFFFF"/>
+  <circle cx="398" cy="126" r="2.5" fill="#FFFFFF"/>
+  <circle cx="130" cy="95" r="2.5" fill="#FFFFFF"/>
+
+  <!-- Glass Jar Shadow -->
+  <ellipse cx="256" cy="410" rx="135" ry="14" fill="#50280A" opacity="0.3" filter="url(#shadow)"/>
+
+  <!-- Jar Body -->
+  <rect x="133" y="168" width="246" height="240" rx="24" fill="#E0F8EE" opacity="0.7" stroke="#182C17" stroke-width="7"/>
+
+  <!-- Sourdough Starter Dough -->
+  <path d="M 140 396 
+           L 140 240 
+           Q 140 216 180 220 
+           Q 220 200 256 200 
+           Q 292 200 332 220 
+           Q 372 216 372 240 
+           L 372 396 
+           Z" fill="#FEF3C7"/>
+  
+  <!-- Dough bottom shading -->
+  <path d="M 140 370 Q 256 385 372 370 L 372 396 L 140 396 Z" fill="#E2CF9F"/>
+
+  <!-- Dough Fermentation Bubbles -->
+  <circle cx="180" cy="330" r="8" fill="#EADBB5"/>
+  <circle cx="165" cy="360" r="6" fill="#EADBB5"/>
+  <circle cx="330" cy="335" r="7" fill="#EADBB5"/>
+  <circle cx="345" cy="365" r="9" fill="#EADBB5"/>
+  <circle cx="226" cy="370" r="7.5" fill="#EADBB5"/>
+  <circle cx="282" cy="372" r="6.5" fill="#EADBB5"/>
+
+  <!-- Red Rubber Band (elastic level marker) -->
+  <rect x="136" y="338" width="240" height="11" fill="#E11D48"/>
+  <line x1="136" y1="338" x2="376" y2="338" stroke="#9F1239" stroke-width="1.5"/>
+  <line x1="136" y1="349" x2="376" y2="349" stroke="#9F1239" stroke-width="1.5"/>
+  <line x1="145" y1="343.5" x2="367" y2="343.5" stroke="#FECDD3" stroke-width="2" stroke-dasharray="6,5"/>
+
+  <!-- Blushing cheeks -->
+  <ellipse cx="195" cy="285" rx="18" ry="11" fill="#FB7185" opacity="0.85"/>
+  <ellipse cx="317" cy="285" rx="18" ry="11" fill="#FB7185" opacity="0.85"/>
+
+  <!-- Eyes -->
+  <ellipse cx="221" cy="270" rx="12" ry="16" fill="#182C17"/>
+  <circle cx="216" cy="264" r="5" fill="#FFFFFF"/>
+  <circle cx="225" cy="274" r="2.5" fill="#FFFFFF"/>
+
+  <ellipse cx="291" cy="270" rx="12" ry="16" fill="#182C17"/>
+  <circle cx="286" cy="264" r="5" fill="#FFFFFF"/>
+  <circle cx="295" cy="274" r="2.5" fill="#FFFFFF"/>
+
+  <!-- Smiling Mouth -->
+  <path d="M 241 287 Q 256 303 271 287 Z" fill="#9F1239" stroke="#182C17" stroke-width="2"/>
+  <path d="M 245 292 Q 256 302 267 292 Z" fill="#FB7185"/>
+
+  <!-- Glass Vertical Highlights -->
+  <rect x="145" y="180" width="7" height="210" rx="3.5" fill="#FFFFFF" opacity="0.75"/>
+  <rect x="156" y="190" width="4" height="180" rx="2" fill="#FFFFFF" opacity="0.45"/>
+
+  <!-- Orange Silicone Gasket -->
+  <rect x="151" y="159" width="210" height="12" rx="5" fill="#E06D53" stroke="#182C17" stroke-width="5"/>
+  <line x1="158" y1="162" x2="354" y2="162" stroke="#FED7AA" stroke-width="2"/>
+
+  <!-- Wooden Lid -->
+  <rect x="141" y="118" width="230" height="41" rx="9" fill="#8D5B4C" stroke="#182C17" stroke-width="7"/>
+  <rect x="148" y="122" width="216" height="12" rx="5" fill="#B27C66"/>
+  <line x1="180" y1="143" x2="332" y2="143" stroke="#6C4438" stroke-width="2"/>
+  <line x1="210" y1="149" x2="302" y2="149" stroke="#6C4438" stroke-width="1.5"/>
+</svg>

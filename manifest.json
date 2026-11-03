@@ -1,0 +1,38 @@
+{
+  "name": "Lievitotchi 🍞 - Assistente Lievito Madre",
+  "short_name": "Lievitotchi",
+  "description": "Tamagotchi e assistente scientifico di precisione per pasta madre viva e licoli",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F4F6F9",
+  "theme_color": "#D97706",
+  "categories": ["utilities", "lifestyle", "food"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

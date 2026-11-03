@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lievitotchi 🍞 - Il tuo Assistente di Panificazione Naturale</title>
+  <meta name="description" content="Tamagotchi e assistente scientifico per la gestione e cura della pasta madre viva e licoli.">
+  <meta name="theme-color" content="#D97706">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Lievitotchi">
+
+  <!-- PWA Web App Manifest & Favicons -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -125,6 +138,23 @@
       background: var(--emerald-light);
       color: var(--emerald);
       border-color: #A7F3D0;
+    }
+
+    #btnInstallPwa {
+      background: var(--amber-light);
+      border-color: var(--amber-border);
+      color: var(--amber-dark);
+      animation: installPulse 2.4s infinite ease-in-out;
+    }
+
+    #btnInstallPwa:hover {
+      background: #FDE68A;
+      transform: scale(1.08);
+    }
+
+    @keyframes installPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(217, 119, 6, 0); }
+      50% { transform: scale(1.06); box-shadow: 0 0 8px rgba(217, 119, 6, 0.4); }
     }
 
     .status-badge {
@@ -1091,6 +1121,9 @@
         <button class="btn-utility-icon" id="btnNotifToggle" title="Notifiche browser">
           <span id="notifIcon">🔔</span>
           <span id="notifText" style="display: none;">Notifiche</span>
+        </button>
+        <button class="btn-utility-icon" id="btnInstallPwa" title="Installa Lievitotchi (App Chrome / PWA)" style="display: none;">
+          <span id="installIcon">📥</span>
         </button>
       </div>
     </header>
@@ -2771,6 +2804,53 @@
 
     quizModal.addEventListener("click", (e) => {
       if (e.target === quizModal) closeQuizModal();
+    });
+
+    // ==========================================
+    // PWA & SERVICE WORKER INSTALLATION
+    // ==========================================
+    let deferredInstallPrompt = null;
+    const btnInstallPwa = document.getElementById("btnInstallPwa");
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('[Lievitotchi SW] Registrato con successo:', reg.scope);
+        }).catch((err) => {
+          console.log('[Lievitotchi SW] Errore di registrazione:', err);
+        });
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      if (btnInstallPwa) {
+        btnInstallPwa.style.display = 'inline-flex';
+        btnInstallPwa.title = 'Installa Lievitotchi come App Chrome!';
+      }
+    });
+
+    if (btnInstallPwa) {
+      btnInstallPwa.addEventListener('click', async () => {
+        if (!deferredInstallPrompt) {
+          spawnToast('ℹ️ Usa il menu di Chrome: "Installa Lievitotchi"');
+          return;
+        }
+        deferredInstallPrompt.prompt();
+        const choiceResult = await deferredInstallPrompt.userChoice;
+        if (choiceResult && choiceResult.outcome === 'accepted') {
+          spawnToast('🎉 Lievitotchi installato con successo!');
+          btnInstallPwa.style.display = 'none';
+        }
+        deferredInstallPrompt = null;
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      if (btnInstallPwa) btnInstallPwa.style.display = 'none';
+      deferredInstallPrompt = null;
+      spawnToast('🎉 Lievitotchi aggiunto alle tue applicazioni!');
     });
 
     // ==========================================
