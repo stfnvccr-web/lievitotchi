@@ -170,43 +170,67 @@
     .badge-type { background: var(--card-subtle); color: var(--text-muted); border-color: var(--border); }
     .badge-age { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
     .badge-streak { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
-    #btnTempToggle { font-size: 0.75rem; }
-
-    /* SELETTORE AMBIENTE (FRIGO / TEMPERATURA AMBIENTE) */
-    .location-selector {
+    /* SELETTORE AMBIENTE INTERNO AL RIQUADRO ANIMAZIONE */
+    .viewport-env-bar {
       display: flex;
-      background: var(--card-subtle);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 2px;
-      gap: 2px;
+      gap: 6px;
+      width: 100%;
+      max-width: 290px;
+      margin-bottom: 5px;
+      z-index: 2;
     }
 
-    .loc-btn {
-      background: transparent;
-      border: none;
-      padding: 2px 6px;
-      border-radius: 5px;
-      font-size: 0.68rem;
+    .env-btn {
+      flex: 1;
+      padding: 5px 8px;
+      font-family: var(--sans-font);
+      font-size: 0.74rem;
       font-weight: 700;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.85);
       color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 3px;
-      transition: all 0.15s;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.18s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
 
-    .loc-btn.active.loc-fridge {
+    .env-btn:hover {
       background: #FFFFFF;
-      color: var(--blue);
-      box-shadow: var(--shadow-sm);
+      color: var(--text-main);
+      transform: translateY(-1px);
     }
 
-    .loc-btn.active.loc-room {
-      background: #FFFFFF;
-      color: var(--amber-dark);
-      box-shadow: var(--shadow-sm);
+    .env-btn.active.env-fridge {
+      background: #0284C7;
+      color: #FFFFFF;
+      border-color: #0284C7;
+      box-shadow: 0 2px 7px rgba(2, 132, 199, 0.35);
+    }
+
+    .env-btn.active.env-room {
+      background: #059669;
+      color: #FFFFFF;
+      border-color: #059669;
+      box-shadow: 0 2px 7px rgba(5, 150, 105, 0.35);
+    }
+
+    .env-btn .env-sub {
+      font-size: 0.62rem;
+      font-weight: 600;
+      opacity: 0.9;
+      background: rgba(0, 0, 0, 0.08);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    .env-btn.active .env-sub {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
     }
 
     /* CARD 1: HERO DEL LIEVITO */
@@ -1108,20 +1132,6 @@
       </div>
 
       <div class="header-right-group">
-        <!-- SELETTORE AMBIENTE (FRIGO / STANZA) + TEMPERATURA RAPIDA -->
-        <div class="location-selector" title="Imposta dove si trova fisicamente il barattolo (clicca stanza per ciclare temperatura)">
-          <button class="loc-btn loc-fridge active" id="btnLocFridge">
-            <span>❄️ Frigo</span>
-          </button>
-          <button class="loc-btn loc-room" id="btnLocRoom">
-            <span id="roomLocLabel">🌡️ 22°C</span>
-          </button>
-        </div>
-
-        <button class="btn-utility-icon" id="btnTempToggle" title="Cambia temperatura stanza: 18°C (Fresco), 22°C (Ideale), 28°C (Cella calda)">
-          <span id="tempIcon">🌡️</span>
-        </button>
-
         <button class="btn-utility-icon" id="btnAudioToggle" title="Audio">
           <span id="audioIcon">🔇</span>
         </button>
@@ -1138,7 +1148,19 @@
     <!-- CARD 1: IL LIEVITO HERO (STARDEW PIXEL ART + 4 METRICHE) -->
     <section class="hero-stage-card">
       <!-- CANVAS STAGE STARDEW VALLEY -->
-      <div class="pet-canvas-viewport" title="Tocca o clicca per interagire e coccolare il lievito!">
+      <div class="pet-canvas-viewport" title="Tocca o clicca il lievito per coccolarlo!">
+        <!-- SELETTORE AMBIENTE (FRIGO / STANZA) INTEGRATO NEL RIQUADRO -->
+        <div class="viewport-env-bar" onclick="event.stopPropagation();" title="Imposta dove si trova fisicamente il barattolo">
+          <button class="env-btn env-fridge active" id="btnLocFridge" onclick="setEnvironment(true)">
+            <span>❄️ Frigo</span>
+            <span class="env-sub" id="lblFridgeSub">+4°C</span>
+          </button>
+          <button class="env-btn env-room" id="btnLocRoom" onclick="setEnvironment(false)">
+            <span>🏠 Stanza</span>
+            <span class="env-sub" id="lblRoomSub">~24°C</span>
+          </button>
+        </div>
+
         <canvas id="petCanvas" width="300" height="185"></canvas>
         <div class="pixel-speech-box" id="speechBubble">
           "Brrr! Sto riposando a +4°C. Gli amidi dureranno tutta la settimana!"
@@ -1432,26 +1454,7 @@
         </div>
       </div>
 
-      <!-- 4. TEMPERATURA STANZA ABITUALE -->
-      <div class="cfg-section">
-        <label class="cfg-label">TEMPERATURA STANZA ABITUALE</label>
-        <div class="cfg-grid-3">
-          <button class="cfg-btn" id="btnRoomTemp18" onclick="setProfileRoomTemp(18)">
-            <strong>❄️ 18°C</strong>
-            <span>Fresco / Inverno</span>
-          </button>
-          <button class="cfg-btn active" id="btnRoomTemp22" onclick="setProfileRoomTemp(22)">
-            <strong>🌡️ 22°C</strong>
-            <span>Ideale / Mite</span>
-          </button>
-          <button class="cfg-btn" id="btnRoomTemp28" onclick="setProfileRoomTemp(28)">
-            <strong>🔥 28°C</strong>
-            <span>Cella / Estate</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 5. OBIETTIVO / QUEST ATTIVA -->
+      <!-- 4. OBIETTIVO / QUEST ATTIVA -->
       <div class="cfg-section">
         <label class="cfg-label">OBIETTIVO PANIFICAZIONE (QUEST)</label>
         <div class="cfg-grid-3" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
@@ -1625,7 +1628,6 @@
       feedRatio: "1:1:1",
       starterGrams: 50,
       flourType: "manitoba", // "manitoba" | "standard" | "integrale"
-      roomTemp: 22, // 18 | 22 | 28
       yeastAge: "stable", // "starter" | "stable" | "ancient"
       panettoneStep: 0, // 0..3 per allenamento grandi lievitati
       switchFromRate: 0.12,
@@ -1808,18 +1810,15 @@
     // Inerzia termica vaso vetro (~70 min costante di tempo tau)
     function calculateThermalSegment(hours, inFridge, switchFromRate) {
       const tau = 1.2;
-      const roomT = Number(appState.roomTemp) || 22.0;
-      // Il tasso metabolico scala con coefficiente termico Q10 ~ 2.0 (doppio ogni 10°C)
-      const roomRate = Math.min(1.85, Math.max(0.65, Math.pow(2, (roomT - 22.0) / 10.0)));
-      const targetRate = inFridge ? 0.12 : roomRate;
-      const originRate = (switchFromRate !== undefined) ? switchFromRate : (inFridge ? roomRate : 0.12);
+      const targetRate = inFridge ? 0.12 : 1.0;
+      const originRate = (switchFromRate !== undefined) ? switchFromRate : (inFridge ? 1.0 : 0.12);
 
       const deltaRate = originRate - targetRate;
       const thermalTransition = deltaRate * tau * (1 - Math.exp(-hours / tau));
       const effectiveHours = Math.max(0, targetRate * hours + thermalTransition);
 
-      const targetTemp = inFridge ? 4.0 : roomT;
-      const originTemp = inFridge ? roomT : 4.0;
+      const targetTemp = inFridge ? 4.0 : 24.0;
+      const originTemp = inFridge ? 24.0 : 4.0;
       const coreTemp = targetTemp + (originTemp - targetTemp) * Math.exp(-hours / tau);
 
       return {
@@ -1876,11 +1875,8 @@
       }
 
       // 3. Profilo Aromatico & Equilibrio Acidi (Lattico vs Acetico)
-      const roomT = Number(appState.roomTemp) || 22.0;
       const isLiquid = appState.yeastType === 'licoli';
       let baseLacticRatio = isLiquid ? 3.8 : 2.8;
-      if (roomT >= 26) baseLacticRatio += 0.7; // Caldo spinge i batteri lattici dolci
-      else if (roomT <= 19) baseLacticRatio -= 0.5; // Freddo spinge la componente acetica
 
       // Calo del rapporto man mano che aumenta la fame/tempo
       let currentLacticRatio = Math.max(1.2, baseLacticRatio - (hunger / 100 * 1.8));
@@ -2533,21 +2529,12 @@
         ctx.fillRect(cx + 9, crownY + 3, 2, 2);
       }
 
-      // EFFETTI TEMPERATURA STANZA
-      if (!appState.inFridge) {
-        const rT = Number(appState.roomTemp) || 22;
-        if (rT === 28) {
-          // Gocciolina di sudore caldo tropicale animata
-          const swY = fY - 3 + Math.floor((tickCount % 48) / 10);
-          ctx.fillStyle = "#38BDF8";
-          ctx.fillRect(fX + 24, swY, 3, 3);
-          ctx.fillRect(fX + 25, swY - 2, 1, 2);
-        } else if (rT === 18) {
-          // Brividino fresco da cantina
-          ctx.fillStyle = "rgba(147, 197, 253, 0.4)";
-          ctx.fillRect(fX - 22, fY + 2, 5, 4);
-          ctx.fillRect(fX + 17, fY + 2, 5, 4);
-        }
+      // EFFETTI TRANSIZIONE TERMICA A STANZA
+      if (!appState.inFridge && kin.isTransitioning) {
+        // Leggero brividino residuo che si dissolve mentre si scalda
+        ctx.fillStyle = "rgba(147, 197, 253, 0.45)";
+        ctx.fillRect(fX - 22, fY + 2, 5, 4);
+        ctx.fillRect(fX + 17, fY + 2, 5, 4);
       }
 
       // Effetti ambientali invernali per il frigo (fiocco hero, brina e bufera di neve)
@@ -2636,12 +2623,27 @@
 
       const btnFridge = document.getElementById("btnLocFridge");
       const btnRoom = document.getElementById("btnLocRoom");
+      const lblFridgeSub = document.getElementById("lblFridgeSub");
+      const lblRoomSub = document.getElementById("lblRoomSub");
+
       if (appState.inFridge) {
         btnFridge.classList.add("active");
         btnRoom.classList.remove("active");
+        if (lblFridgeSub) {
+          lblFridgeSub.innerText = kin.isTransitioning ? `${kin.coreTemp}°C ➔ +4°C` : "+4°C";
+        }
+        if (lblRoomSub) {
+          lblRoomSub.innerText = "~24°C";
+        }
       } else {
         btnRoom.classList.add("active");
         btnFridge.classList.remove("active");
+        if (lblRoomSub) {
+          lblRoomSub.innerText = kin.isTransitioning ? `${kin.coreTemp}°C ➔ 24°C` : "~24°C";
+        }
+        if (lblFridgeSub) {
+          lblFridgeSub.innerText = "+4°C";
+        }
       }
 
       // 4 Barre Statistiche
@@ -2700,14 +2702,10 @@
           } else {
             speech.innerText = "😋 Slurp! Che banchetto, zuccheri freschi! Inizio a gonfiarmi di vita!";
           }
-        } else if (Number(appState.roomTemp) === 28 && kin.vigor > 70) {
-          speech.innerText = "🔥 Cella a 28°C! Fermentazione turbo a razzo, zuccheri convertiti a gran velocità!";
-        } else if (Number(appState.roomTemp) === 18) {
-          speech.innerText = "🧣 Temperatura fresca a 18°C: fermento con calma e rilassatezza, la maglia ringrazia!";
         } else if (kin.vigor > 75 && parseFloat(kin.volume) >= 1.35) {
           speech.innerText = `😉 Sto crescendo una bellezza! Note aromatiche di ${kin.aromaProfile} e maglia elastica!`;
         } else {
-          speech.innerText = `🥖 Fermento vivace a ${appState.roomTemp || 22}°C. Profilo: ${kin.aromaProfile}!`;
+          speech.innerText = `🥖 Fermento vivace a temperatura ambiente (~24°C). Profilo: ${kin.aromaProfile}!`;
         }
       }
 
@@ -2804,23 +2802,14 @@
       document.getElementById("badgeType").innerText = isLicoli ? "LICOLI 100%" : "SOLIDO 50%";
       document.getElementById("questIcon").innerText = isLicoli ? "🫧" : "🍞";
       document.getElementById("questTargetName").innerText = `${isLicoli ? "Li.Co.Li" : "Pasta Madre"} • ${currentRatio} (${yeastG}g)`;
-      document.getElementById("schoolIcon").innerText = appState.inFridge ? "❄️" : "🌡️";
-      document.getElementById("schoolName").innerText = appState.inFridge ? "In Frigo (+4°C)" : `A Stanza (${appState.roomTemp || 22}°C)`;
+      document.getElementById("schoolIcon").innerText = appState.inFridge ? "❄️" : "🏠";
+      document.getElementById("schoolName").innerText = appState.inFridge ? "In Frigo (+4°C)" : "A Stanza (~24°C)";
 
       // Header Badges & Labels
       const bAgeHead = document.getElementById("badgeAge");
       if (bAgeHead) {
         const ageBadges = { starter: "👶 CUCCIOLO", stable: "🍞 STABILE", ancient: "👑 CENTENARIA" };
         bAgeHead.innerText = ageBadges[appState.yeastAge || 'stable'] || "🍞 STABILE";
-      }
-      const roomLbl = document.getElementById("roomLocLabel");
-      if (roomLbl) {
-        roomLbl.innerText = `🌡️ ${appState.roomTemp || 22}°C`;
-      }
-      const btnTemp = document.getElementById("btnTempToggle");
-      if (btnTemp) {
-        const tempIcons = { 18: "❄️ 18°", 22: "🌡️ 22°", 28: "🔥 28°" };
-        btnTemp.innerText = tempIcons[appState.roomTemp || 22] || "22°";
       }
 
       document.getElementById("readinessFill").style.width = kin.readiness + "%";
@@ -2829,7 +2818,7 @@
       // Accordion Bio-Scanner con temperatura al cuore e transizione
       const tempStatus = kin.isTransitioning 
         ? (appState.inFridge ? "In raffreddamento" : "In riscaldamento") 
-        : (appState.inFridge ? "Stabile 4°C" : `Stabile ${appState.roomTemp || 22}°C`);
+        : (appState.inFridge ? "Stabile +4°C" : "Stabile ~24°C");
       document.getElementById("bioTemp").innerText = `${kin.coreTemp}°C (${tempStatus})`;
       document.getElementById("bioPh").innerText = kin.pH;
       document.getElementById("bioYeastPop").innerText = `~${kin.yeastPopulation}`;
@@ -2912,13 +2901,7 @@
     }
 
     function setEnvironment(inFridge) {
-      if (appState.inFridge === inFridge) {
-        if (!inFridge) {
-          // Se clicca di nuovo su stanza, cicla la temperatura!
-          toggleRoomTemp();
-        }
-        return;
-      }
+      if (appState.inFridge === inFridge) return;
       playRetroBeep('fridge');
 
       const now = Date.now();
@@ -2927,17 +2910,15 @@
       appState.accEquivalentHours += prevSeg.effectiveHours;
 
       const tau = 1.2;
-      const roomT = Number(appState.roomTemp) || 22.0;
-      const roomRate = Math.min(1.85, Math.max(0.65, Math.pow(2, (roomT - 22.0) / 10.0)));
-      const prevTargetRate = appState.inFridge ? 0.12 : roomRate;
-      const prevOriginRate = (appState.switchFromRate !== undefined) ? appState.switchFromRate : (appState.inFridge ? roomRate : 0.12);
-      const instantRate = prevTargetRate + (prevOriginRate - prevTargetRate) * Math.exp(-elapsedSegment / tau);
+      const targetRate = inFridge ? 0.12 : 1.0;
+      const originRate = (appState.switchFromRate !== undefined) ? appState.switchFromRate : (inFridge ? 1.0 : 0.12);
+      const instantRate = targetRate + (originRate - targetRate) * Math.exp(-elapsedSegment / tau);
 
       appState.inFridge = inFridge;
       appState.switchFromRate = instantRate;
       appState.lastSwitchTimestamp = now;
 
-      spawnToast(inFridge ? "❄️ In Frigo" : `🌡️ In Stanza (${appState.roomTemp || 22}°C)`);
+      spawnToast(inFridge ? "❄️ In Frigo (+4°C)" : "🏠 In Stanza (~24°C)");
       saveState();
       updateUI();
     }
@@ -3089,15 +3070,6 @@
       if (bAStab) bAStab.classList.toggle("active", ag === 'stable');
       if (bAAnc) bAAnc.classList.toggle("active", ag === 'ancient');
 
-      // Temperatura stanza
-      const rt = Number(appState.roomTemp) || 22;
-      const bRT18 = document.getElementById("btnRoomTemp18");
-      const bRT22 = document.getElementById("btnRoomTemp22");
-      const bRT28 = document.getElementById("btnRoomTemp28");
-      if (bRT18) bRT18.classList.toggle("active", rt === 18);
-      if (bRT22) bRT22.classList.toggle("active", rt === 22);
-      if (bRT28) bRT28.classList.toggle("active", rt === 28);
-
       // Quest
       const qu = appState.activeQuest || 'pizza';
       const bQPizza = document.getElementById("btnQuestPizza");
@@ -3152,11 +3124,6 @@
       syncProfileModalUI();
     }
 
-    function setProfileRoomTemp(temp) {
-      appState.roomTemp = Number(temp);
-      syncProfileModalUI();
-    }
-
     function setProfileQuest(questKey) {
       appState.activeQuest = questKey;
       if (questKey === 'panettone' && (appState.panettoneStep === undefined || appState.panettoneStep === null)) {
@@ -3182,22 +3149,6 @@
       saveState();
       updateUI();
       spawnToast("🔄 Allenamento Panettone azzerato.");
-    }
-
-    function toggleRoomTemp() {
-      const temps = [18, 22, 28];
-      const cur = Number(appState.roomTemp) || 22;
-      const nextIdx = (temps.indexOf(cur) + 1) % temps.length;
-      appState.roomTemp = temps[nextIdx];
-      if (appState.inFridge) {
-        appState.inFridge = false;
-        appState.lastSwitchTimestamp = Date.now();
-      }
-      saveState();
-      updateUI();
-      playRetroBeep('click');
-      const labels = { 18: "18°C Fresco/Inverno 🧣", 22: "22°C Ideale/Standard 🌡️", 28: "28°C Cella Calda/Estate 🔥" };
-      spawnToast("🌡️ Stanza: " + labels[appState.roomTemp]);
     }
 
     function setProfileRatio(ratio) {
@@ -3232,9 +3183,6 @@
     document.getElementById("badgeType").addEventListener("click", openProfileModal);
     const bAgeClick = document.getElementById("badgeAge");
     if (bAgeClick) bAgeClick.addEventListener("click", openProfileModal);
-
-    const btnTemp = document.getElementById("btnTempToggle");
-    if (btnTemp) btnTemp.addEventListener("click", toggleRoomTemp);
 
     quizModal.addEventListener("click", (e) => {
       if (e.target === quizModal) closeQuizModal();
