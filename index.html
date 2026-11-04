@@ -168,7 +168,9 @@
     }
 
     .badge-type { background: var(--card-subtle); color: var(--text-muted); border-color: var(--border); }
+    .badge-age { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
     .badge-streak { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
+    #btnTempToggle { font-size: 0.75rem; }
 
     /* SELETTORE AMBIENTE (FRIGO / TEMPERATURA AMBIENTE) */
     .location-selector {
@@ -1100,20 +1102,25 @@
       <div class="brand-group">
         <span class="brand-symbol-mini">🍞</span>
         <h1 class="brand-title">Lievitotchi</h1>
-        <span class="status-badge badge-type" id="badgeType" title="Clicca per aprire le opzioni profilo">LICOLI 100%</span>
+        <span class="status-badge badge-type" id="badgeType" title="Clicca per aprire le opzioni profilo" onclick="openProfileModal()">LICOLI 100%</span>
+        <span class="status-badge badge-age" id="badgeAge" title="Età e robustezza starter" onclick="openProfileModal()">🍞 STABILE</span>
         <span class="status-badge badge-streak" id="badgeStreak">🔥 x3</span>
       </div>
 
       <div class="header-right-group">
-        <!-- SELETTORE AMBIENTE (FRIGO / STANZA) -->
-        <div class="location-selector" title="Imposta dove si trova fisicamente il barattolo">
+        <!-- SELETTORE AMBIENTE (FRIGO / STANZA) + TEMPERATURA RAPIDA -->
+        <div class="location-selector" title="Imposta dove si trova fisicamente il barattolo (clicca stanza per ciclare temperatura)">
           <button class="loc-btn loc-fridge active" id="btnLocFridge">
             <span>❄️ Frigo</span>
           </button>
           <button class="loc-btn loc-room" id="btnLocRoom">
-            <span>🌡️ Stanza</span>
+            <span id="roomLocLabel">🌡️ 22°C</span>
           </button>
         </div>
+
+        <button class="btn-utility-icon" id="btnTempToggle" title="Cambia temperatura stanza: 18°C (Fresco), 22°C (Ideale), 28°C (Cella calda)">
+          <span id="tempIcon">🌡️</span>
+        </button>
 
         <button class="btn-utility-icon" id="btnAudioToggle" title="Audio">
           <span id="audioIcon">🔇</span>
@@ -1302,6 +1309,28 @@
             ⚖️ <strong>Rapporto Acidi:</strong> <span id="bioAcidRatio" style="font-weight:700; color:var(--text-main);">3.8 : 1 (Equilibrato)</span>
           </div>
 
+          <div style="font-size:0.76rem; color:var(--text-muted); background:var(--card-subtle); padding:8px 10px; border-radius:8px; border:1px solid var(--border); margin-top:6px;">
+            🌸 <strong>Profilo Aromatico:</strong> <span id="bioAroma" style="font-weight:700; color:var(--text-main);">Yogurt Dolce & Mela Matura</span>
+          </div>
+
+          <div style="font-size:0.76rem; color:var(--text-muted); background:var(--card-subtle); padding:8px 10px; border-radius:8px; border:1px solid var(--border); margin-top:6px; display:flex; justify-content:space-between;">
+            <span>🌾 <strong>Farina:</strong> <span id="bioFlour">Manitoba</span></span>
+            <span>🧬 <strong>Colonia:</strong> <span id="bioAge">Stabile</span></span>
+          </div>
+
+          <!-- BOX ALLENAMENTO GRANDI LIEVITATI (PANETTONE) -->
+          <div id="panettoneTrainingBox" style="display:none; background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:10px; padding:10px; margin-top:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:0.8rem; color:#B45309;">👑 Allenamento Grandi Lievitati</strong>
+              <span id="panettoneStepBadge" style="font-size:0.7rem; font-weight:800; background:#F59E0B; color:white; padding:2px 7px; border-radius:6px;">Step 0/3</span>
+            </div>
+            <p id="panettoneStepDesc" style="font-size:0.72rem; color:#92400E; margin:4px 0 8px;">Per il Panettone servono 3 rinfreschi ravvicinati a 28°C per azzerare l'acidità e massimizzare la spinta.</p>
+            <div style="display:flex; gap:6px;">
+              <button class="btn-feed-action" onclick="advancePanettoneStep()" style="flex:1; padding:6px 10px; font-size:0.75rem;">+1 Rinfresco Step</button>
+              <button class="cfg-btn" onclick="resetPanettoneStep()" style="padding:6px 10px; font-size:0.75rem;">Reset</button>
+            </div>
+          </div>
+
           <div class="science-readiness-row">
             <div class="readiness-meta-row">
               <span>Stabilità Storica Lievito:</span>
@@ -1365,7 +1394,91 @@
         </div>
       </div>
 
-      <!-- 2. RAPPORTO DI RINFRESCO -->
+      <!-- 2. TIPO DI FARINA -->
+      <div class="cfg-section">
+        <label class="cfg-label">TIPO DI FARINA PER IL RINFRESCO</label>
+        <div class="cfg-grid-3">
+          <button class="cfg-btn active" id="btnFlourManitoba" onclick="setProfileFlour('manitoba')">
+            <strong>🌾 Manitoba</strong>
+            <span>Forte (W350+)</span>
+          </button>
+          <button class="cfg-btn" id="btnFlourStandard" onclick="setProfileFlour('standard')">
+            <strong>🍞 Tipo 0/00</strong>
+            <span>Standard (W260)</span>
+          </button>
+          <button class="cfg-btn" id="btnFlourIntegrale" onclick="setProfileFlour('integrale')">
+            <strong>🌿 Integrale</strong>
+            <span>Turbo Enzimi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. ETÀ E RESILIENZA STARTER -->
+      <div class="cfg-section">
+        <label class="cfg-label">ETÀ E RESILIENZA DELLA COLONIA</label>
+        <div class="cfg-grid-3">
+          <button class="cfg-btn" id="btnAgeStarter" onclick="setProfileAge('starter')">
+            <strong>👶 Cucciolo</strong>
+            <span>1-2 sett. (Delicato)</span>
+          </button>
+          <button class="cfg-btn active" id="btnAgeStable" onclick="setProfileAge('stable')">
+            <strong>🍞 Stabile</strong>
+            <span>Mesi (Bilanciato)</span>
+          </button>
+          <button class="cfg-btn" id="btnAgeAncient" onclick="setProfileAge('ancient')">
+            <strong>👑 Centenario</strong>
+            <span>Anni (Invincibile)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. TEMPERATURA STANZA ABITUALE -->
+      <div class="cfg-section">
+        <label class="cfg-label">TEMPERATURA STANZA ABITUALE</label>
+        <div class="cfg-grid-3">
+          <button class="cfg-btn" id="btnRoomTemp18" onclick="setProfileRoomTemp(18)">
+            <strong>❄️ 18°C</strong>
+            <span>Fresco / Inverno</span>
+          </button>
+          <button class="cfg-btn active" id="btnRoomTemp22" onclick="setProfileRoomTemp(22)">
+            <strong>🌡️ 22°C</strong>
+            <span>Ideale / Mite</span>
+          </button>
+          <button class="cfg-btn" id="btnRoomTemp28" onclick="setProfileRoomTemp(28)">
+            <strong>🔥 28°C</strong>
+            <span>Cella / Estate</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. OBIETTIVO / QUEST ATTIVA -->
+      <div class="cfg-section">
+        <label class="cfg-label">OBIETTIVO PANIFICAZIONE (QUEST)</label>
+        <div class="cfg-grid-3" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));">
+          <button class="cfg-btn active" id="btnQuestPizza" onclick="setProfileQuest('pizza')">
+            <strong>🍕 Pizza</strong>
+            <span>Idrataz. 75-80%</span>
+          </button>
+          <button class="cfg-btn" id="btnQuestBread" onclick="setProfileQuest('easy-bread')">
+            <strong>🥖 Pane</strong>
+            <span>Casalingo</span>
+          </button>
+          <button class="cfg-btn" id="btnQuestArtisan" onclick="setProfileQuest('artisan')">
+            <strong>🍞 Rustico</strong>
+            <span>Alveolato</span>
+          </button>
+          <button class="cfg-btn" id="btnQuestBrioche" onclick="setProfileQuest('brioche')">
+            <strong>🥐 Brioche</strong>
+            <span>Dolci soffici</span>
+          </button>
+          <button class="cfg-btn" id="btnQuestPanettone" onclick="setProfileQuest('panettone')">
+            <strong>👑 Panettone</strong>
+            <span>3 Rinfreschi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 6. RAPPORTO DI RINFRESCO -->
       <div class="cfg-section">
         <label class="cfg-label">RAPPORTO ABITUALE DI RINFRESCO</label>
         <div class="cfg-grid-3">
@@ -1384,7 +1497,7 @@
         </div>
       </div>
 
-      <!-- 3. QUANTITÀ MADRE DA USARE -->
+      <!-- 7. QUANTITÀ MADRE DA USARE -->
       <div class="cfg-section">
         <label class="cfg-label">PESO MADRE BASE DAL VASETTO</label>
         <div class="cfg-grid-4">
@@ -1511,6 +1624,10 @@
       activeQuest: "pizza",
       feedRatio: "1:1:1",
       starterGrams: 50,
+      flourType: "manitoba", // "manitoba" | "standard" | "integrale"
+      roomTemp: 22, // 18 | 22 | 28
+      yeastAge: "stable", // "starter" | "stable" | "ancient"
+      panettoneStep: 0, // 0..3 per allenamento grandi lievitati
       switchFromRate: 0.12,
       inFridge: true,
       accEquivalentHours: 5.0,
@@ -1691,15 +1808,18 @@
     // Inerzia termica vaso vetro (~70 min costante di tempo tau)
     function calculateThermalSegment(hours, inFridge, switchFromRate) {
       const tau = 1.2;
-      const targetRate = inFridge ? 0.12 : 1.0;
-      const originRate = (switchFromRate !== undefined) ? switchFromRate : (inFridge ? 1.0 : 0.12);
+      const roomT = Number(appState.roomTemp) || 22.0;
+      // Il tasso metabolico scala con coefficiente termico Q10 ~ 2.0 (doppio ogni 10°C)
+      const roomRate = Math.min(1.85, Math.max(0.65, Math.pow(2, (roomT - 22.0) / 10.0)));
+      const targetRate = inFridge ? 0.12 : roomRate;
+      const originRate = (switchFromRate !== undefined) ? switchFromRate : (inFridge ? roomRate : 0.12);
 
       const deltaRate = originRate - targetRate;
       const thermalTransition = deltaRate * tau * (1 - Math.exp(-hours / tau));
       const effectiveHours = Math.max(0, targetRate * hours + thermalTransition);
 
-      const targetTemp = inFridge ? 4.0 : 24.0;
-      const originTemp = inFridge ? 24.0 : 4.0;
+      const targetTemp = inFridge ? 4.0 : roomT;
+      const originTemp = inFridge ? roomT : 4.0;
       const coreTemp = targetTemp + (originTemp - targetTemp) * Math.exp(-hours / tau);
 
       return {
@@ -1715,14 +1835,36 @@
       const seg = calculateThermalSegment(currentSegmentHours, appState.inFridge, appState.switchFromRate);
       const totalEffectiveHours = Math.max(0, appState.accEquivalentHours + seg.effectiveHours);
 
-      // Picco calibrato in base al rapporto di rinfresco
-      const ratio = appState.feedRatio || '1:1:1';
-      let peakHours = 4.0; // 1:1:1 raggiunge il picco in 3.5 - 4.5 ore
-      if (ratio === '1:2:2') peakHours = 6.0;
-      else if (ratio === '1:3:3') peakHours = 8.5;
+      // 1. Variabile Farina (Alimentazione / Forza Glutine)
+      const flour = appState.flourType || 'manitoba';
+      let flourSpeedMultiplier = 1.0;
+      let starvationFactor = 3.4;
+      if (flour === 'manitoba') {
+        flourSpeedMultiplier = 1.06; // Maglia tenace, picco solido
+        starvationFactor = 4.2; // Resistenza al collasso molto più alta
+      } else if (flour === 'integrale') {
+        flourSpeedMultiplier = 0.82; // Carica enzimatica alta: picco rapido (+22% velocità)
+        starvationFactor = 2.8; // Acidifica prima e maglia cede prima
+      }
 
-      const starvationHours = peakHours * 3.4;
-      const hunger = Math.min(100, Math.floor((totalEffectiveHours / starvationHours) * 100));
+      // 2. Variabile Età & Resilienza Starter
+      const age = appState.yeastAge || 'stable';
+      let ageResilience = 1.0;
+      if (age === 'starter') {
+        ageResilience = 1.25; // Starter giovane: si affanna prima
+      } else if (age === 'ancient') {
+        ageResilience = 0.72; // Madre centenaria: eccezionale resistenza al digiuno
+      }
+
+      // Picco calibrato in base al rapporto di rinfresco e farina
+      const ratio = appState.feedRatio || '1:1:1';
+      let basePeakHours = 4.0; // 1:1:1
+      if (ratio === '1:2:2') basePeakHours = 6.0;
+      else if (ratio === '1:3:3') basePeakHours = 8.5;
+
+      const peakHours = basePeakHours * flourSpeedMultiplier;
+      const starvationHours = peakHours * starvationFactor;
+      const hunger = Math.min(100, Math.floor(((totalEffectiveHours * ageResilience) / starvationHours) * 100));
 
       let volume = 1.0;
       if (totalEffectiveHours < peakHours) {
@@ -1733,31 +1875,72 @@
         volume = Math.max(1.05, 1.9 - (0.045 * (totalEffectiveHours - peakHours * 2)));
       }
 
+      // 3. Profilo Aromatico & Equilibrio Acidi (Lattico vs Acetico)
+      const roomT = Number(appState.roomTemp) || 22.0;
+      const isLiquid = appState.yeastType === 'licoli';
+      let baseLacticRatio = isLiquid ? 3.8 : 2.8;
+      if (roomT >= 26) baseLacticRatio += 0.7; // Caldo spinge i batteri lattici dolci
+      else if (roomT <= 19) baseLacticRatio -= 0.5; // Freddo spinge la componente acetica
+
+      // Calo del rapporto man mano che aumenta la fame/tempo
+      let currentLacticRatio = Math.max(1.2, baseLacticRatio - (hunger / 100 * 1.8));
+
       let pH = 4.2;
-      let acidRatio = "3.8 : 1 (Equilibrato)";
+      let aromaProfile = "Yogurt Dolce & Mela Matura";
+      let aromaNote = "Equilibrato";
       let needCorrection = false;
       let correctionMsg = "";
 
       const rawWallHoursSinceFed = (now - appState.lastFedTimestamp) / 3600000;
-      if (hunger > 80 || rawWallHoursSinceFed > 160) {
+      const starvationThreshold = (age === 'ancient') ? 240 : (age === 'starter' ? 100 : 160);
+
+      if (hunger > 80 || rawWallHoursSinceFed > starvationThreshold) {
         pH = 3.65;
-        acidRatio = "1.8 : 1 (Eccesso Acetico!)";
+        currentLacticRatio = 1.3;
+        aromaProfile = "Aceto Pungente & Solvente";
+        aromaNote = "Sbilanciato (Troppo Acetico)";
         needCorrection = true;
         correctionMsg = "Digiuno prolungato: esegui un rinfresco con rapporto 1:3 con acqua tiepida a 26°C.";
-      } else if (hunger > 50) {
-        pH = 3.9;
-        acidRatio = "2.9 : 1 (Vivace)";
+      } else if (hunger > 60) {
+        pH = 3.85;
+        aromaProfile = "Mela Verde & Alcolico Vivace";
+        aromaNote = "Pungente";
+      } else if (hunger > 35) {
+        pH = 4.05;
+        aromaProfile = "Yogurt Dolce & Mela Matura";
+        aromaNote = "Simbiosi Perfetta";
+      } else {
+        pH = 4.2;
+        aromaProfile = "Panna Dolce & Floreale";
+        aromaNote = "Fresco e Delicato";
       }
+
+      const acidRatio = currentLacticRatio.toFixed(1) + " : 1 (" + aromaNote + ")";
 
       const yeastPopulation = appState.inFridge ? "0.8 × 10⁷" : (hunger < 40 ? "2.4 × 10⁷" : "1.1 × 10⁷");
       const labPopulation = appState.inFridge ? "1.1 × 10⁸" : (hunger < 40 ? "3.2 × 10⁸" : "1.6 × 10⁸");
 
+      // 4. Modalità Panettone & Quest
+      const isPanettoneQuest = appState.activeQuest === 'panettone';
+      const panettoneStep = appState.panettoneStep || 0;
+
       const currentQuest = RECIPE_QUESTS[appState.activeQuest] || RECIPE_QUESTS["pizza"];
       let readiness = 65;
       readiness += Math.min(25, (appState.streakCount || 1) * 5);
+      if (flour === 'manitoba') readiness += 5;
+      if (age === 'ancient') readiness += 6;
+      if (isPanettoneQuest && panettoneStep === 3) readiness = 98;
       if (hunger > 75) readiness -= 30;
       if (hunger < 40 && parseFloat(volume) >= 1.8) readiness += 15;
       readiness = Math.max(15, Math.min(100, readiness));
+
+      // Vigore con bonus
+      let vigor = 94;
+      if (flour === 'manitoba') vigor += 4;
+      if (age === 'ancient') vigor += 5;
+      if (isPanettoneQuest && panettoneStep === 3) vigor = 100;
+      if (hunger > 60) vigor -= Math.round((hunger - 60) * 2.2);
+      vigor = Math.max(15, Math.min(100, vigor));
 
       return {
         totalEffectiveHours: totalEffectiveHours.toFixed(1),
@@ -1766,13 +1949,18 @@
         volume: volume.toFixed(1),
         pH: pH.toFixed(2),
         acidRatio,
+        aromaProfile,
         yeastPopulation,
         labPopulation,
-        vigor: Math.max(20, Math.min(98, Math.round(96 - (hunger > 75 ? (hunger - 75) * 2.8 : 0)))),
+        vigor,
         readiness,
         needCorrection,
         correctionMsg,
         currentQuest,
+        panettoneStep,
+        flour,
+        roomT,
+        age,
         coreTemp: seg.coreTemp,
         isTransitioning: seg.isTransitioning
       };
@@ -1912,6 +2100,22 @@
 
       ctx.fillStyle = highlightDough;
       ctx.fillRect(cx - jarW/2 + 7, topY + 4, jarW - 14, 3);
+
+      // Se farina integrale: semini e crusca rustica scura sparsi
+      if (appState.flourType === 'integrale') {
+        ctx.fillStyle = "#8D5B4C";
+        const branSeeds = [
+          [-45, 22], [-20, 35], [-5, 18], [15, 30], [38, 20],
+          [-35, 55], [-12, 65], [12, 50], [32, 60], [-25, 85], [20, 80]
+        ];
+        branSeeds.forEach(([bx, by]) => {
+          const cy = topY + by;
+          if (cy < jarBottom - 14) {
+            ctx.fillRect(cx + bx, cy, 2, 2);
+            ctx.fillRect(cx + bx + 1, cy + 1, 1, 1);
+          }
+        });
+      }
 
       // Strato scuro di hooch (liquido acetico / esausto) in digiuno estremo (hunger >= 88)
       if (kin.hunger >= 88) {
@@ -2311,6 +2515,41 @@
         ctx.fillRect(fX + 3, fY + 5, 2, 2);
       }
 
+      // CORONA DORATA PIXEL (Allenamento Panettone 3/3 o Madre Centenaria)
+      if (appState.panettoneStep === 3 || appState.yeastAge === 'ancient') {
+        const crownY = topY - 10;
+        ctx.fillStyle = "#F59E0B";
+        // Base corona
+        ctx.fillRect(cx - 13, crownY + 5, 26, 4);
+        // Punte corona
+        ctx.fillRect(cx - 13, crownY + 1, 4, 4);
+        ctx.fillRect(cx - 2, crownY - 1, 4, 6);
+        ctx.fillRect(cx + 9, crownY + 1, 4, 4);
+        // Gemme colorate
+        ctx.fillStyle = "#EF4444";
+        ctx.fillRect(cx - 1, crownY + 2, 2, 2);
+        ctx.fillStyle = "#38BDF8";
+        ctx.fillRect(cx - 11, crownY + 3, 2, 2);
+        ctx.fillRect(cx + 9, crownY + 3, 2, 2);
+      }
+
+      // EFFETTI TEMPERATURA STANZA
+      if (!appState.inFridge) {
+        const rT = Number(appState.roomTemp) || 22;
+        if (rT === 28) {
+          // Gocciolina di sudore caldo tropicale animata
+          const swY = fY - 3 + Math.floor((tickCount % 48) / 10);
+          ctx.fillStyle = "#38BDF8";
+          ctx.fillRect(fX + 24, swY, 3, 3);
+          ctx.fillRect(fX + 25, swY - 2, 1, 2);
+        } else if (rT === 18) {
+          // Brividino fresco da cantina
+          ctx.fillStyle = "rgba(147, 197, 253, 0.4)";
+          ctx.fillRect(fX - 22, fY + 2, 5, 4);
+          ctx.fillRect(fX + 17, fY + 2, 5, 4);
+        }
+      }
+
       // Effetti ambientali invernali per il frigo (fiocco hero, brina e bufera di neve)
       if (appState.inFridge) {
         // FIOCCO DI NEVE HERO IN FRIGO (in alto a destra)
@@ -2429,6 +2668,8 @@
       } else if (appState.inFridge) {
         if (kin.isTransitioning) {
           speech.innerText = `❄️ Brrr... che brividi! Mi sto raffreddando (${kin.coreTemp}°C) verso i +4°C!`;
+        } else if (appState.yeastAge === 'ancient') {
+          speech.innerText = "❄️ Zzz... dormo beato a +4°C. Sono un lievito centenario, il freddo non mi spaventa minimamente!";
         } else {
           speech.innerText = "❄️ Zzz... dormo beato a +4°C con fiocchi di neve. Amidi protetti per il fine settimana!";
         }
@@ -2439,16 +2680,34 @@
           speech.innerText = "😭 Non ce la faccio più, ho troppa fame! Guarda che lacrime... ti prego, dammi farina fresca!";
         } else if (kin.hunger >= 60) {
           speech.innerText = "😮‍💨 Il picco è passato e mi sto sgonfiando... inizio ad avere fame, non farmi aspettare troppo!";
+        } else if (appState.activeQuest === 'panettone' && appState.panettoneStep === 3) {
+          speech.innerText = "👑 CORONA DA PANETTONE! Triplo rinfresco completato: spinta esplosiva e zero acidità, pronto per burro e tuorli!";
+        } else if (appState.activeQuest === 'panettone' && appState.panettoneStep === 2) {
+          speech.innerText = "🥊 Step 2/3 Panettone superato! Acidità dimezzata, ancora un rinfresco a 28°C per la massima spinta!";
+        } else if (appState.activeQuest === 'panettone' && appState.panettoneStep === 1) {
+          speech.innerText = "🥊 Step 1/3 Panettone: La colonia si è svegliata, pronto per il secondo giro tra 3-4 ore!";
         } else if (parseFloat(kin.volume) >= 2.0) {
-          speech.innerText = `🚀 SONO AL PICCO! Spinta esplosiva, pronto per infornare!`;
+          if (appState.flourType === 'manitoba') {
+            speech.innerText = `🚀 SONO AL PICCO! Maglia Manitoba d'acciaio W350+, spinta esplosiva e profumo di ${kin.aromaProfile}!`;
+          } else {
+            speech.innerText = `🚀 SONO AL PICCO! Spinta esplosiva e profumo di ${kin.aromaProfile}, pronto per infornare!`;
+          }
         } else if (kin.isTransitioning) {
           speech.innerText = `🌡️ *Yaaawn*... mi sto risvegliando a temperatura ambiente (${kin.coreTemp}°C)!`;
         } else if ((Date.now() - appState.lastFedTimestamp < 1800000) || (parseFloat(kin.totalEffectiveHours) < 0.6)) {
-          speech.innerText = "😋 Slurp! Che banchetto, zuccheri freschi! Inizio a gonfiarmi di vita!";
+          if (appState.flourType === 'integrale') {
+            speech.innerText = "😋 Slurp! Farina integrale rustica, che banchetto ricco di minerali ed enzimi!";
+          } else {
+            speech.innerText = "😋 Slurp! Che banchetto, zuccheri freschi! Inizio a gonfiarmi di vita!";
+          }
+        } else if (Number(appState.roomTemp) === 28 && kin.vigor > 70) {
+          speech.innerText = "🔥 Cella a 28°C! Fermentazione turbo a razzo, zuccheri convertiti a gran velocità!";
+        } else if (Number(appState.roomTemp) === 18) {
+          speech.innerText = "🧣 Temperatura fresca a 18°C: fermento con calma e rilassatezza, la maglia ringrazia!";
         } else if (kin.vigor > 75 && parseFloat(kin.volume) >= 1.35) {
-          speech.innerText = "😉 Sto crescendo una bellezza! Bolle attive e maglia glutinica perfetta!";
+          speech.innerText = `😉 Sto crescendo una bellezza! Note aromatiche di ${kin.aromaProfile} e maglia elastica!`;
         } else {
-          speech.innerText = "🥖 Fermento vivace a temperatura ambiente. La colonia è in piena salute!";
+          speech.innerText = `🥖 Fermento vivace a ${appState.roomTemp || 22}°C. Profilo: ${kin.aromaProfile}!`;
         }
       }
 
@@ -2546,7 +2805,23 @@
       document.getElementById("questIcon").innerText = isLicoli ? "🫧" : "🍞";
       document.getElementById("questTargetName").innerText = `${isLicoli ? "Li.Co.Li" : "Pasta Madre"} • ${currentRatio} (${yeastG}g)`;
       document.getElementById("schoolIcon").innerText = appState.inFridge ? "❄️" : "🌡️";
-      document.getElementById("schoolName").innerText = appState.inFridge ? "In Frigo (+4°C)" : "A Stanza (24°C)";
+      document.getElementById("schoolName").innerText = appState.inFridge ? "In Frigo (+4°C)" : `A Stanza (${appState.roomTemp || 22}°C)`;
+
+      // Header Badges & Labels
+      const bAgeHead = document.getElementById("badgeAge");
+      if (bAgeHead) {
+        const ageBadges = { starter: "👶 CUCCIOLO", stable: "🍞 STABILE", ancient: "👑 CENTENARIA" };
+        bAgeHead.innerText = ageBadges[appState.yeastAge || 'stable'] || "🍞 STABILE";
+      }
+      const roomLbl = document.getElementById("roomLocLabel");
+      if (roomLbl) {
+        roomLbl.innerText = `🌡️ ${appState.roomTemp || 22}°C`;
+      }
+      const btnTemp = document.getElementById("btnTempToggle");
+      if (btnTemp) {
+        const tempIcons = { 18: "❄️ 18°", 22: "🌡️ 22°", 28: "🔥 28°" };
+        btnTemp.innerText = tempIcons[appState.roomTemp || 22] || "22°";
+      }
 
       document.getElementById("readinessFill").style.width = kin.readiness + "%";
       document.getElementById("readinessScore").innerText = `${kin.readiness}% • ${kin.readiness >= 65 ? "Pronto" : "In Crescita"}`;
@@ -2554,12 +2829,49 @@
       // Accordion Bio-Scanner con temperatura al cuore e transizione
       const tempStatus = kin.isTransitioning 
         ? (appState.inFridge ? "In raffreddamento" : "In riscaldamento") 
-        : (appState.inFridge ? "Stabile 4°C" : "Stabile stanza");
+        : (appState.inFridge ? "Stabile 4°C" : `Stabile ${appState.roomTemp || 22}°C`);
       document.getElementById("bioTemp").innerText = `${kin.coreTemp}°C (${tempStatus})`;
       document.getElementById("bioPh").innerText = kin.pH;
       document.getElementById("bioYeastPop").innerText = `~${kin.yeastPopulation}`;
       document.getElementById("bioLabPop").innerText = `~${kin.labPopulation}`;
       document.getElementById("bioAcidRatio").innerText = kin.acidRatio;
+
+      const bAroma = document.getElementById("bioAroma");
+      if (bAroma) bAroma.innerText = kin.aromaProfile;
+
+      const bFlour = document.getElementById("bioFlour");
+      if (bFlour) {
+        const fNames = { manitoba: "Manitoba W350+", standard: "Tipo 0/00 (W260)", integrale: "Integrale / Segale" };
+        bFlour.innerText = fNames[appState.flourType || 'manitoba'] || "Manitoba";
+      }
+
+      const bAge = document.getElementById("bioAge");
+      if (bAge) {
+        const aNames = { starter: "Cucciolo (1-2 sett.)", stable: "Stabile & Attivo", ancient: "Madre Centenaria (Anni)" };
+        bAge.innerText = aNames[appState.yeastAge || 'stable'] || "Stabile";
+      }
+
+      // Box Panettone
+      const pBox = document.getElementById("panettoneTrainingBox");
+      if (pBox) {
+        if (appState.activeQuest === 'panettone') {
+          pBox.style.display = "block";
+          const step = appState.panettoneStep || 0;
+          document.getElementById("panettoneStepBadge").innerText = `Step ${step}/3`;
+          const descEl = document.getElementById("panettoneStepDesc");
+          if (step === 3) {
+            descEl.innerHTML = "🎉 <strong>CONGRATULAZIONI!</strong> 3/3 rinfreschi completati a 28°C. Lievito incoronato, acidità azzerata e massima spinta: <em>pronto per il primo impasto!</em>";
+          } else if (step === 2) {
+            descEl.innerText = "Ottimo! Secondo rinfresco fatto. Esegui il 3° e ultimo rinfresco tra 3-4 ore a 28°C per completare la preparazione.";
+          } else if (step === 1) {
+            descEl.innerText = "Primo rinfresco di risveglio completato. Fai il 2° rinfresco tra 3-4 ore a 28°C.";
+          } else {
+            descEl.innerText = "Per il Panettone servono 3 rinfreschi ravvicinati a 28°C per azzerare l'acidità e massimizzare la spinta.";
+          }
+        } else {
+          pBox.style.display = "none";
+        }
+      }
 
       renderHistory();
       checkNotificationNeed(kin);
@@ -2600,7 +2912,13 @@
     }
 
     function setEnvironment(inFridge) {
-      if (appState.inFridge === inFridge) return;
+      if (appState.inFridge === inFridge) {
+        if (!inFridge) {
+          // Se clicca di nuovo su stanza, cicla la temperatura!
+          toggleRoomTemp();
+        }
+        return;
+      }
       playRetroBeep('fridge');
 
       const now = Date.now();
@@ -2609,15 +2927,17 @@
       appState.accEquivalentHours += prevSeg.effectiveHours;
 
       const tau = 1.2;
-      const prevTargetRate = appState.inFridge ? 0.12 : 1.0;
-      const prevOriginRate = (appState.switchFromRate !== undefined) ? appState.switchFromRate : (appState.inFridge ? 1.0 : 0.12);
+      const roomT = Number(appState.roomTemp) || 22.0;
+      const roomRate = Math.min(1.85, Math.max(0.65, Math.pow(2, (roomT - 22.0) / 10.0)));
+      const prevTargetRate = appState.inFridge ? 0.12 : roomRate;
+      const prevOriginRate = (appState.switchFromRate !== undefined) ? appState.switchFromRate : (appState.inFridge ? roomRate : 0.12);
       const instantRate = prevTargetRate + (prevOriginRate - prevTargetRate) * Math.exp(-elapsedSegment / tau);
 
       appState.inFridge = inFridge;
       appState.switchFromRate = instantRate;
       appState.lastSwitchTimestamp = now;
 
-      spawnToast(inFridge ? "❄️ In Frigo" : "🌡️ In Stanza");
+      spawnToast(inFridge ? "❄️ In Frigo" : `🌡️ In Stanza (${appState.roomTemp || 22}°C)`);
       saveState();
       updateUI();
     }
@@ -2659,6 +2979,17 @@
       appState.lastSwitchTimestamp = now;
       appState.accEquivalentHours = 0;
       appState.switchFromRate = appState.inFridge ? 0.12 : 1.0;
+
+      // Avanzamento Allenamento Panettone se la Quest attiva è panettone
+      if (appState.activeQuest === 'panettone') {
+        const curStep = appState.panettoneStep || 0;
+        appState.panettoneStep = Math.min(3, curStep + 1);
+        if (appState.panettoneStep === 3) {
+          spawnToast("👑 3/3 Rinfresco Panettone: Lievito Incoronato e Pronto!");
+        } else {
+          spawnToast(`🥊 Step ${appState.panettoneStep}/3 Panettone completato!`);
+        }
+      }
 
       localStorage.removeItem("last_peak_notif_time");
       localStorage.removeItem("last_starve_notif_time");
@@ -2740,6 +3071,46 @@
       if (btnLicoli) btnLicoli.classList.toggle("active", isLicoli);
       if (btnSolido) btnSolido.classList.toggle("active", !isLicoli);
 
+      // Farina
+      const fl = appState.flourType || 'manitoba';
+      const bFM = document.getElementById("btnFlourManitoba");
+      const bFS = document.getElementById("btnFlourStandard");
+      const bFI = document.getElementById("btnFlourIntegrale");
+      if (bFM) bFM.classList.toggle("active", fl === 'manitoba');
+      if (bFS) bFS.classList.toggle("active", fl === 'standard');
+      if (bFI) bFI.classList.toggle("active", fl === 'integrale');
+
+      // Età
+      const ag = appState.yeastAge || 'stable';
+      const bAStart = document.getElementById("btnAgeStarter");
+      const bAStab = document.getElementById("btnAgeStable");
+      const bAAnc = document.getElementById("btnAgeAncient");
+      if (bAStart) bAStart.classList.toggle("active", ag === 'starter');
+      if (bAStab) bAStab.classList.toggle("active", ag === 'stable');
+      if (bAAnc) bAAnc.classList.toggle("active", ag === 'ancient');
+
+      // Temperatura stanza
+      const rt = Number(appState.roomTemp) || 22;
+      const bRT18 = document.getElementById("btnRoomTemp18");
+      const bRT22 = document.getElementById("btnRoomTemp22");
+      const bRT28 = document.getElementById("btnRoomTemp28");
+      if (bRT18) bRT18.classList.toggle("active", rt === 18);
+      if (bRT22) bRT22.classList.toggle("active", rt === 22);
+      if (bRT28) bRT28.classList.toggle("active", rt === 28);
+
+      // Quest
+      const qu = appState.activeQuest || 'pizza';
+      const bQPizza = document.getElementById("btnQuestPizza");
+      const bQBread = document.getElementById("btnQuestBread");
+      const bQArt = document.getElementById("btnQuestArtisan");
+      const bQBri = document.getElementById("btnQuestBrioche");
+      const bQPan = document.getElementById("btnQuestPanettone");
+      if (bQPizza) bQPizza.classList.toggle("active", qu === 'pizza');
+      if (bQBread) bQBread.classList.toggle("active", qu === 'easy-bread');
+      if (bQArt) bQArt.classList.toggle("active", qu === 'artisan');
+      if (bQBri) bQBri.classList.toggle("active", qu === 'brioche');
+      if (bQPan) bQPan.classList.toggle("active", qu === 'panettone');
+
       // Rapporto
       const r = appState.feedRatio || '1:1:1';
       const b111 = document.getElementById("btnCfgRatio111");
@@ -2769,6 +3140,64 @@
     function setProfileYeast(type) {
       appState.yeastType = type;
       syncProfileModalUI();
+    }
+
+    function setProfileFlour(flour) {
+      appState.flourType = flour;
+      syncProfileModalUI();
+    }
+
+    function setProfileAge(age) {
+      appState.yeastAge = age;
+      syncProfileModalUI();
+    }
+
+    function setProfileRoomTemp(temp) {
+      appState.roomTemp = Number(temp);
+      syncProfileModalUI();
+    }
+
+    function setProfileQuest(questKey) {
+      appState.activeQuest = questKey;
+      if (questKey === 'panettone' && (appState.panettoneStep === undefined || appState.panettoneStep === null)) {
+        appState.panettoneStep = 0;
+      }
+      syncProfileModalUI();
+    }
+
+    function advancePanettoneStep() {
+      const cur = appState.panettoneStep || 0;
+      appState.panettoneStep = Math.min(3, cur + 1);
+      saveState();
+      updateUI();
+      if (appState.panettoneStep === 3) {
+        spawnToast("👑 3/3 Panettone: Pronto all'impasto!");
+      } else {
+        spawnToast(`🥊 Step ${appState.panettoneStep}/3 completato!`);
+      }
+    }
+
+    function resetPanettoneStep() {
+      appState.panettoneStep = 0;
+      saveState();
+      updateUI();
+      spawnToast("🔄 Allenamento Panettone azzerato.");
+    }
+
+    function toggleRoomTemp() {
+      const temps = [18, 22, 28];
+      const cur = Number(appState.roomTemp) || 22;
+      const nextIdx = (temps.indexOf(cur) + 1) % temps.length;
+      appState.roomTemp = temps[nextIdx];
+      if (appState.inFridge) {
+        appState.inFridge = false;
+        appState.lastSwitchTimestamp = Date.now();
+      }
+      saveState();
+      updateUI();
+      playRetroBeep('click');
+      const labels = { 18: "18°C Fresco/Inverno 🧣", 22: "22°C Ideale/Standard 🌡️", 28: "28°C Cella Calda/Estate 🔥" };
+      spawnToast("🌡️ Stanza: " + labels[appState.roomTemp]);
     }
 
     function setProfileRatio(ratio) {
@@ -2801,6 +3230,11 @@
 
     document.getElementById("btnOpenQuiz").addEventListener("click", openProfileModal);
     document.getElementById("badgeType").addEventListener("click", openProfileModal);
+    const bAgeClick = document.getElementById("badgeAge");
+    if (bAgeClick) bAgeClick.addEventListener("click", openProfileModal);
+
+    const btnTemp = document.getElementById("btnTempToggle");
+    if (btnTemp) btnTemp.addEventListener("click", toggleRoomTemp);
 
     quizModal.addEventListener("click", (e) => {
       if (e.target === quizModal) closeQuizModal();
