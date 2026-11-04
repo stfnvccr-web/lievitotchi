@@ -170,31 +170,29 @@
     .badge-type { background: var(--card-subtle); color: var(--text-muted); border-color: var(--border); }
     .badge-age { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
     .badge-streak { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
-    /* SELETTORE AMBIENTE INTERNO AL RIQUADRO ANIMAZIONE */
+    /* SELETTORE AMBIENTE (APPENA SOPRA L'ANIMAZIONE) */
     .viewport-env-bar {
       display: flex;
       gap: 6px;
       width: 100%;
-      max-width: 290px;
-      margin-bottom: 5px;
-      z-index: 2;
+      margin-bottom: 2px;
     }
 
     .env-btn {
       flex: 1;
-      padding: 5px 8px;
+      padding: 6px 10px;
       font-family: var(--sans-font);
       font-size: 0.74rem;
       font-weight: 700;
-      border-radius: 8px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      background: rgba(255, 255, 255, 0.85);
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--card-subtle);
       color: var(--text-muted);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       transition: all 0.18s ease;
       box-shadow: 0 1px 2px rgba(0,0,0,0.03);
     }
@@ -220,11 +218,11 @@
     }
 
     .env-btn .env-sub {
-      font-size: 0.62rem;
+      font-size: 0.64rem;
       font-weight: 600;
       opacity: 0.9;
       background: rgba(0, 0, 0, 0.08);
-      padding: 1px 4px;
+      padding: 1px 5px;
       border-radius: 4px;
     }
 
@@ -1147,20 +1145,20 @@
 
     <!-- CARD 1: IL LIEVITO HERO (STARDEW PIXEL ART + 4 METRICHE) -->
     <section class="hero-stage-card">
+      <!-- SELETTORE AMBIENTE (FRIGO / STANZA) APPENA SOPRA L'ANIMAZIONE -->
+      <div class="viewport-env-bar" title="Imposta dove si trova fisicamente il barattolo">
+        <button class="env-btn env-fridge active" id="btnLocFridge" onclick="setEnvironment(true)">
+          <span>❄️ Frigo</span>
+          <span class="env-sub" id="lblFridgeSub">+4°C</span>
+        </button>
+        <button class="env-btn env-room" id="btnLocRoom" onclick="setEnvironment(false)">
+          <span>🏠 Stanza</span>
+          <span class="env-sub" id="lblRoomSub">~24°C</span>
+        </button>
+      </div>
+
       <!-- CANVAS STAGE STARDEW VALLEY -->
       <div class="pet-canvas-viewport" title="Tocca o clicca il lievito per coccolarlo!">
-        <!-- SELETTORE AMBIENTE (FRIGO / STANZA) INTEGRATO NEL RIQUADRO -->
-        <div class="viewport-env-bar" onclick="event.stopPropagation();" title="Imposta dove si trova fisicamente il barattolo">
-          <button class="env-btn env-fridge active" id="btnLocFridge" onclick="setEnvironment(true)">
-            <span>❄️ Frigo</span>
-            <span class="env-sub" id="lblFridgeSub">+4°C</span>
-          </button>
-          <button class="env-btn env-room" id="btnLocRoom" onclick="setEnvironment(false)">
-            <span>🏠 Stanza</span>
-            <span class="env-sub" id="lblRoomSub">~24°C</span>
-          </button>
-        </div>
-
         <canvas id="petCanvas" width="300" height="185"></canvas>
         <div class="pixel-speech-box" id="speechBubble">
           "Brrr! Sto riposando a +4°C. Gli amidi dureranno tutta la settimana!"
@@ -1955,7 +1953,6 @@
         currentQuest,
         panettoneStep,
         flour,
-        roomT,
         age,
         coreTemp: seg.coreTemp,
         isTransitioning: seg.isTransitioning
