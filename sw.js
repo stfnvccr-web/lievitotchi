@@ -1,5 +1,5 @@
 // Lievitotchi Service Worker
-const CACHE_NAME = 'lievitotchi-v1';
+const CACHE_NAME = 'lievitotchi-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

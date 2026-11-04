@@ -880,9 +880,50 @@
     .history-row {
       display: flex;
       justify-content: space-between;
-      padding: 7px 0;
+      align-items: center;
+      padding: 8px 0;
       border-bottom: 1px dashed var(--border);
       font-size: 0.78rem;
+      gap: 6px;
+    }
+
+    .history-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .history-desc {
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .history-time {
+      font-size: 0.68rem;
+      color: var(--text-light);
+    }
+
+    .btn-delete-history {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      line-height: 1;
+      transition: all 0.15s;
+    }
+
+    .btn-delete-history:hover {
+      background: #FEE2E2;
+      border-color: #FECACA;
+      color: #DC2626;
+      transform: scale(1.05);
     }
 
     .sos-card {
@@ -1362,12 +1403,13 @@
           </div>
         </div>
 
-        <!-- PANNELLO 2: STORICO RINFRESCHI -->
+        <!-- PANNELLO 2: STORICO RINFRESCHI & TEMPERATURA -->
         <div class="drawer-panel" id="panelHistory" style="display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.78rem; font-weight:700; color:var(--text-muted);">Registro Rinfreschi</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
+            <span style="font-size:0.78rem; font-weight:700; color:var(--text-muted);">Diario Eventi (Rinfreschi & Ambiente)</span>
             <span style="color:var(--amber-gold); font-size:0.75rem; font-weight:800;" id="drawerStreakLabel">Streak: x3</span>
           </div>
+          <p style="font-size:0.65rem; color:var(--text-light); margin:0 0 8px 0;">Puoi eliminare qualsiasi voce errata con 🗑️ per ricalcolare lo stato del lievito.</p>
           <div id="historyList"></div>
         </div>
 
@@ -1435,7 +1477,10 @@
 
       <!-- 3. ETÀ E RESILIENZA STARTER -->
       <div class="cfg-section">
-        <label class="cfg-label">ETÀ E RESILIENZA DELLA COLONIA</label>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 4px;">
+          <label class="cfg-label" style="margin:0;">ETÀ E DATA DI NASCITA</label>
+          <span id="calculatedAgeBadge" style="font-size:0.68rem; font-weight:700; color:var(--amber-dark); background:#FEF3C7; padding:2px 7px; border-radius:5px;">~1 anno</span>
+        </div>
         <div class="cfg-grid-3">
           <button class="cfg-btn" id="btnAgeStarter" onclick="setProfileAge('starter')">
             <strong>👶 Cucciolo</strong>
@@ -1449,6 +1494,10 @@
             <strong>👑 Centenario</strong>
             <span>Anni (Invincibile)</span>
           </button>
+        </div>
+        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--card-subtle); padding:6px 10px; border-radius:8px; border:1px solid var(--border);">
+          <span style="font-size:0.75rem; color:var(--text-main); font-weight:600;">🎂 <strong>Data Creazione:</strong></span>
+          <input type="date" id="inputBirthDate" onchange="setProfileBirthDate(this.value)" style="border:1px solid var(--border); border-radius:6px; padding:3px 7px; font-size:0.72rem; font-family:var(--sans-font); background:#fff; color:var(--text-main);">
         </div>
       </div>
 
@@ -1627,6 +1676,7 @@
       starterGrams: 50,
       flourType: "manitoba", // "manitoba" | "standard" | "integrale"
       yeastAge: "stable", // "starter" | "stable" | "ancient"
+      birthDate: "2024-03-15", // data di nascita del lievito
       panettoneStep: 0, // 0..3 per allenamento grandi lievitati
       switchFromRate: 0.12,
       inFridge: true,
@@ -1637,9 +1687,9 @@
       notifEnabled: false,
       streakCount: 3,
       history: [
-        { time: new Date(Date.now() - 42 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), hoursInterval: 48, status: "Regolare" },
-        { time: new Date(Date.now() - 90 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), hoursInterval: 52, status: "Regolare" },
-        { time: new Date(Date.now() - 142 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), hoursInterval: 46, status: "Regolare" }
+        { id: "feed_1", type: "feed", time: new Date(Date.now() - 42 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), timestamp: Date.now() - 42 * 3600000, hoursInterval: 48, status: "Regolare" },
+        { id: "feed_2", type: "feed", time: new Date(Date.now() - 90 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), timestamp: Date.now() - 90 * 3600000, hoursInterval: 52, status: "Regolare" },
+        { id: "feed_3", type: "feed", time: new Date(Date.now() - 142 * 3600000).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}), timestamp: Date.now() - 142 * 3600000, hoursInterval: 46, status: "Regolare" }
       ]
     };
 
@@ -1658,6 +1708,43 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
       } catch(e) {}
+    }
+
+    function getAgeInfo(birthDateStr) {
+      if (!birthDateStr) return { text: "Stabile", detail: "Età non impostata", days: 180 };
+      const birth = new Date(birthDateStr);
+      const now = new Date();
+      if (isNaN(birth.getTime())) return { text: "Stabile", detail: "Data non valida", days: 180 };
+
+      const diffMs = now - birth;
+      const totalDays = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+
+      if (totalDays < 30) {
+        return { text: `${totalDays}gg`, detail: `${totalDays} giorni di vita`, days: totalDays };
+      }
+      const months = Math.floor(totalDays / 30.4375);
+      if (months < 12) {
+        return { text: `~${months} mesi`, detail: `${months} mesi (${totalDays} gg)`, days: totalDays };
+      }
+      const years = Math.floor(months / 12);
+      const remMonths = months % 12;
+      const yearStr = (years === 1) ? "1 anno" : `${years} anni`;
+      const monthStr = remMonths > 0 ? ` e ${remMonths}m` : "";
+      return { text: yearStr + monthStr, detail: `${yearStr}${monthStr} (${totalDays} gg)`, days: totalDays };
+    }
+
+    function checkAgeEvolution() {
+      if (appState.yeastAge === 'starter') {
+        const feedsCount = (appState.history || []).filter(h => !h.type || h.type === 'feed').length;
+        const ageInfo = getAgeInfo(appState.birthDate);
+        if (feedsCount >= 10 || ageInfo.days >= 28) {
+          appState.yeastAge = 'stable';
+          saveState();
+          spawnToast("🎉 EVOLUZIONE! Colonia STABILE!");
+          const speech = document.getElementById("speechBubble");
+          if (speech) speech.innerText = "🎉 EVOLUZIONE! Grazie ai tuoi rinfreschi costanti, sono cresciuto e sono diventato un Lievito Stabile e forte!";
+        }
+      }
     }
 
     // ==========================================
@@ -2804,9 +2891,14 @@
 
       // Header Badges & Labels
       const bAgeHead = document.getElementById("badgeAge");
+      const ageInfo = getAgeInfo(appState.birthDate);
       if (bAgeHead) {
-        const ageBadges = { starter: "👶 CUCCIOLO", stable: "🍞 STABILE", ancient: "👑 CENTENARIA" };
-        bAgeHead.innerText = ageBadges[appState.yeastAge || 'stable'] || "🍞 STABILE";
+        const ageBadges = { 
+          starter: `👶 CUCCIOLO (${ageInfo.text})`, 
+          stable: `🍞 STABILE (${ageInfo.text})`, 
+          ancient: `👑 CENTENARIA (${ageInfo.text})` 
+        };
+        bAgeHead.innerText = ageBadges[appState.yeastAge || 'stable'] || `🍞 STABILE (${ageInfo.text})`;
       }
 
       document.getElementById("readinessFill").style.width = kin.readiness + "%";
@@ -2834,7 +2926,8 @@
       const bAge = document.getElementById("bioAge");
       if (bAge) {
         const aNames = { starter: "Cucciolo (1-2 sett.)", stable: "Stabile & Attivo", ancient: "Madre Centenaria (Anni)" };
-        bAge.innerText = aNames[appState.yeastAge || 'stable'] || "Stabile";
+        const baseName = aNames[appState.yeastAge || 'stable'] || "Stabile";
+        bAge.innerText = `${baseName} • ${ageInfo.detail}`;
       }
 
       // Box Panettone
@@ -2871,16 +2964,68 @@
     function renderHistory() {
       const container = document.getElementById("historyList");
       if (!appState.history || appState.history.length === 0) {
-        container.innerHTML = `<p style="color:var(--text-light); font-size:0.75rem;">Nessun rinfresco recente.</p>`;
+        container.innerHTML = `<p style="color:var(--text-light); font-size:0.75rem; text-align:center; padding:12px 0;">Nessun passaggio registrato nello storico.</p>`;
         return;
       }
 
-      container.innerHTML = appState.history.slice(0, 4).map(h => `
-        <div class="history-row">
-          <span>📅 ${h.time}</span>
-          <span style="font-weight:700; color:var(--text-main);">${h.status} (${h.hoursInterval}h fa)</span>
-        </div>
-      `).join("");
+      container.innerHTML = appState.history.slice(0, 20).map((h, idx) => {
+        const isFeed = (!h.type || h.type === 'feed');
+        const icon = isFeed ? '🥣' : (h.inFridge ? '❄️' : '🏠');
+        const title = isFeed 
+          ? `Rinfresco ${h.status || 'Regolare'} ${h.hoursInterval !== undefined ? `(${h.hoursInterval}h fa)` : ''}`
+          : (h.status || (h.inFridge ? 'Messo in Frigo (+4°C)' : 'Messo a Stanza (~24°C)'));
+
+        return `
+          <div class="history-row">
+            <div class="history-main">
+              <span class="history-desc">${icon} ${title}</span>
+              <span class="history-time">📅 ${h.time}</span>
+            </div>
+            <button class="btn-delete-history" onclick="deleteHistoryEntry(${idx})" title="Elimina questo passaggio errato dallo storico">
+              🗑️
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function deleteHistoryEntry(idx) {
+      if (!appState.history || !appState.history[idx]) return;
+      const target = appState.history[idx];
+      const isFeed = (!target.type || target.type === 'feed');
+
+      appState.history.splice(idx, 1);
+
+      if (isFeed) {
+        // Se era il rinfresco più recente o all'inizio, ripristina lastFedTimestamp
+        if (idx === 0) {
+          const prevFeed = appState.history.find(h => !h.type || h.type === 'feed');
+          if (prevFeed && prevFeed.timestamp) {
+            appState.lastFedTimestamp = prevFeed.timestamp;
+          } else {
+            appState.lastFedTimestamp = Date.now() - (12 * 3600 * 1000);
+          }
+        }
+        if (appState.streakCount > 1) {
+          appState.streakCount -= 1;
+        }
+        spawnToast("🗑️ Rinfresco rimosso dallo storico");
+      } else {
+        // Passaggio ambiente/temperatura
+        if (idx === 0) {
+          const restoredInFridge = (target.prevInFridge !== undefined) ? target.prevInFridge : !target.inFridge;
+          appState.inFridge = restoredInFridge;
+          const prevEnv = appState.history.find(h => h.type === 'env');
+          appState.lastSwitchTimestamp = (prevEnv && prevEnv.timestamp) 
+            ? prevEnv.timestamp 
+            : Date.now() - (3 * 3600 * 1000);
+        }
+        spawnToast("🗑️ Passaggio temperatura rimosso");
+      }
+
+      saveState();
+      updateUI();
+      playRetroBeep('click');
     }
 
     // ==========================================
@@ -2911,9 +3056,24 @@
       const originRate = (appState.switchFromRate !== undefined) ? appState.switchFromRate : (inFridge ? 1.0 : 0.12);
       const instantRate = targetRate + (originRate - targetRate) * Math.exp(-elapsedSegment / tau);
 
+      const prevInFridge = appState.inFridge;
       appState.inFridge = inFridge;
       appState.switchFromRate = instantRate;
       appState.lastSwitchTimestamp = now;
+
+      // Registra evento cambio temperatura/ambiente nello storico
+      if (!appState.history) appState.history = [];
+      appState.history.unshift({
+        id: "env_" + now,
+        type: "env",
+        timestamp: now,
+        time: new Date(now).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}),
+        inFridge: inFridge,
+        prevInFridge: prevInFridge,
+        coreTemp: prevSeg.coreTemp,
+        status: inFridge ? "❄️ Messo in Frigo (+4°C)" : "🏠 Messo a Stanza (~24°C)"
+      });
+      if (appState.history.length > 25) appState.history.pop();
 
       spawnToast(inFridge ? "❄️ In Frigo (+4°C)" : "🏠 In Stanza (~24°C)");
       saveState();
@@ -2946,12 +3106,16 @@
         appState.streakCount += 1;
       }
 
+      if (!appState.history) appState.history = [];
       appState.history.unshift({
-        time: new Date().toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}),
+        id: "feed_" + now,
+        type: "feed",
+        timestamp: now,
+        time: new Date(now).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}),
         hoursInterval: Math.round(hoursPassed),
         status: statusNote
       });
-      if (appState.history.length > 10) appState.history.pop();
+      if (appState.history.length > 25) appState.history.pop();
 
       appState.lastFedTimestamp = now;
       appState.lastSwitchTimestamp = now;
@@ -2968,6 +3132,8 @@
           spawnToast(`🥊 Step ${appState.panettoneStep}/3 Panettone completato!`);
         }
       }
+
+      checkAgeEvolution();
 
       localStorage.removeItem("last_peak_notif_time");
       localStorage.removeItem("last_starve_notif_time");
@@ -3058,7 +3224,7 @@
       if (bFS) bFS.classList.toggle("active", fl === 'standard');
       if (bFI) bFI.classList.toggle("active", fl === 'integrale');
 
-      // Età
+      // Età & Data di nascita
       const ag = appState.yeastAge || 'stable';
       const bAStart = document.getElementById("btnAgeStarter");
       const bAStab = document.getElementById("btnAgeStable");
@@ -3066,6 +3232,12 @@
       if (bAStart) bAStart.classList.toggle("active", ag === 'starter');
       if (bAStab) bAStab.classList.toggle("active", ag === 'stable');
       if (bAAnc) bAAnc.classList.toggle("active", ag === 'ancient');
+
+      const inBirth = document.getElementById("inputBirthDate");
+      if (inBirth) inBirth.value = appState.birthDate || "2024-03-15";
+      const ageInfo = getAgeInfo(appState.birthDate);
+      const calcAgeBadge = document.getElementById("calculatedAgeBadge");
+      if (calcAgeBadge) calcAgeBadge.innerText = ageInfo.text;
 
       // Quest
       const qu = appState.activeQuest || 'pizza';
@@ -3119,6 +3291,17 @@
     function setProfileAge(age) {
       appState.yeastAge = age;
       syncProfileModalUI();
+    }
+
+    function setProfileBirthDate(val) {
+      if (!val) return;
+      appState.birthDate = val;
+      const ageInfo = getAgeInfo(val);
+      const calcAgeBadge = document.getElementById("calculatedAgeBadge");
+      if (calcAgeBadge) calcAgeBadge.innerText = ageInfo.text;
+      saveState();
+      updateUI();
+      spawnToast(`🎂 Compleanno: ${val}`);
     }
 
     function setProfileQuest(questKey) {
@@ -3195,10 +3378,17 @@
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').then((reg) => {
           console.log('[Lievitotchi SW] Registrato con successo:', reg.scope);
+          if (reg.update) reg.update();
         }).catch((err) => {
           console.log('[Lievitotchi SW] Errore di registrazione:', err);
         });
       });
+    }
+
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist().then((persistent) => {
+        if (persistent) console.log('[Lievitotchi Storage] Persistenza memoria garantita.');
+      }).catch(() => {});
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
