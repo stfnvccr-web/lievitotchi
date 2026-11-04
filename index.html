@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Lievitotchi 🍞 - Il tuo Assistente di Panificazione Naturale</title>
   <meta name="description" content="Tamagotchi e assistente scientifico per la gestione e cura della pasta madre viva e licoli.">
   <meta name="theme-color" content="#D97706">
@@ -52,6 +52,13 @@
       --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
     }
 
+    html {
+      box-sizing: border-box;
+      overflow-x: hidden;
+      width: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -67,20 +74,25 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 10px 8px 24px;
+      padding: 8px 10px 24px;
       line-height: 1.45;
+      overflow-x: hidden;
+      width: 100%;
+      margin: 0;
     }
 
     .app-container {
       width: 100%;
-      max-width: 470px;
+      max-width: 440px;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      margin: 0 auto;
     }
 
     /* TOP HEADER: ULTRA-LEAN SINGLE ROW */
     .top-header {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -91,7 +103,9 @@
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
+      min-width: 0;
+      flex-wrap: nowrap;
     }
 
     .brand-symbol-mini {
@@ -314,8 +328,12 @@
     canvas#petCanvas {
       image-rendering: pixelated;
       image-rendering: crisp-edges;
-      max-width: 100%;
+      width: 100%;
+      max-width: 330px;
+      height: auto;
+      aspect-ratio: 300 / 185;
       display: block;
+      margin: 0 auto;
     }
 
     .pixel-speech-box {
@@ -330,6 +348,7 @@
       color: #1A3319;
       text-align: center;
       width: 100%;
+      max-width: 330px;
       box-shadow: var(--shadow-sm);
     }
 
@@ -1153,6 +1172,82 @@
     @keyframes popAnim {
       0% { transform: translateY(0) scale(0.6); opacity: 1; }
       100% { transform: translateY(-35px) scale(1.2); opacity: 0; }
+    }
+
+    /* ADATTAMENTO RESPONSIVE PER SMARTPHONE (PIXEL 7, IPHONE, GALAXY S) */
+    @media (max-width: 440px) {
+      body {
+        padding: 6px 8px 20px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .top-header {
+        gap: 3px;
+        padding: 0 1px 2px;
+      }
+
+      .brand-title {
+        font-size: 0.96rem;
+      }
+
+      .brand-symbol-mini {
+        font-size: 1.05rem;
+      }
+
+      .status-badge {
+        font-size: 0.61rem;
+        padding: 2px 5px;
+      }
+
+      .btn-utility-icon {
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
+      }
+
+      .hero-stage-card, .guide-card {
+        padding: 8px 10px;
+        border-radius: 14px;
+      }
+
+      .env-btn {
+        padding: 5px 8px;
+        font-size: 0.72rem;
+      }
+
+      .doses-chips-row {
+        gap: 3px;
+      }
+
+      .d-chip-qty {
+        font-size: 0.98rem;
+      }
+
+      .d-chip-sub {
+        font-size: 0.52rem;
+      }
+
+      .insights-toolbar {
+        gap: 4px;
+      }
+
+      .insight-pill-btn {
+        font-size: 0.67rem;
+        padding: 6px 3px;
+      }
+
+      .drawer-box {
+        max-width: 100%;
+        border-radius: 18px 18px 0 0;
+      }
+
+      .modal-box {
+        padding: 18px 14px;
+      }
     }
   </style>
 </head>
@@ -2894,11 +2989,12 @@
       const ageInfo = getAgeInfo(appState.birthDate);
       if (bAgeHead) {
         const ageBadges = { 
-          starter: `👶 CUCCIOLO (${ageInfo.text})`, 
-          stable: `🍞 STABILE (${ageInfo.text})`, 
-          ancient: `👑 CENTENARIA (${ageInfo.text})` 
+          starter: "👶 CUCCIOLO", 
+          stable: "🍞 STABILE", 
+          ancient: "👑 CENTENARIA" 
         };
-        bAgeHead.innerText = ageBadges[appState.yeastAge || 'stable'] || `🍞 STABILE (${ageInfo.text})`;
+        bAgeHead.innerText = ageBadges[appState.yeastAge || 'stable'] || "🍞 STABILE";
+        bAgeHead.title = `Età esatta: ${ageInfo.text} (${ageInfo.detail}) • Clicca per modificare`;
       }
 
       document.getElementById("readinessFill").style.width = kin.readiness + "%";
