@@ -1282,12 +1282,12 @@
     <!-- CARD 1: IL LIEVITO HERO (STARDEW PIXEL ART + 4 METRICHE) -->
     <section class="hero-stage-card">
       <!-- SELETTORE AMBIENTE (FRIGO / STANZA) APPENA SOPRA L'ANIMAZIONE -->
-      <div class="viewport-env-bar" title="Imposta dove si trova fisicamente il barattolo">
-        <button class="env-btn env-fridge active" id="btnLocFridge" onclick="setEnvironment(true)">
+      <div class="viewport-env-bar" title="1 tap: sposta ambiente • Doppio tap: raggiunge subito la temperatura">
+        <button class="env-btn env-fridge active" id="btnLocFridge" onclick="handleFridgeClick(event)" title="1 tap: sposta in frigo gradualmente • Doppio tap: raggiunge subito +4°C">
           <span>❄️ Frigo</span>
           <span class="env-sub" id="lblFridgeSub">+4°C</span>
         </button>
-        <button class="env-btn env-room" id="btnLocRoom" onclick="setEnvironment(false)">
+        <button class="env-btn env-room" id="btnLocRoom" onclick="handleRoomClick(event)" title="1 tap: sposta a stanza gradualmente • Doppio tap: raggiunge subito ~24°C">
           <span>🏠 Stanza</span>
           <span class="env-sub" id="lblRoomSub">~24°C</span>
         </button>
@@ -2690,22 +2690,127 @@
         ctx.fillRect(fX + 3, fY + 5, 2, 2);
       }
 
-      // CORONA DORATA PIXEL (Allenamento Panettone 3/3 o Madre Centenaria)
-      if (appState.panettoneStep === 3 || appState.yeastAge === 'ancient') {
-        const crownY = topY - 10;
+      // ==========================================
+      // TRATTI DISTINTIVI VISIVI DELL'ETÀ DEL LIEVITO (CUCCIOLO / STABILE / CENTENARIA)
+      // ==========================================
+      const ageType = appState.yeastAge || 'stable';
+
+      // 1. CUCCIOLO (starter): Germoglio verde vivo 🌱 oscillante in testa + cuoricino baby
+      if (ageType === 'starter') {
+        const sproutX = cx + shiverOffX;
+        const sproutY = topY - 1;
+        const sproutWiggle = Math.floor(Math.sin(tickCount * 0.12) * 2);
+
+        // Gambo del germoglio
+        ctx.fillStyle = "#15803D";
+        ctx.fillRect(sproutX - 1, sproutY - 8, 2, 8);
+        ctx.fillStyle = "#166534";
+        ctx.fillRect(sproutX, sproutY - 6, 1, 6);
+
+        // Fogliolina sinistra
+        ctx.fillStyle = "#22C55E";
+        ctx.fillRect(sproutX - 6 + sproutWiggle, sproutY - 10, 5, 3);
+        ctx.fillRect(sproutX - 4 + sproutWiggle, sproutY - 12, 3, 2);
+        ctx.fillStyle = "#14532D";
+        ctx.fillRect(sproutX - 7 + sproutWiggle, sproutY - 9, 1, 2);
+
+        // Fogliolina destra
+        ctx.fillStyle = "#4ADE80";
+        ctx.fillRect(sproutX + 1 - sproutWiggle, sproutY - 10, 5, 3);
+        ctx.fillRect(sproutX + 1 - sproutWiggle, sproutY - 12, 3, 2);
+        ctx.fillStyle = "#14532D";
+        ctx.fillRect(sproutX + 6 - sproutWiggle, sproutY - 9, 1, 2);
+
+        // Cuoricino baby pixel art fluttuante
+        const babyHeartY = Math.floor((tickCount * 0.4) % 32);
+        const babyHeartAlpha = Math.max(0, 1 - babyHeartY / 32);
+        ctx.fillStyle = `rgba(244, 63, 94, ${babyHeartAlpha})`;
+        const bhX = sproutX + 24;
+        const bhY = topY + 8 - babyHeartY;
+        ctx.fillRect(bhX - 3, bhY, 2, 2);
+        ctx.fillRect(bhX, bhY, 2, 2);
+        ctx.fillRect(bhX - 3, bhY + 2, 5, 2);
+        ctx.fillRect(bhX - 2, bhY + 4, 3, 2);
+        ctx.fillRect(bhX - 1, bhY + 6, 1, 1);
+
+      // 2. CENTENARIA (ancient) o QUEST PANETTONE 3/3: Corona Regale d'Oro + Barba Bianca da Maestro Saggio
+      } else if (ageType === 'ancient' || appState.panettoneStep === 3) {
+        const crownX = cx + shiverOffX;
+        const crownY = topY - 11;
+
+        // Corona d'oro
         ctx.fillStyle = "#F59E0B";
-        // Base corona
-        ctx.fillRect(cx - 13, crownY + 5, 26, 4);
-        // Punte corona
-        ctx.fillRect(cx - 13, crownY + 1, 4, 4);
-        ctx.fillRect(cx - 2, crownY - 1, 4, 6);
-        ctx.fillRect(cx + 9, crownY + 1, 4, 4);
-        // Gemme colorate
-        ctx.fillStyle = "#EF4444";
-        ctx.fillRect(cx - 1, crownY + 2, 2, 2);
-        ctx.fillStyle = "#38BDF8";
-        ctx.fillRect(cx - 11, crownY + 3, 2, 2);
-        ctx.fillRect(cx + 9, crownY + 3, 2, 2);
+        ctx.fillRect(crownX - 13, crownY + 5, 26, 4); // base
+        ctx.fillRect(crownX - 13, crownY + 1, 4, 4); // punta sx
+        ctx.fillRect(crownX - 2, crownY - 1, 4, 6);  // punta centro
+        ctx.fillRect(crownX + 9, crownY + 1, 4, 4);  // punta dx
+        ctx.fillStyle = "#FDE68A";
+        ctx.fillRect(crownX - 11, crownY + 2, 2, 3);
+        ctx.fillRect(crownX, crownY, 2, 4);
+        ctx.fillRect(crownX + 9, crownY + 2, 2, 3);
+
+        // Bordo scuro corona
+        ctx.fillStyle = "#78350F";
+        ctx.fillRect(crownX - 14, crownY + 8, 28, 1);
+
+        // Gemme preziose
+        ctx.fillStyle = "#EF4444"; // rubino centrale
+        ctx.fillRect(crownX - 1, crownY + 2, 2, 2);
+        ctx.fillStyle = "#38BDF8"; // zaffiri laterali
+        ctx.fillRect(crownX - 11, crownY + 3, 2, 2);
+        ctx.fillRect(crownX + 9, crownY + 3, 2, 2);
+
+        // Se è Madre Centenaria: barbetta bianca da vecchio maestro saggio sotto la bocca!
+        if (ageType === 'ancient') {
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(fX - 5, fY + 10, 10, 3);
+          ctx.fillRect(fX - 4, fY + 13, 8, 3);
+          ctx.fillRect(fX - 2, fY + 16, 4, 3);
+          ctx.fillStyle = "#E2E8F0";
+          ctx.fillRect(fX - 1, fY + 19, 2, 2);
+          ctx.fillStyle = "#94A3B8";
+          ctx.fillRect(fX - 5, fY + 10, 1, 3);
+          ctx.fillRect(fX + 4, fY + 10, 1, 3);
+
+          // Scintille magiche dorate fluttuanti dell'antica madre
+          const sparkleTick = (tickCount * 0.08);
+          const spX1 = cx - 38 + Math.cos(sparkleTick) * 4;
+          const spY1 = topY + 14 + Math.sin(sparkleTick) * 6;
+          const spX2 = cx + 36 + Math.sin(sparkleTick * 1.2) * 5;
+          const spY2 = topY + 28 + Math.cos(sparkleTick * 1.2) * 5;
+          ctx.fillStyle = "#FBBF24";
+          ctx.fillRect(spX1, spY1, 2, 2);
+          ctx.fillRect(spX1 - 1, spY1 + 1, 4, 1);
+          ctx.fillRect(spX2, spY2, 2, 2);
+          ctx.fillRect(spX2 - 1, spY2 + 1, 4, 1);
+        }
+
+      // 3. STABILE (stable): Toque Blanche da Piccolo Panettiere Esperto 👨‍🍳
+      } else if (ageType === 'stable') {
+        const hatX = cx + shiverOffX;
+        const hatY = topY - 11;
+
+        // Cupola bianca soffice pieghettata da fornaio
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(hatX - 14, hatY - 2, 28, 8);
+        ctx.fillRect(hatX - 11, hatY - 5, 22, 4);
+        ctx.fillRect(hatX - 7, hatY - 7, 14, 3);
+
+        // Ombreggiatura e pieghe del cappello da chef
+        ctx.fillStyle = "#CBD5E1";
+        ctx.fillRect(hatX - 6, hatY - 4, 2, 7);
+        ctx.fillRect(hatX + 4, hatY - 4, 2, 7);
+        ctx.fillRect(hatX - 13, hatY + 4, 26, 2);
+
+        // Fascia rigida alla base del cappello
+        ctx.fillStyle = "#94A3B8";
+        ctx.fillRect(hatX - 12, hatY + 6, 24, 3);
+        ctx.fillStyle = "#E2E8F0";
+        ctx.fillRect(hatX - 11, hatY + 6, 22, 2);
+
+        // Bordo scuro pixel
+        ctx.fillStyle = "#182C17";
+        ctx.fillRect(hatX - 12, hatY + 9, 24, 1);
       }
 
       // EFFETTI TRANSIZIONE TERMICA A STANZA
@@ -3138,11 +3243,58 @@
       setTimeout(() => sp.remove(), 1000);
     }
 
-    function setEnvironment(inFridge) {
+    let lastFridgeTap = 0;
+    let lastRoomTap = 0;
+
+    function handleFridgeClick(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const now = Date.now();
+      const isDouble = (now - lastFridgeTap < 450);
+      lastFridgeTap = now;
+      setEnvironment(true, isDouble);
+    }
+
+    function handleRoomClick(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const now = Date.now();
+      const isDouble = (now - lastRoomTap < 450);
+      lastRoomTap = now;
+      setEnvironment(false, isDouble);
+    }
+
+    function setEnvironment(inFridge, instantSnap = false) {
+      const now = Date.now();
+
+      // Scatto istantaneo a temperatura bersaglio (doppio tap o correzione rapida)
+      if (instantSnap) {
+        playRetroBeep('feed');
+        appState.inFridge = inFridge;
+        appState.switchFromRate = inFridge ? 0.12 : 1.0;
+        // Simuliamo 6 ore di transizione completata: temperatura stabile a +4°C o ~24°C al 100%
+        appState.lastSwitchTimestamp = now - (6 * 3600 * 1000);
+
+        if (!appState.history) appState.history = [];
+        appState.history.unshift({
+          id: "env_" + now,
+          type: "env",
+          timestamp: now,
+          time: new Date(now).toLocaleString('it-IT', { dateStyle:'short', timeStyle:'short'}),
+          inFridge: inFridge,
+          prevInFridge: !inFridge,
+          coreTemp: inFridge ? 4.0 : 24.0,
+          status: inFridge ? "⚡ Frigo Immediato (+4°C)" : "⚡ Stanza Immediata (~24°C)"
+        });
+        if (appState.history.length > 25) appState.history.pop();
+
+        spawnToast(inFridge ? "⚡ Subito a +4°C!" : "⚡ Subito a ~24°C!");
+        saveState();
+        updateUI();
+        return;
+      }
+
       if (appState.inFridge === inFridge) return;
       playRetroBeep('fridge');
 
-      const now = Date.now();
       const elapsedSegment = (now - appState.lastSwitchTimestamp) / 3600000;
       const prevSeg = calculateThermalSegment(elapsedSegment, appState.inFridge, appState.switchFromRate);
       appState.accEquivalentHours += prevSeg.effectiveHours;
@@ -3176,8 +3328,16 @@
       updateUI();
     }
 
-    document.getElementById("btnLocFridge").addEventListener("click", () => setEnvironment(true));
-    document.getElementById("btnLocRoom").addEventListener("click", () => setEnvironment(false));
+    const btnLocFridge = document.getElementById("btnLocFridge");
+    const btnLocRoom = document.getElementById("btnLocRoom");
+    if (btnLocFridge) {
+      btnLocFridge.addEventListener("click", handleFridgeClick);
+      btnLocFridge.addEventListener("dblclick", (e) => { if (e && e.stopPropagation) e.stopPropagation(); setEnvironment(true, true); });
+    }
+    if (btnLocRoom) {
+      btnLocRoom.addEventListener("click", handleRoomClick);
+      btnLocRoom.addEventListener("dblclick", (e) => { if (e && e.stopPropagation) e.stopPropagation(); setEnvironment(false, true); });
+    }
 
     function setFeedRatio(r) {
       appState.feedRatio = r;
