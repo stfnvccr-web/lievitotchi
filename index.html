@@ -1474,6 +1474,10 @@
             <span>🧬 <strong>Colonia:</strong> <span id="bioAge">Stabile</span></span>
           </div>
 
+          <div id="bioNotesCard" style="font-size:0.74rem; color:var(--text-muted); background:var(--card-subtle); padding:8px 10px; border-radius:8px; border:1px solid var(--border); margin-top:6px; display:none;">
+            <strong style="color:var(--text-main);">📝 Note Starter:</strong> <span id="bioNotesText" style="line-height:1.4;"></span>
+          </div>
+
           <!-- BOX ALLENAMENTO GRANDI LIEVITATI (PANETTONE) -->
           <div id="panettoneTrainingBox" style="display:none; background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:10px; padding:10px; margin-top:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1534,7 +1538,13 @@
         <h3 class="quiz-title">⚙️ Profilo del tuo Lievito</h3>
         <button class="drawer-close-btn" onclick="closeQuizModal()">✕</button>
       </div>
-      <p class="quiz-desc">Configura il tuo starter, il rapporto di rinfresco abituale e la routine:</p>
+      <p class="quiz-desc">Personalizza il nome, lo starter, le note e la routine di gestione:</p>
+
+      <!-- 0. NOME DEL LIEVITO -->
+      <div class="cfg-section" style="background:var(--card-subtle); padding:10px 12px; border-radius:10px; border:1px solid var(--border);">
+        <label class="cfg-label" style="margin-bottom:4px;">🏷️ NOME DEL TUO LIEVITO</label>
+        <input type="text" id="inputStarterName" maxlength="24" placeholder="Es: Lazzaro, Bubbly, Gennarino, Blob..." style="width:100%; border:1px solid var(--border); border-radius:8px; padding:7px 10px; font-size:0.85rem; font-family:var(--sans-font); background:#fff; color:var(--text-main); font-weight:700;">
+      </div>
 
       <!-- 1. TIPO DI STARTER -->
       <div class="cfg-section">
@@ -1681,6 +1691,28 @@
         </div>
       </div>
 
+      <!-- 8. NOTE PERSONALI & DIARIO DELLO STARTER -->
+      <div class="cfg-section">
+        <label class="cfg-label">📝 NOTE PERSONALI & DETTAGLI STARTER</label>
+        <textarea id="inputStarterNotes" rows="3" placeholder="Es: Dono del panettiere nel 2022; preferisce 80% manitoba e 20% farro integrale; acqua a 24°C; raddoppia in circa 3h30..." style="width:100%; border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:0.75rem; font-family:var(--sans-font); background:#fff; color:var(--text-main); resize:vertical; line-height:1.4;"></textarea>
+      </div>
+
+      <!-- 9. BACKUP & TRASFERIMENTO DATI -->
+      <div class="cfg-section" style="background:#F8FAFC; border:1px dashed var(--border); border-radius:10px; padding:10px;">
+        <label class="cfg-label" style="margin-bottom:6px;">🛡️ BACKUP & TRASFERIMENTO DATI</label>
+        <div style="display:flex; gap:8px;">
+          <button class="cfg-btn" onclick="exportBackupJSON()" type="button" style="flex:1; padding:7px 8px; font-size:0.72rem;">
+            <strong>📤 Esporta Backup</strong>
+            <span>Salva file .JSON</span>
+          </button>
+          <button class="cfg-btn" onclick="triggerImportJSON()" type="button" style="flex:1; padding:7px 8px; font-size:0.72rem;">
+            <strong>📥 Carica Backup</strong>
+            <span>Ripristina file</span>
+          </button>
+          <input type="file" id="fileInputBackup" accept=".json" onchange="importBackupJSON(event)" style="display:none;">
+        </div>
+      </div>
+
       <button class="btn-feed-action" onclick="saveAndCloseProfile()" style="margin-top:6px;">
         <span>💾 Salva e Applica Profilo</span>
       </button>
@@ -1764,6 +1796,8 @@
 
     const DEFAULT_STATE = {
       hasDoneQuiz: true,
+      starterName: "Lievitotchi",
+      notes: "",
       yeastType: "licoli",
       school: "fridge-modern",
       activeQuest: "pizza",
@@ -3131,6 +3165,20 @@
         bAge.innerText = `${baseName} • ${ageInfo.detail}`;
       }
 
+      const brandTitle = document.getElementById("brandTitle");
+      if (brandTitle) brandTitle.innerText = appState.starterName || "Lievitotchi";
+
+      const notesCard = document.getElementById("bioNotesCard");
+      const notesText = document.getElementById("bioNotesText");
+      if (notesCard && notesText) {
+        if (appState.notes && appState.notes.trim().length > 0) {
+          notesCard.style.display = "block";
+          notesText.innerText = appState.notes;
+        } else {
+          notesCard.style.display = "none";
+        }
+      }
+
       // Box Panettone
       const pBox = document.getElementById("panettoneTrainingBox");
       if (pBox) {
@@ -3464,6 +3512,12 @@
     }
 
     function syncProfileModalUI() {
+      // Nome e Note
+      const inName = document.getElementById("inputStarterName");
+      if (inName) inName.value = appState.starterName || "Lievitotchi";
+      const inNotes = document.getElementById("inputStarterNotes");
+      if (inNotes) inNotes.value = appState.notes || "";
+
       // Tipo
       const isLicoli = appState.yeastType === 'licoli';
       const btnLicoli = document.getElementById("btnCfgLicoli");
@@ -3609,10 +3663,60 @@
     }
 
     function saveAndCloseProfile() {
+      const inName = document.getElementById("inputStarterName");
+      if (inName && inName.value.trim().length > 0) {
+        appState.starterName = inName.value.trim();
+      }
+      const inNotes = document.getElementById("inputStarterNotes");
+      if (inNotes) {
+        appState.notes = inNotes.value.trim();
+      }
       saveState();
       updateUI();
       closeQuizModal();
       spawnToast("✅ Profilo Salvato!");
+    }
+
+    function exportBackupJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const cleanName = (appState.starterName || 'lievitotchi').toLowerCase().replace(/[^a-z0-9_-]/g, '_');
+      const filename = `lievitotchi_${cleanName}_backup.json`;
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", filename);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      spawnToast("📤 File di backup salvato!");
+    }
+
+    function triggerImportJSON() {
+      const fileInput = document.getElementById("fileInputBackup");
+      if (fileInput) fileInput.click();
+    }
+
+    function importBackupJSON(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && (imported.yeastType || imported.lastFedTimestamp)) {
+            appState = Object.assign({}, DEFAULT_STATE, imported);
+            saveState();
+            updateUI();
+            syncProfileModalUI();
+            spawnToast("✅ Backup ripristinato con successo!");
+          } else {
+            alert("Il file selezionato non è un backup valido di Lievitotchi.");
+          }
+        } catch(err) {
+          alert("Errore nel ripristino del backup: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
     }
 
     document.getElementById("btnOpenQuiz").addEventListener("click", openProfileModal);
