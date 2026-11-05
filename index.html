@@ -1283,11 +1283,11 @@
     <section class="hero-stage-card">
       <!-- SELETTORE AMBIENTE (FRIGO / STANZA) APPENA SOPRA L'ANIMAZIONE -->
       <div class="viewport-env-bar" title="1 tap: sposta ambiente • Doppio tap: raggiunge subito la temperatura">
-        <button class="env-btn env-fridge active" id="btnLocFridge" onclick="handleFridgeClick(event)" title="1 tap: sposta in frigo gradualmente • Doppio tap: raggiunge subito +4°C">
+        <button class="env-btn env-fridge active" id="btnLocFridge" type="button" title="1 tap: sposta in frigo gradualmente • Doppio tap: raggiunge subito +4°C">
           <span>❄️ Frigo</span>
           <span class="env-sub" id="lblFridgeSub">+4°C</span>
         </button>
-        <button class="env-btn env-room" id="btnLocRoom" onclick="handleRoomClick(event)" title="1 tap: sposta a stanza gradualmente • Doppio tap: raggiunge subito ~24°C">
+        <button class="env-btn env-room" id="btnLocRoom" type="button" title="1 tap: sposta a stanza gradualmente • Doppio tap: raggiunge subito ~24°C">
           <span>🏠 Stanza</span>
           <span class="env-sub" id="lblRoomSub">~24°C</span>
         </button>
@@ -2248,14 +2248,32 @@
         ctx.fillRect(cx - w/2, jarBottom + 3 + (jarW + 10 - w)/8, w, 3);
       }
 
-      // Corpo vaso vetro
-      ctx.fillStyle = "rgba(205, 235, 200, 0.45)";
+      // Corpo vaso vetro: reattivo all'ambiente (caldo dorato/crema stanza vs azzurro gelo frigo) e alla temperatura
+      const curCoreTemp = parseFloat(kin.coreTemp) || (appState.inFridge ? 4.0 : 24.0);
+      const tempRatio = Math.max(0, Math.min(1, (curCoreTemp - 4.0) / 20.0));
+      // Frigo (+4°C): rgba(186, 224, 248, 0.62) azzurro gelo
+      // Stanza (~24°C): rgba(254, 248, 228, 0.65) caldo ambrato/crema luminoso
+      const glassR = Math.round(186 + (254 - 186) * tempRatio);
+      const glassG = Math.round(224 + (248 - 224) * tempRatio);
+      const glassB = Math.round(248 + (228 - 248) * tempRatio);
+      const glassAlpha = appState.inFridge ? 0.62 : 0.55;
+
+      ctx.fillStyle = `rgba(${glassR}, ${glassG}, ${glassB}, ${glassAlpha})`;
       ctx.fillRect(cx - jarW/2, jarTop + 14, jarW, jarH - 14);
 
       // Riflessi Stardew
       ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
       ctx.fillRect(cx - jarW/2 + 7, jarTop + 20, 3, jarH - 34);
       ctx.fillRect(cx - jarW/2 + 13, jarTop + 24, 2, jarH - 44);
+
+      // Riflesso caldo della stanza o bruma gelata sul lato destro del vaso
+      if (!appState.inFridge) {
+        ctx.fillStyle = `rgba(255, 245, 210, ${(0.25 + 0.20 * tempRatio).toFixed(2)})`;
+        ctx.fillRect(cx + jarW/2 - 8, jarTop + 20, 2, jarH - 36);
+      } else {
+        ctx.fillStyle = `rgba(147, 197, 253, ${(0.20 + 0.15 * (1 - tempRatio)).toFixed(2)})`;
+        ctx.fillRect(cx + jarW/2 - 8, jarTop + 20, 2, jarH - 36);
+      }
 
       // Bordo vaso
       ctx.fillStyle = "#182C17";
@@ -2296,6 +2314,19 @@
       const isShivering = (appState.inFridge && kin.isTransitioning);
       const pulse = Math.floor(Math.sin(tickCount * 0.08) * (appState.inFridge ? 1 : 2.5)) + pokeSquish;
       const topY = jarBottom - yeastHeight - pulse;
+
+      // Tinta e atmosfera della camera d'aria interna al vaso (sopra la massa lievito)
+      if (topY > jarTop + 16) {
+        if (!appState.inFridge) {
+          // Luce calda e dorata della stanza che rischiara l'interno vuoto del vaso
+          ctx.fillStyle = `rgba(255, 238, 195, ${(0.20 + 0.12 * tempRatio).toFixed(2)})`;
+          ctx.fillRect(cx - jarW/2 + 3, jarTop + 14, jarW - 6, topY - (jarTop + 10));
+        } else {
+          // Bagliore gelido e brina nell'aria fredda interna del vaso in frigo
+          ctx.fillStyle = `rgba(186, 230, 255, ${(0.16 + 0.14 * (1 - tempRatio)).toFixed(2)})`;
+          ctx.fillRect(cx - jarW/2 + 3, jarTop + 14, jarW - 6, topY - (jarTop + 10));
+        }
+      }
 
       const baseDough = appState.yeastType === 'licoli' ? "#FFF3D1" : "#F7E6BD";
       const shadowDough = appState.yeastType === 'licoli' ? "#EADBB5" : "#E2CF9F";
@@ -3297,16 +3328,20 @@
     function handleFridgeClick(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const now = Date.now();
-      const isDouble = (now - lastFridgeTap < 450);
-      lastFridgeTap = now;
+      const delta = now - lastFridgeTap;
+      if (delta > 0 && delta < 50) return; // ignora click sintetici o duplicati a <50ms
+      const isDouble = (delta >= 50 && delta <= 450);
+      lastFridgeTap = isDouble ? 0 : now;
       setEnvironment(true, isDouble);
     }
 
     function handleRoomClick(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const now = Date.now();
-      const isDouble = (now - lastRoomTap < 450);
-      lastRoomTap = now;
+      const delta = now - lastRoomTap;
+      if (delta > 0 && delta < 50) return; // ignora click sintetici o duplicati a <50ms
+      const isDouble = (delta >= 50 && delta <= 450);
+      lastRoomTap = isDouble ? 0 : now;
       setEnvironment(false, isDouble);
     }
 
